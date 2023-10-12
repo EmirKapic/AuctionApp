@@ -2,10 +2,7 @@ import SocialMediaIcon from "./SocialMediaIcon";
 
 export default function UpperNavbar(){
     return (
-        <section className="w-full py-[8px]"
-            style={{
-                background:" #252525"
-            }}>
+        <section className="w-full py-[8px] bg-grey_">
             <div className="flex justify-between max-w-[1280px] w-full mx-auto items-center"
                 >
                 <nav>
