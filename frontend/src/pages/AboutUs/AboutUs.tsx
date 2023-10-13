@@ -22,10 +22,10 @@ export default function AboutUs(){
                             <img src='https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y2hlZnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80'></img>
                         </div>
                         <div className="col-span-1 row-span-1">
-                            <img className="object-cover w-full" src="https://parrotprint.com/wp/wp-content/uploads/2017/04/pexels-photo-27411.jpg"></img>
+                            <img className="object-cover h-[200px]" src="https://parrotprint.com/wp/wp-content/uploads/2017/04/pexels-photo-27411.jpg"></img>
                         </div>
                         <div className="col-span-1 row-span-1 w-full">
-                            <img className="object-cover w-full" src="https://images.agoramedia.com/wte3.0/gcms/Ways-to-Encourage-Your-Baby-to-Play-Alone-alt-722x406.jpg"></img>
+                            <img className="object-cover h-[200px]" src="https://images.agoramedia.com/wte3.0/gcms/Ways-to-Encourage-Your-Baby-to-Play-Alone-alt-722x406.jpg"></img>
                         </div>
                     </aside>
                 </section>
