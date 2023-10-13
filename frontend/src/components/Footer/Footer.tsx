@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import SocialMediaIcon from "src/components/Navbar/SocialMediaIcon";
 
 
@@ -11,13 +12,13 @@ export default function Footer(){
                 <nav>
                     <ul className="flex flex-col gap-3 opacity-80">
                         <li>
-                            <a>About us</a>
+                            <Link to="/about">About us</Link>
                         </li>
                         <li>
-                            <a>Terms and conditions</a>
+                            <Link to="/terms">Terms and conditions</Link>
                         </li>
                         <li>
-                            <a>Privacy policy</a>
+                            <Link to="/privacy">Privacy policy</Link>
                         </li>
                     </ul>
                 </nav>

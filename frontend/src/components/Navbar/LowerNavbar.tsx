@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Icon from "src/svgs/Icon";
 
 
@@ -6,8 +7,24 @@ import Icon from "src/svgs/Icon";
 export default function LowerNavbar(){
     //1 selected Home, 2 selected Shop, 3 selected My profile, this is to know which one to color purple in the nav links
     const [selectedTab, setSelectedTab] = useState(1);
+    const {pathname} = useLocation();
 
-    //note still need to find the "hammer" img that is next to Auction text. Mentor help :D
+    //question for mentor
+    /*
+        is it a good idea to rely on url to pick which of the navs get colored?
+        this is 100% least amount of code as any other solution would require passing props(i think)
+        but it is also kinda volatile (although i dont expect url to change often)
+    */
+
+    useEffect(() => {
+        if (pathname === "/about" || pathname === "/privacy" || pathname === "/terms"){
+            setSelectedTab(2);
+        }
+        else{
+            setSelectedTab(1);
+        }
+    }, [pathname]);
+    
     return (
         <section>
             <div className="flex max-w-[1280px] w-full mx-auto items-center py-4 justify-between font-[300]">
