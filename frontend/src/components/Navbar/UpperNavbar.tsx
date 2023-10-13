@@ -7,9 +7,16 @@ export default function UpperNavbar(){
                 >
                 <nav>
                     <ul className="flex items-center gap-4">
-                        <SocialMediaIcon name="facebook"/>
-                        <SocialMediaIcon name="insta" />
-                        <SocialMediaIcon name="twitter"/>
+                        <a href="https://bs-ba.facebook.com/Emir.Kapic02">
+                            <SocialMediaIcon name="facebook"/>
+                        </a>
+                        <a href="https://www.instagram.com/kapic.e/">
+                            <SocialMediaIcon name="insta" />
+                        </a>
+                        
+                        <a href="https://twitter.com/elonmusk">
+                            <SocialMediaIcon name="twitter"/>
+                        </a>
                     </ul>
                 </nav>
                 <p className="text-white">

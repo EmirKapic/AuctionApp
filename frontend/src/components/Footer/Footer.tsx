@@ -30,12 +30,21 @@ export default function Footer(){
                             <a>Call us at +123 797-567-2535</a>
                         </li>
                         <li>
-                            <a>support@auction.com</a>
+                            <a href="mailto:emirkapic0@gmail.com">
+                                support@auction.com
+                            </a>
                         </li>
                         <ul className="flex items-center gap-4">
+                            <a href="https://bs-ba.facebook.com/Emir.Kapic02">
                             <SocialMediaIcon name="facebook"/>
-                            <SocialMediaIcon name="insta" />
-                            <SocialMediaIcon name="twitter"/>
+                            </a>
+                            <a href="https://www.instagram.com/kapic.e/">
+                                <SocialMediaIcon name="insta" />
+                            </a>
+                            
+                            <a href="https://twitter.com/elonmusk">
+                                <SocialMediaIcon name="twitter"/>
+                            </a>
                         </ul>
                     </ul>
                 </nav>
