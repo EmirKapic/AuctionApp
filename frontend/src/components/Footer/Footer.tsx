@@ -1,4 +1,4 @@
-import SocialMediaIcon from "../Navbar/SocialMediaIcon";
+import SocialMediaIcon from "src/components/Navbar/SocialMediaIcon";
 
 
 

@@ -1,4 +1,4 @@
-import SocialMediaIcon from "./SocialMediaIcon";
+import SocialMediaIcon from "src/components/Navbar/SocialMediaIcon";
 
 export default function UpperNavbar(){
     return (

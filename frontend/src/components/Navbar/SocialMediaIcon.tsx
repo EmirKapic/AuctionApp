@@ -1,4 +1,4 @@
-import Icon from "../../svgs/Icon"
+import Icon from "src/svgs/Icon"
 
 
 interface SocialMediaIconProps{

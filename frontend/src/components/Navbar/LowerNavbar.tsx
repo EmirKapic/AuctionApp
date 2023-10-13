@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Icon from "../../svgs/Icon";
+import Icon from "src/svgs/Icon";
 
 
 

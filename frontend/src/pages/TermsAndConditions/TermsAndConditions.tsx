@@ -1,4 +1,4 @@
-import SubHeader from "../Common/Subheader";
+import SubHeader from "src/components/Common/Subheader";
 
 
 
