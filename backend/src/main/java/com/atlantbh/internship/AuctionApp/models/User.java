@@ -1,5 +1,7 @@
 package com.atlantbh.internship.AuctionApp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -35,6 +37,7 @@ public class User {
     private List<Bid> bids = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Product> productsOnSale = new ArrayList<>();
 
     @Nullable
