@@ -1,6 +1,6 @@
 package com.atlantbh.internship.AuctionApp.services;
 
-import com.atlantbh.internship.AuctionApp.controllers.ProductService;
+import com.atlantbh.internship.AuctionApp.controllers.Products.ProductService;
 import com.atlantbh.internship.AuctionApp.dtos.ProductDto;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service

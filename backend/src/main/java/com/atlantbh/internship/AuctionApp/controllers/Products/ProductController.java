@@ -1,8 +1,7 @@
-package com.atlantbh.internship.AuctionApp.controllers;
+package com.atlantbh.internship.AuctionApp.controllers.Products;
 
 
 import com.atlantbh.internship.AuctionApp.dtos.ProductDto;
-import com.atlantbh.internship.AuctionApp.models.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
