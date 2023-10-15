@@ -17,6 +17,7 @@ export default function useFetchAll<T>(url : string){
                 throw new Error("failed to fetch data");
             }
         };
+        fetchData();
     }, []);
     return {data, isLoading};
 }
