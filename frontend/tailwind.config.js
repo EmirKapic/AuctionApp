@@ -12,6 +12,9 @@ export default {
       boxShadow: {
         'lightgrey': "4px 4px 0 0 rgba(0 , 0, 0 , 0.11)",
       },
+      maxWidth : {
+        'container-lg' : '1280px'
+      }
     },
   },
   plugins: [],

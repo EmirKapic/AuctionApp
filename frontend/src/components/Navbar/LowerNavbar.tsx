@@ -17,7 +17,7 @@ export default function LowerNavbar() {
 
   return (
     <section>
-      <div className="flex max-w-[1280px] w-full mx-auto items-center py-4 justify-between font-[300]">
+      <div className="flex max-w-container-lg w-full mx-auto items-center py-4 justify-between font-light">
         <section className="flex items-center">
           <Link to={"/"} className="flex">
             <Icon name="hammer" />
@@ -28,7 +28,7 @@ export default function LowerNavbar() {
         </section>
 
         <section className="flex w-full justify-end items-center gap-10">
-          <section className="max-w-[60%] flex-grow relative">
+          <section className="max-w-[60%] flex-grow relative invisible">
             <input
               type="text"
               role="search"
@@ -44,7 +44,7 @@ export default function LowerNavbar() {
             <ul className="flex gap-5 uppercase">
               <li className="cursor-pointer">
                 <Link
-                  className={selectedTab === 1 ? "text-purple font-[700]" : ""}
+                  className={selectedTab === 1 ? "text-purple font-bold" : ""}
                   to={"/"}
                 >
                   Home
@@ -54,7 +54,7 @@ export default function LowerNavbar() {
                 <a
                   className={
                     "invisible " +
-                    (selectedTab === 2 ? "text-purple font-[700]" : "")
+                    (selectedTab === 2 ? "text-purple font-bold" : "")
                   }
                 >
                   Shop
@@ -64,7 +64,7 @@ export default function LowerNavbar() {
                 <a
                   className={
                     "invisible " +
-                    (selectedTab === 3 ? "text-purple font-[700]" : "")
+                    (selectedTab === 3 ? "text-purple font-bold" : "")
                   }
                 >
                   My account

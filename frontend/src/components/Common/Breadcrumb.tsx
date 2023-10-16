@@ -35,7 +35,7 @@ export default function Breadcrumb(props: BreadcrumbProps) {
 
   return (
     <aside className="w-full bg-lightgrey-100">
-      <div className="w-full max-w-[1280px] mx-auto flex justify-between py-5">
+      <div className="w-full max-w-container-lg mx-auto flex justify-between py-5">
         <h3 className="tracking-wider text-lg uppercase">{props.title}</h3>
         <div className="flex text-base">{breadcrumbPath}</div>
       </div>

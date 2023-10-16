@@ -10,7 +10,7 @@ export default function TermsAndConditions() {
           { title: "terms and conditions" },
         ]}
       />
-      <main className="max-w-[1280px] w-full mx-auto px-[250px] pt-12 pb-36 [&>p]:text-lg [&>p]:text-lightgrey-200 [&>h2]:text-grey_">
+      <main className="max-w-container-lg w-full mx-auto px-64 pt-12 pb-36 [&>p]:text-lg [&>p]:text-lightgrey-200 [&>h2]:text-grey_">
         <h2 className="text-5xl pb-6">Introduction</h2>
 
         <p className="pb-6">

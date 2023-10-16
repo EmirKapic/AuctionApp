@@ -7,7 +7,7 @@ export default function AboutUs() {
         title="about us"
         items={[{ title: "shop", to: "/shop" }, { title: "about us" }]}
       />
-      <main className="max-w-[1280px] w-full mx-auto mb-10">
+      <main className="max-w-container-lg w-full mx-auto mb-10">
         <h1 className="text-4xl font-normal py-10">About Us</h1>
         <section className="flex justify-stretch w-full flex-wrap">
           <article className="w-1/2 leading-7 text-lg opacity-50 word-spacing-3 [&>p]:pb-5 [&>p]:max-w-[60ch]">
@@ -46,13 +46,13 @@ export default function AboutUs() {
             </div>
             <div className="col-span-1 row-span-1">
               <img
-                className="object-cover h-[200px]"
+                className="object-cover h-52"
                 src="https://parrotprint.com/wp/wp-content/uploads/2017/04/pexels-photo-27411.jpg"
               ></img>
             </div>
             <div className="col-span-1 row-span-1 w-full">
               <img
-                className="object-cover h-[200px]"
+                className="object-cover h-52"
                 src="https://images.agoramedia.com/wte3.0/gcms/Ways-to-Encourage-Your-Baby-to-Play-Alone-alt-722x406.jpg"
               ></img>
             </div>

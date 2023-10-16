@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
           { title: "privacy and policy" },
         ]}
       />
-      <main className="max-w-[1280px] w-full mx-auto px-[250px] pt-12 pb-36 [&>p]:text-lg [&>p]:text-lightgrey-200">
+      <main className="max-w-container-lg w-full mx-auto px-64 pt-12 pb-36 [&>p]:text-lg [&>p]:text-lightgrey-200">
         <h1 className="text-5xl pb-6">Privacy and policy</h1>
         <p className="pb-6">
           We respect your privacy and are committed to protecting it through our
