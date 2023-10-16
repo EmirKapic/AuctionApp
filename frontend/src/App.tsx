@@ -17,6 +17,7 @@ function App() {
     <div className='wrapper'>
       <main className='content'>
         <Navbar/>
+
 		<ScrollToTop/>
         <Routes>	
 			<Route path="/" element={<main>hi</main>}/>
