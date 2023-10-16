@@ -4,13 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        purple: "#8367D8",
-        grey_: "#252525",
+        purple :  "#8367D8",
+        grey_:  "#252525",
         "lightgrey-200": "#9B9B9B",
         "lightgrey-100": "#FAFAFA",
       },
       boxShadow: {
-        lightgrey: "4px 4px 0 0 rgba(0 , 0, 0 , 0.11)",
+        'lightgrey': "4px 4px 0 0 rgba(0 , 0, 0 , 0.11)",
       },
     },
   },

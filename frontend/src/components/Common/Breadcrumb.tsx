@@ -23,8 +23,8 @@ export default function Breadcrumb(props: BreadcrumbProps) {
     return (
       <h3
         className={
-          "text-grey_ opacity-60 font-light text-md uppercase " +
-          (lastIndex ? " font-bold" : " cursor-pointer pr-1")
+          "opacity-60 font-light text-lg uppercase text-black" +
+          (lastIndex ? " font-normal" : " cursor-pointer pr-2")
         }
         onClick={() => handleRouteClick(item.to)}
       >
