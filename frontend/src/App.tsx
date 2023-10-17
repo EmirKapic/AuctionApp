@@ -1,9 +1,27 @@
-import './App.css'
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Footer from "./components/Footer/Footer";
+import Navbar from "./components/Navbar/Navbar";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
+import AboutUs from "./pages/AboutUs/AboutUs";
+import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
+import ScrollToTop from "./components/Common/ScrollToTop";
 
 function App() {
   return (
-    <h1 className="text-center">Hi</h1>
-  )
+    <main className="relative min-h-screen pb-72">
+      <Navbar />
+      <ScrollToTop />
+      <Routes>
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsAndConditions />} />
+      </Routes>
+      <div className="absolute bottom-0 w-full">
+        <Footer />
+      </div>
+    </main>
+  );
 }
 
-export default App
+export default App;
