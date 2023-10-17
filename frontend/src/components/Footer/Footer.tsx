@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import SocialMediaIcon from "src/components/Navbar/SocialMediaIcon";
+import SocialMediaIcon from "components/Navbar/SocialMediaIcon";
 
 export default function Footer() {
   return (

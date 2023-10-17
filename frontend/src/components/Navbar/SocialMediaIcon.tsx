@@ -1,7 +1,7 @@
-import Icon from "src/svgs/Icon";
-import { IconType } from "src/svgs/Icon";
+import Icon from "svgs/Icon";
+import { IconType } from "svgs/Icon";
 
-interface SocialMediaIconProps {
+export interface SocialMediaIconProps {
   name: IconType;
 }
 

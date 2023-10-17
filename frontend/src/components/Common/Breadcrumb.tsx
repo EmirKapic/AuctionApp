@@ -5,7 +5,7 @@ interface BreadcrumbItem {
   to?: string;
 }
 
-interface BreadcrumbProps {
+export interface BreadcrumbProps {
   title: string;
   items: Array<BreadcrumbItem>;
 }
@@ -13,7 +13,7 @@ interface BreadcrumbProps {
 export default function Breadcrumb(props: BreadcrumbProps) {
   const navigate = useNavigate();
 
-  function handleRouteClick(to: string | undefined) {
+  function handleRouteClick(to: string | undefined): void {
     if (!to) return;
     navigate(to);
   }

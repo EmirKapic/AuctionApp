@@ -1,4 +1,4 @@
-import Breadcrumb from "src/components/Common/Breadcrumb";
+import Breadcrumb from "components/Common/Breadcrumb";
 
 export default function TermsAndConditions() {
   return (

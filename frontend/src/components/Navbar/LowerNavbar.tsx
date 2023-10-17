@@ -1,19 +1,8 @@
-import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Icon from "src/svgs/Icon";
+import Icon from "svgs/Icon";
 
 export default function LowerNavbar() {
-  //1 selected Home, 2 selected Shop, 3 selected My profile, this is to know which one to color purple in the nav links
-  const [selectedTab, setSelectedTab] = useState(1);
   const { pathname } = useLocation();
-
-  useEffect(() => {
-    if (pathname === "/") {
-      setSelectedTab(1);
-    } else {
-      setSelectedTab(0);
-    }
-  }, [pathname]);
 
   return (
     <section>
@@ -44,31 +33,17 @@ export default function LowerNavbar() {
             <ul className="flex gap-5 uppercase">
               <li className="cursor-pointer">
                 <Link
-                  className={selectedTab === 1 ? "text-purple font-bold" : ""}
+                  className={pathname === "/" ? "text-purple font-bold" : ""}
                   to={"/"}
                 >
                   Home
                 </Link>
               </li>
               <li className="cursor-pointer">
-                <a
-                  className={
-                    "invisible " +
-                    (selectedTab === 2 ? "text-purple font-bold" : "")
-                  }
-                >
-                  Shop
-                </a>
+                <a className={"invisible "}>Shop</a>
               </li>
               <li className="cursor-pointer">
-                <a
-                  className={
-                    "invisible " +
-                    (selectedTab === 3 ? "text-purple font-bold" : "")
-                  }
-                >
-                  My account
-                </a>
+                <a className={"invisible "}>My account</a>
               </li>
             </ul>
           </nav>
