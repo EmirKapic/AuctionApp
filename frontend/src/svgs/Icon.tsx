@@ -1,6 +1,6 @@
 export type IconType = "insta" | "facebook" | "twitter" | "magnify" | "hammer";
 
-interface IconProps {
+export interface IconProps {
   name: IconType;
 }
 
