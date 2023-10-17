@@ -11,6 +11,7 @@ export default {
       },
       boxShadow: {
         lightgrey: "4px 4px 0 0 rgba(0 , 0, 0 , 0.11)",
+        "purple-md" : "3px 3px 0 0 rgba(131, 103, 216, 0.3)"
       },
       maxWidth: {
         "container-lg": "1280px",

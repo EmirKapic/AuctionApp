@@ -25,7 +25,7 @@ export default function CategoriesList() {
         boxShadow: "3px 3px 0 0 rgba(0,0,0,0.11)",
       }}
     >
-      <h1 className="text-purple p-4 pr-28">CATEGORIES</h1>
+      <h1 className="text-purple p-4 pr-36">CATEGORIES</h1>
       <ul>
         {categoriesList}
 
