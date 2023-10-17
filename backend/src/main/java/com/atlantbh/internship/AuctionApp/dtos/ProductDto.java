@@ -19,6 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductDto {
     private Long id;
+    private String name;
+    private String description;
     private Double startBid;
     private Double highestBid;
     private Integer numberOfBids;
@@ -26,8 +28,9 @@ public class ProductDto {
     private LocalDateTime dateEnd;
     private LocalDateTime dateCreated;
     private SubCategory subCategory;
-    private List<Bid> bids = new ArrayList<>();
-    private List<ProductImage> productImage = new ArrayList<>();
+    private List<Bid> bids;
+    private List<ProductImage> productImage;
+    private Long sellerId;
 
 
 

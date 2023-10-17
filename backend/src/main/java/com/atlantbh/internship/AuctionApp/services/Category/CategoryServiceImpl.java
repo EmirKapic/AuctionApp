@@ -1,4 +1,4 @@
-package com.atlantbh.internship.AuctionApp.services;
+package com.atlantbh.internship.AuctionApp.services.Category;
 
 import com.atlantbh.internship.AuctionApp.controllers.Categories.CategoryService;
 import com.atlantbh.internship.AuctionApp.models.Category;

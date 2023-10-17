@@ -19,6 +19,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    private String description;
     private Double startBid;
     private Double highestBid;
     private Integer numberOfBids;
@@ -26,7 +28,6 @@ public class Product {
     private LocalDateTime dateEnd;
     private LocalDateTime dateCreated;
 
-    //withut the JsonBackReference, we go into an infinite loop. But without it subcategory data is not included in the returned result
     @ManyToOne
     @JoinColumn(name = "subcategory_id")
     private SubCategory subCategory;

@@ -6,4 +6,5 @@ import org.springframework.data.domain.Page;
 
 public interface ProductService {
     Page<ProductDto> getAll(Integer page, Integer size);
+    ProductDto getRandomProduct();
 }
