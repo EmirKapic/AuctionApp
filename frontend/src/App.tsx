@@ -9,20 +9,18 @@ import ScrollToTop from "./components/Common/ScrollToTop";
 
 function App() {
   return (
-    <div>
-      <main className="relative min-h-screen pb-72">
-        <Navbar />
-        <ScrollToTop />
-        <Routes>
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsAndConditions />} />
-        </Routes>
-        <div className="absolute bottom-0 w-full">
-          <Footer />
-        </div>
-      </main>
-    </div>
+    <main className="relative min-h-screen pb-72">
+      <Navbar />
+      <ScrollToTop />
+      <Routes>
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsAndConditions />} />
+      </Routes>
+      <div className="absolute bottom-0 w-full">
+        <Footer />
+      </div>
+    </main>
   );
 }
 
