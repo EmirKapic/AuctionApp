@@ -17,16 +17,18 @@ export default function SpecialOffers() {
 
   return (
     <section className="max-w-container-lg w-full mx-auto">
-      <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2">
+      <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2 text-lg">
         <button
-          className={selectedTab === 1 ? "border-b-4 border-purple" : ""}
+          className={
+            selectedTab === 1 ? "border-b-4 border-purple font-bold" : ""
+          }
           onClick={() => setSelectedTab(1)}
         >
           New Arrivals
         </button>
         <button
           className={
-            selectedTab === 2 ? "border-b-4 border-purple duration-300" : ""
+            selectedTab === 2 ? "border-b-4 border-purple font-bold" : ""
           }
           onClick={() => setSelectedTab(2)}
         >
