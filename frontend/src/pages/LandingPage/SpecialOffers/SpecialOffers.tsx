@@ -7,7 +7,7 @@ export default function SpecialOffers() {
   const [selectedTab, setSelectedTab] = useState(1);
 
   const { data: newProducts, isLoading: isLoadingNew } = useFetchPage(
-    new UrlBuilder().products().url,
+    new UrlBuilder().products().recent().url,
     0,
     8,
   );

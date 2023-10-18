@@ -14,4 +14,8 @@ export default class UrlBuilder {
     this._url += "/random";
     return this;
   }
+  public recent(): UrlBuilder {
+    this._url += "/recent";
+    return this;
+  }
 }
