@@ -1,6 +1,6 @@
 import ProductTitle from "components/Common/ProductTitle";
 import CategoriesList from "./CategoriesList";
-import PurpleButton from "components/Common/PurpleButton";
+import PurpleButton from "components/Common/Button";
 import useFetchOne from "hooks/useFetchOne";
 import Product from "models/Product";
 import HeroProduct from "./HeroProduct";
@@ -13,7 +13,7 @@ export default function Hero() {
   data;
 
   return (
-    <section className="bg-lightgrey-100 w-full">
+    <section className="bg-lightgrey-100 w-full mb-10">
       <div className="max-w-[1280px] w-full mx-auto flex">
         <CategoriesList />
         <HeroProduct />

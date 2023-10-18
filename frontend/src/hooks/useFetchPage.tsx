@@ -1,13 +1,20 @@
+import Page from "models/Page";
 import { useEffect, useState } from "react";
 
-export default function useFetchAll<T>(url: string) {
-  const [data, setData] = useState<T[]>([]);
+export default function useFetchPage(
+  url: string,
+  pageNumber: number,
+  pageSize: number,
+) {
+  const [data, setData] = useState<Page>();
   const [isLoading, setIsLoading] = useState(true);
+
+  const completeUrl = url + `?page=${pageNumber}&size=${pageSize}`;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(url);
+        const res = await fetch(completeUrl);
         setData(await res.json());
         setIsLoading(false);
       } catch (error) {
@@ -16,5 +23,6 @@ export default function useFetchAll<T>(url: string) {
     };
     fetchData();
   }, []);
+
   return { data, isLoading };
 }

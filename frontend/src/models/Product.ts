@@ -1,6 +1,6 @@
-import Bid from "./Bid";
 import ProductImage from "./ProductImage";
 import Subcategory from "./Subcategory";
+import User from "./User";
 
 type Product = {
   id: number;
@@ -13,8 +13,7 @@ type Product = {
   dateEnd: Date;
   dateCreated: Date;
   subCategory: Subcategory;
-  bids: Array<Bid>;
-  productImages: Array<ProductImage>;
-  sellerId: number;
+  productImage: Array<ProductImage>;
+  user: User;
 };
 export default Product;

@@ -1,11 +1,12 @@
 import ProductTitle from "components/Common/ProductTitle";
-import PurpleButton from "components/Common/PurpleButton";
+import Button from "components/Common/Button";
 import useFetchOne from "hooks/useFetchOne";
 import Product from "models/Product";
+import UrlBuilder from "services/UrlBuilder";
 
 export default function HeroProduct() {
   const { data, isLoading } = useFetchOne<Product>(
-    "http://localhost:8080/api/products/random",
+    new UrlBuilder().products().random().url,
   );
 
   function handleBid(): void {}
@@ -23,10 +24,9 @@ export default function HeroProduct() {
       <div className="w-1/2">
         <ProductTitle title={data!!.name} startPrice={data!!.startBid} />
         <p className="pb-16">{data!!.description}</p>
-        <PurpleButton
+        <Button
           text="Bid now"
-          paddingX={9}
-          paddingY={2}
+          className="border-2 border-purple px-9 py-2 flex gap-2 items-center duration-300 text-center hover:bg-purple hover:text-white shadow-purple-md"
           onClick={handleBid}
         />
       </div>
