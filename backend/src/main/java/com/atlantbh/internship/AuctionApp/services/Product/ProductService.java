@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface ProductService {
     Page<Product> getAll(Pageable pageable);
     Product getRandom();
+    Page<Product> getRecent(Pageable pageable);
 }

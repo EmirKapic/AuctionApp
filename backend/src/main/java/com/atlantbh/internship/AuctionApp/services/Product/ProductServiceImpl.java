@@ -22,4 +22,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findRandom();
     }
 
+    @Override
+    public Page<Product> getRecent(Pageable pageable) {
+        return productRepository.findAllByOrderByDateStartDesc(pageable);
+    }
+
 }
