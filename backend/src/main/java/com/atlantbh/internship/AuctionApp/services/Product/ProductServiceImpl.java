@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.Random;
 
 
 @Service
@@ -21,12 +20,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getRandom() {
         return productRepository.findRandom();
-    }
-
-    private Long getRandomPageNumber(){
-        Long numberOfRows = productRepository.count();
-        Long numberOfPages = numberOfRows/20;
-        return new Random().nextLong(numberOfPages);
     }
 
 }
