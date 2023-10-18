@@ -22,8 +22,4 @@ public class SubCategory {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "subCategory")
-    @JsonBackReference
-    private List<Product> product = new ArrayList<>();
-
 }

@@ -33,10 +33,6 @@ public class Product {
     private SubCategory subCategory;
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore
-    private List<Bid> bids = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product")
     private List<ProductImage> productImage = new ArrayList<>();
 
     @ManyToOne

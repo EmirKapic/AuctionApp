@@ -1,6 +1,7 @@
 package com.atlantbh.internship.AuctionApp.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -21,11 +22,15 @@ public class User {
 
     private String firstName;
     private String lastName;
+
     @Column(unique = true)
+    @JsonIgnore
     private String email;
+    @JsonIgnore
     private String password;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "Wishlist",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -33,14 +38,15 @@ public class User {
     )
     private List<Product> wishlist = new ArrayList<>();
 
-    @OneToMany(mappedBy = "seller")
-    private List<Bid> bids = new ArrayList<>();
-
     @OneToMany(mappedBy = "user")
     @JsonBackReference
     private List<Product> productsOnSale = new ArrayList<>();
 
+
     @Nullable
+    @JsonIgnore
     private String phoneNumber;
+
+    @JsonIgnore
     private String role;
 }
