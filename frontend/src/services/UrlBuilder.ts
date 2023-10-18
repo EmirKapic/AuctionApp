@@ -18,4 +18,9 @@ export default class UrlBuilder {
     this._url += "/recent";
     return this;
   }
+
+  public lastchance(): UrlBuilder {
+    this._url += "/lastchance";
+    return this;
+  }
 }

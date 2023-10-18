@@ -13,7 +13,7 @@ export default function SpecialOffers() {
   );
 
   const { data: lastChanceProducts, isLoading: isLoadingLastChance } =
-    useFetchPage(new UrlBuilder().products().url, 1, 8);
+    useFetchPage(new UrlBuilder().products().lastchance().url, 0, 8);
 
   return (
     <section className="max-w-container-lg w-full mx-auto">
