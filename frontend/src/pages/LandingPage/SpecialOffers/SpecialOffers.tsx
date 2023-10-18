@@ -16,7 +16,7 @@ export default function SpecialOffers() {
     useFetchPage(new UrlBuilder().products().lastchance().url, 0, 8);
 
   return (
-    <section className="max-w-container-lg w-full mx-auto">
+    <section className="max-w-container-lg w-full mx-auto pb-10">
       <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2 text-lg">
         <button
           className={

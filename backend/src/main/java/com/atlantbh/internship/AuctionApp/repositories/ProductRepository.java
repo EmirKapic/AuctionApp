@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM product ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
     Product findRandom();
-
+    //not 100% correct, it should check if date_start < now and date_end > now!!!
     Page<Product> findAllByOrderByDateStartDesc(Pageable pageable);
 
     Page<Product> findAllByOrderByDateEndDesc(Pageable pageable);
