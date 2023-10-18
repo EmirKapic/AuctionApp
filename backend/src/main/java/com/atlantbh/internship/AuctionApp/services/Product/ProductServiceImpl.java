@@ -27,4 +27,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllByOrderByDateStartDesc(pageable);
     }
 
+    @Override
+    public Page<Product> getExpiring(Pageable pageable) {
+        return productRepository.findAllByOrderByDateEndDesc(pageable);
+    }
+
 }

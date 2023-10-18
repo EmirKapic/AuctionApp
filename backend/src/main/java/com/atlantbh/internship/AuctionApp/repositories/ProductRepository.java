@@ -11,4 +11,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findRandom();
 
     Page<Product> findAllByOrderByDateStartDesc(Pageable pageable);
+
+    Page<Product> findAllByOrderByDateEndDesc(Pageable pageable);
 }

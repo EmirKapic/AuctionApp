@@ -30,4 +30,9 @@ public class ProductController {
         return productService.getRecent(pageable);
     }
 
+    @GetMapping("/lastchance")
+    public Page<Product> getExpiring(Pageable pageable){
+        return productService.getExpiring(pageable);
+    }
+
 }
