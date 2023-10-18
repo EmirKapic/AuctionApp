@@ -14,7 +14,7 @@ export default function Grid(props: GridProps) {
   }
 
   const gridItems = props.items.map((item) => (
-    <div>
+    <div key={item.id}>
       <button onClick={() => handleProductClick(item.id)}>
         <img
           className="object-cover"

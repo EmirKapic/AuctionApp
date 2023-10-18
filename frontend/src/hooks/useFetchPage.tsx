@@ -6,23 +6,26 @@ export default function useFetchPage(
   pageNumber: number,
   pageSize: number,
 ) {
-  const [data, setData] = useState<Page>();
+  const [data, setData] = useState<Page>({ content: [], last: false });
   const [isLoading, setIsLoading] = useState(true);
 
-  const completeUrl = url + `?page=${pageNumber}&size=${pageSize}`;
-
   useEffect(() => {
+    const completeUrl = url + `?page=${pageNumber}&size=${pageSize}`;
     const fetchData = async () => {
       try {
         const res = await fetch(completeUrl);
-        setData(await res.json());
+        const newData: Page = await res.json();
+        setData({
+          ...newData,
+          content: [...data!!.content, ...newData.content],
+        });
         setIsLoading(false);
       } catch (error) {
         throw new Error("failed to fetch data");
       }
     };
     fetchData();
-  }, []);
+  }, [pageNumber, pageSize]);
 
   return { data, isLoading };
 }
