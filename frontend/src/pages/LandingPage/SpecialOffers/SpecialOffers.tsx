@@ -18,14 +18,20 @@ export default function SpecialOffers() {
     useFetchPage(new UrlBuilder().products().lastchance().url, pageExpiring, 8);
 
   const handleScroll = () => {
-    if (selectedTab === 1 && isLoadingNew) return;
+    if (
+      (selectedTab === 1 && isLoadingNew) ||
+      (selectedTab === 2 && isLoadingLastChance)
+    )
+      return;
 
     if (
-      document.documentElement.scrollHeight ===
-      window.scrollY + window.innerHeight
+      document.documentElement.scrollHeight - 10 <=
+      Math.floor(window.scrollY + window.innerHeight)
     ) {
-      if (selectedTab === 1) setPageRecent((pageRecent) => pageRecent + 1);
-      else if (selectedTab === 2) setPageExpiring(pageExpiring + 1);
+      if (selectedTab === 1 && !newProducts.last) {
+        setPageRecent(pageRecent + 1);
+      } else if (selectedTab === 2 && !lastChanceProducts.last)
+        setPageExpiring(pageExpiring + 1);
     }
 
     //when we add 3rd tab add it here
