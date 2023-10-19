@@ -14,7 +14,7 @@ export default function Hero() {
 
   return (
     <section className="bg-lightgrey-100 w-full mb-10">
-      <div className="max-w-[1280px] w-full mx-auto flex">
+      <div className="max-w-container-lg w-full mx-auto flex">
         <CategoriesList />
         <HeroProduct />
       </div>

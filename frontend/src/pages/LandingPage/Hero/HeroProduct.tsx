@@ -3,13 +3,17 @@ import Button from "components/Common/Button";
 import useFetchOne from "hooks/useFetchOne";
 import Product from "models/Product";
 import UrlBuilder from "services/UrlBuilder";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroProduct() {
+  const navigate = useNavigate();
   const { data, isLoading } = useFetchOne<Product>(
     new UrlBuilder().products().random().url,
   );
 
-  function handleBid(): void {}
+  function handleBid(): void {
+    navigate(`/products/${data?.id}`);
+  }
 
   if (isLoading) {
     return (

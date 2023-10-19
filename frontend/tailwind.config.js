@@ -16,6 +16,12 @@ export default {
       maxWidth: {
         "container-lg": "1280px",
       },
+      borderWidth : {
+        1 : "0.2px",
+      },
+      borderColor : {
+        silver : "silver"
+      }
     },
   },
   plugins: [],
