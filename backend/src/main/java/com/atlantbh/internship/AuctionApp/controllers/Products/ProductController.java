@@ -1,6 +1,7 @@
 package com.atlantbh.internship.AuctionApp.controllers.Products;
 
 
+import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductService;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,10 @@ public class ProductController {
     }
 
 
+
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable(name = "id") Long id) throws ProductNotFoundException {
+        return productService.getById(id);
+    }
 
 }
