@@ -35,7 +35,7 @@ export default function ProductImages() {
   }
 
   return (
-    <div className="p-12 h-full pb-20">
+    <div>
       <div className="h-96 w-full mb-5">{productImages[selectedIndex]}</div>
 
       <div className="grid grid-cols-4 gap-4 h-32">

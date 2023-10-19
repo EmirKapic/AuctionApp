@@ -18,4 +18,8 @@ export default class UrlBuilder {
     this._url += "/categories";
     return this;
   }
+  public id(id: number): UrlBuilder {
+    this._url += `/${id.toFixed(0)}`;
+    return this;
+  }
 }
