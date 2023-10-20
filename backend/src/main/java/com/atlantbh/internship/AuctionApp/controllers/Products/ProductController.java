@@ -25,14 +25,6 @@ public class ProductController {
         return productService.getRandom();
     }
 
-    @GetMapping("/recent")
-    public Page<Product> getRecent(Pageable pageable){
-        return productService.getRecent(pageable);
-    }
 
-    @GetMapping("/lastchance")
-    public Page<Product> getExpiring(Pageable pageable){
-        return productService.getExpiring(pageable);
-    }
 
 }
