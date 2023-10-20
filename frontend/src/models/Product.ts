@@ -13,7 +13,7 @@ type Product = {
   dateEnd: Date;
   dateCreated: Date;
   subCategory: Subcategory;
-  productImage: Array<ProductImage>;
+  images: Array<ProductImage>;
   user: User;
 };
 export default Product;

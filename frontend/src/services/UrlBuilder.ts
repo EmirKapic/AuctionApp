@@ -14,4 +14,8 @@ export default class UrlBuilder {
     this._url += "/random";
     return this;
   }
+  public categories(): UrlBuilder {
+    this._url += "/categories";
+    return this;
+  }
 }

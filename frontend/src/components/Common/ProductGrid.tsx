@@ -15,10 +15,7 @@ export default function ProductGrid(props: GridProps) {
       className="cursor-pointer"
       onClick={() => navigate(`/products/${item.id}`)}
     >
-      <img
-        className="object-cover"
-        src="https://content-management-files.canva.com/cdn-cgi/image/f=auto,q=70/2fdbd7ab-f378-4c63-8b21-c944ad2633fd/header_t-shirts2.jpg"
-      ></img>
+      <img className="object-cover" src={item.images[0].url}></img>
       <h3 className="text-2xl py-1 font-bold cursor-pointer">{item.name}</h3>
       <p className="text-lightgrey-200">
         Start From{" "}

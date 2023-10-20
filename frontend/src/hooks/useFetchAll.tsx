@@ -9,9 +9,10 @@ export default function useFetchAll<T>(url: string) {
       try {
         const res = await fetch(url);
         setData(await res.json());
-        setIsLoading(false);
       } catch (error) {
         throw new Error("failed to fetch data");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();

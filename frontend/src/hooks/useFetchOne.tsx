@@ -9,9 +9,10 @@ export default function useFetchOne<T>(url: string) {
       try {
         const res = await fetch(url);
         setData(await res.json());
-        setIsLoading(false);
       } catch (error) {
         throw new Error("Error while fetching data");
+      } finally {
+        setIsLoading(false);
       }
     };
 

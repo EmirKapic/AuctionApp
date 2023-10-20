@@ -1,9 +1,10 @@
 import useFetchAll from "hooks/useFetchAll";
 import Category from "models/Category";
+import UrlBuilder from "services/UrlBuilder";
 
 export default function CategoriesList() {
   const { data, isLoading } = useFetchAll<Category>(
-    "http://localhost:8080/api/categories",
+    new UrlBuilder().categories().url,
   );
 
   const categoriesList = data.map((category) => (
@@ -15,6 +16,10 @@ export default function CategoriesList() {
     </li>
   ));
 
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
+
   return (
     <aside className="bg-white shadow-lightgrey">
       <h1 className="text-purple p-4 pr-36">CATEGORIES</h1>
@@ -23,7 +28,7 @@ export default function CategoriesList() {
 
         <li
           key={
-            1283091 /* number chosen at random to stop react warning. Better way?*/
+            "all-categories" /* number chosen at random to stop react warning. Better way?*/
           }
           className="p-3 pl-4 w-full border-b-1 border-silver"
         >
