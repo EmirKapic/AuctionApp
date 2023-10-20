@@ -15,7 +15,10 @@ export default function ProductGrid(props: GridProps) {
       className="cursor-pointer"
       onClick={() => navigate(`/products/${item.id}`)}
     >
-      <img className="object-cover" src={item.images[0].url}></img>
+      <div className="w-72 h-72">
+        <img className="object-cover h-full" src={item.images[0].url} />
+      </div>
+
       <h3 className="text-2xl py-1 font-bold cursor-pointer">{item.name}</h3>
       <p className="text-lightgrey-200">
         Start From{" "}

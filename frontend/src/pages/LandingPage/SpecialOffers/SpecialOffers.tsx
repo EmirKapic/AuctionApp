@@ -51,7 +51,7 @@ export default function SpecialOffers() {
 
   return (
     <section className="max-w-container-lg w-full mx-auto pb-10">
-      <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2 text-lg">
+      <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2 text-lg mb-5">
         <button
           className={
             selectedTab === 1 ? "border-b-4 border-purple font-bold" : ""
