@@ -1,4 +1,4 @@
-import Grid from "components/Common/Grid";
+import ProductGrid from "components/Common/ProductGrid";
 import useFetchPage from "hooks/useFetchPage";
 import { useEffect, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
@@ -71,14 +71,14 @@ export default function SpecialOffers() {
       </section>
 
       {!isLoadingNew && selectedTab === 1 && (
-        <Grid
+        <ProductGrid
           className="grid grid-cols-4 gap-5"
           items={newProducts!!.content}
         />
       )}
 
       {!isLoadingLastChance && selectedTab === 2 && (
-        <Grid
+        <ProductGrid
           className="grid grid-cols-4 gap-5 "
           items={lastChanceProducts!!.content}
         />
