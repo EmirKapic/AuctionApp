@@ -2,20 +2,28 @@ import Grid from "components/Common/Grid";
 import useFetchPage from "hooks/useFetchPage";
 import { useEffect, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
+import { defaultPageSize } from "constants";
+import Product from "models/Product";
 
 export default function SpecialOffers() {
   const [selectedTab, setSelectedTab] = useState(1);
   const [pageRecent, setPageRecent] = useState(0);
   const [pageExpiring, setPageExpiring] = useState(0);
 
-  const { data: newProducts, isLoading: isLoadingNew } = useFetchPage(
-    new UrlBuilder().products().recent().url,
+  const { data: newProducts, isLoading: isLoadingNew } = useFetchPage<Product>(
+    new UrlBuilder().products().url,
     pageRecent,
-    8,
+    defaultPageSize,
+    "dateStart,desc",
   );
 
   const { data: lastChanceProducts, isLoading: isLoadingLastChance } =
-    useFetchPage(new UrlBuilder().products().lastchance().url, pageExpiring, 8);
+    useFetchPage<Product>(
+      new UrlBuilder().products().url,
+      pageExpiring,
+      defaultPageSize,
+      "dateEnd,asc",
+    );
 
   const handleScroll = () => {
     if (

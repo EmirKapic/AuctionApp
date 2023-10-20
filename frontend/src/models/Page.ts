@@ -1,7 +1,5 @@
-import Product from "./Product";
-
-type Page = {
-  content: Array<Product>;
+type Page<T> = {
+  content: Array<T>;
   last: boolean;
 };
 
