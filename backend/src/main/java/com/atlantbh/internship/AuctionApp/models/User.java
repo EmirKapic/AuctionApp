@@ -18,7 +18,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     private String firstName;
     private String lastName;
@@ -37,11 +37,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> wishlist = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    @JsonBackReference
-    private List<Product> productsOnSale = new ArrayList<>();
-
 
     @Nullable
     @JsonIgnore

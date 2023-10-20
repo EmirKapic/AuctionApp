@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,10 +14,10 @@ import java.time.LocalDateTime;
 public class Bid {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    private Double bid;
-    private LocalDateTime dateCreated;
+    private double bid;
+    private Instant dateCreated;
 
     @ManyToOne
     @JoinColumn(name = "seller_id")

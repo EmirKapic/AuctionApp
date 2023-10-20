@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class SubCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String name;
 
     @ManyToOne
