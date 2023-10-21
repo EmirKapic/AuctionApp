@@ -1,5 +1,5 @@
 export default class UrlBuilder {
-  constructor(private _url: string = "http://localhost:8080/api") {}
+  constructor(private _url: string = import.meta.env.VITE_BACKEND_URL) {}
 
   public get url(): string {
     return this._url;
