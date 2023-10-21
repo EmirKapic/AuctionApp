@@ -11,7 +11,6 @@ export default function HeroProduct() {
   const { data, isLoading, isError } = useFetchOne<Product>(
     new UrlBuilder().products().random().url,
   );
-  data;
 
   if (isLoading) {
     return (

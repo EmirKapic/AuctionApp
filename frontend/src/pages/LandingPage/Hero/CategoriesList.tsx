@@ -30,9 +30,7 @@ export default function CategoriesList() {
         {categoriesList}
 
         <li
-          key={
-            "all-categories" /* number chosen at random to stop react warning. Better way?*/
-          }
+          key={"all-categories"}
           className="p-3 pl-4 w-full border-b-1 border-silver"
         >
           <button>All categories</button>
