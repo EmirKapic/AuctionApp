@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/categories")
-@CrossOrigin
 @AllArgsConstructor
 public class CategoryController {
     private CategoryService categoryService;
