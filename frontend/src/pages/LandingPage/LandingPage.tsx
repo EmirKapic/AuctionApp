@@ -3,9 +3,9 @@ import SpecialOffers from "./SpecialOffers/SpecialOffers";
 
 export default function LandingPage() {
   return (
-    <main>
+    <div>
       <Hero />
       <SpecialOffers />
-    </main>
+    </div>
   );
 }

@@ -2,7 +2,8 @@ import Product from "models/Product";
 import { useNavigate } from "react-router-dom";
 
 export interface GridProps {
-  className?: string;
+  itemsClassName?: string;
+  imageClassName?: string;
   items: Array<Product>;
 }
 
@@ -15,7 +16,7 @@ export default function ProductGrid(props: GridProps) {
       className="cursor-pointer"
       onClick={() => navigate(`/products/${item.id}`)}
     >
-      <div className="w-72 h-72">
+      <div className={props.imageClassName}>
         <img className="object-cover h-full" src={item.images[0].url} />
       </div>
 
@@ -26,5 +27,5 @@ export default function ProductGrid(props: GridProps) {
       </p>
     </div>
   ));
-  return <div className={props.className}>{gridItems}</div>;
+  return <div className={props.itemsClassName}>{gridItems}</div>;
 }

@@ -1,6 +1,6 @@
 import ProductGrid from "components/Common/ProductGrid";
 import useFetchPage from "hooks/useFetchPage";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
 import { defaultPageSize } from "constants";
 import Product from "models/Product";
@@ -24,6 +24,29 @@ export default function SpecialOffers() {
       defaultPageSize,
       "dateEnd,asc",
     );
+
+  function renderTabButton(title: string, tabNumber: number): ReactNode {
+    return (
+      <button
+        className={
+          selectedTab === tabNumber ? "border-b-4 border-purple font-bold" : ""
+        }
+        onClick={() => setSelectedTab(tabNumber)}
+      >
+        {title}
+      </button>
+    );
+  }
+
+  function renderProductGrid(items: Product[]): ReactNode {
+    return (
+      <ProductGrid
+        itemsClassName="grid grid-cols-4 gap-5"
+        imageClassName="w-72 h-72"
+        items={items}
+      />
+    );
+  }
 
   const handleScroll = () => {
     if (
@@ -52,37 +75,17 @@ export default function SpecialOffers() {
   return (
     <section className="max-w-container-lg w-full mx-auto pb-10">
       <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2 text-lg mb-5">
-        <button
-          className={
-            selectedTab === 1 ? "border-b-4 border-purple font-bold" : ""
-          }
-          onClick={() => setSelectedTab(1)}
-        >
-          New Arrivals
-        </button>
-        <button
-          className={
-            selectedTab === 2 ? "border-b-4 border-purple font-bold" : ""
-          }
-          onClick={() => setSelectedTab(2)}
-        >
-          Last Chance
-        </button>
+        {renderTabButton("New Arrivals", 1)}
+        {renderTabButton("Last Chance", 2)}
       </section>
 
-      {!isLoadingNew && selectedTab === 1 && (
-        <ProductGrid
-          className="grid grid-cols-4 gap-5"
-          items={newProducts!!.content}
-        />
-      )}
+      {!isLoadingNew &&
+        selectedTab === 1 &&
+        renderProductGrid(newProducts.content)}
 
-      {!isLoadingLastChance && selectedTab === 2 && (
-        <ProductGrid
-          className="grid grid-cols-4 gap-5 "
-          items={lastChanceProducts!!.content}
-        />
-      )}
+      {!isLoadingLastChance &&
+        selectedTab === 2 &&
+        renderProductGrid(lastChanceProducts.content)}
     </section>
   );
 }
