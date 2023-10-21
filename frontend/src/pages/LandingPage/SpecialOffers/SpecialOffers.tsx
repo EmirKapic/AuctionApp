@@ -79,10 +79,6 @@ export default function SpecialOffers() {
     document.addEventListener("scroll", handleScroll);
   });
 
-  if (errorNew || errorLastChance) {
-    return <div>Error while fetching data...</div>;
-  }
-
   return (
     <section className="max-w-container-lg w-full mx-auto pb-10">
       <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2 text-lg mb-5">

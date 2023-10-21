@@ -14,7 +14,11 @@ export default function useFetchOne<T>(url: string) {
     const fetchData = async () => {
       try {
         const res = await fetch(url);
-        setData(await res.json());
+        if (!res.ok) {
+          setIsError(true);
+        } else {
+          setData(await res.json());
+        }
       } catch (error) {
         setIsError(true);
       } finally {

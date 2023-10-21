@@ -33,10 +33,14 @@ export default function useFetchPage<T>(
       try {
         const res = await fetch(completeUrl);
         const newData: Page<T> = await res.json();
-        setData({
-          ...newData,
-          content: [...data.content, ...newData.content],
-        });
+        if (!res.ok) {
+          setIsError(true);
+        } else {
+          setData({
+            ...newData,
+            content: [...data.content, ...newData.content],
+          });
+        }
       } catch (error) {
         setIsError(true);
       } finally {
