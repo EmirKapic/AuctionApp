@@ -7,14 +7,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     @Override
-    public Page<Product> getAll(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Page<Product> getAllActive(Pageable pageable) {
+        return productRepository.findAllByDateEndAfterAndDateStartBefore(pageable, Instant.now(), Instant.now());
     }
 
     @Override

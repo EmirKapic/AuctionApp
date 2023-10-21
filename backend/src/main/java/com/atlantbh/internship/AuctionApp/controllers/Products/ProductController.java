@@ -16,8 +16,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public Page<Product> getProducts(Pageable pageable){
-        return productService.getAll(pageable);
+    public Page<Product> getAllActive(Pageable pageable){
+        return productService.getAllActive(pageable);
     }
 
     @GetMapping("/random")
