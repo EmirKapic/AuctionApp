@@ -3,7 +3,7 @@ import Category from "models/Category";
 import UrlBuilder from "services/UrlBuilder";
 
 export default function CategoriesList() {
-  const { data, isLoading } = useFetchAll<Category>(
+  const { data, isLoading, isError } = useFetchAll<Category>(
     new UrlBuilder().categories().url,
   );
 
@@ -17,7 +17,10 @@ export default function CategoriesList() {
   ));
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return <div className="flex items-center">Loading categories...</div>;
+  }
+  if (isError) {
+    return <div className="flex items-center">Error loading categories...</div>;
   }
 
   return (

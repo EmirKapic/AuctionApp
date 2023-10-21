@@ -8,14 +8,23 @@ import Icon from "svgs/Icon";
 
 export default function HeroProduct() {
   const navigate = useNavigate();
-  const { data, isLoading } = useFetchOne<Product>(
+  const { data, isLoading, isError } = useFetchOne<Product>(
     new UrlBuilder().products().random().url,
   );
+  data;
 
   if (isLoading) {
     return (
-      <div className="w-full h-full text-3xl flex justify-center items-center">
+      <div className="w-full h-full text-3xl flex justify-center my-auto">
         Loading...
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full h-full text-3xl flex justify-center my-auto">
+        Error fetching product...
       </div>
     );
   }
@@ -23,8 +32,11 @@ export default function HeroProduct() {
   return (
     <section className="flex-grow p-20 w-full flex gap-5">
       <div className="w-1/2">
-        <ProductTitle title={data!!.name} startPrice={data!!.startBid} />
-        <p className="pb-16">{data!!.description}</p>
+        <ProductTitle
+          title={data?.name || "error"}
+          startPrice={data?.startBid || 0}
+        />
+        <p className="pb-16">{data?.description || "error"}</p>
         <Button
           type="primary"
           onClick={() => navigate(`/products/${data?.id}`)}

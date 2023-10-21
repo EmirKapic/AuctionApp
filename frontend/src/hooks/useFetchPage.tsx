@@ -24,8 +24,10 @@ export default function useFetchPage<T>(
 ) {
   const [data, setData] = useState<Page<T>>({ content: [], last: false });
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const completeUrl = buildFullUrl(url, pageNumber, pageSize, sort);
     const fetchData = async () => {
       try {
@@ -36,7 +38,7 @@ export default function useFetchPage<T>(
           content: [...data.content, ...newData.content],
         });
       } catch (error) {
-        throw new Error("failed to fetch data");
+        setIsError(true);
       } finally {
         setIsLoading(false);
       }
@@ -44,5 +46,5 @@ export default function useFetchPage<T>(
     fetchData();
   }, [pageNumber, pageSize, url]);
 
-  return { data, isLoading };
+  return { data, isLoading, isError };
 }

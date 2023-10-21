@@ -1,6 +1,6 @@
 import Product from "models/Product";
 import { useNavigate } from "react-router-dom";
-
+//need to allow different size images for higher reusability (will be needed in future)
 export interface GridProps {
   itemsClassName?: string;
   imageClassName?: string;

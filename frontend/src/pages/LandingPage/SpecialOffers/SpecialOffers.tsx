@@ -10,20 +10,27 @@ export default function SpecialOffers() {
   const [pageRecent, setPageRecent] = useState(0);
   const [pageExpiring, setPageExpiring] = useState(0);
 
-  const { data: newProducts, isLoading: isLoadingNew } = useFetchPage<Product>(
+  const {
+    data: newProducts,
+    isLoading: isLoadingNew,
+    isError: errorNew,
+  } = useFetchPage<Product>(
     new UrlBuilder().products().url,
     pageRecent,
     defaultPageSize,
     "dateStart,desc",
   );
 
-  const { data: lastChanceProducts, isLoading: isLoadingLastChance } =
-    useFetchPage<Product>(
-      new UrlBuilder().products().url,
-      pageExpiring,
-      defaultPageSize,
-      "dateEnd,asc",
-    );
+  const {
+    data: lastChanceProducts,
+    isLoading: isLoadingLastChance,
+    isError: errorLastChance,
+  } = useFetchPage<Product>(
+    new UrlBuilder().products().url,
+    pageExpiring,
+    defaultPageSize,
+    "dateEnd,asc",
+  );
 
   function renderTabButton(title: string, tabNumber: number): ReactNode {
     return (
@@ -72,6 +79,10 @@ export default function SpecialOffers() {
     document.addEventListener("scroll", handleScroll);
   });
 
+  if (errorNew || errorLastChance) {
+    return <div>Error while fetching data...</div>;
+  }
+
   return (
     <section className="max-w-container-lg w-full mx-auto pb-10">
       <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2 text-lg mb-5">
@@ -79,13 +90,21 @@ export default function SpecialOffers() {
         {renderTabButton("Last Chance", 2)}
       </section>
 
-      {!isLoadingNew &&
-        selectedTab === 1 &&
-        renderProductGrid(newProducts.content)}
+      {selectedTab === 1 && renderProductGrid(newProducts.content)}
 
-      {!isLoadingLastChance &&
-        selectedTab === 2 &&
-        renderProductGrid(lastChanceProducts.content)}
+      {selectedTab === 2 && renderProductGrid(lastChanceProducts.content)}
+
+      {(isLoadingLastChance || isLoadingNew) && (
+        <div className="text-center font-bold text-2xl py-5">
+          Loading more....
+        </div>
+      )}
+
+      {(errorNew || errorLastChance) && (
+        <div className="text-center font-bold text-2xl py-5">
+          Error fetching data...
+        </div>
+      )}
     </section>
   );
 }
