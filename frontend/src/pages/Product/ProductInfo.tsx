@@ -2,6 +2,7 @@ import Button from "components/Common/Button";
 import ProductTitle from "components/Common/ProductTitle";
 import Product from "models/Product";
 import { getNormalized } from "services/DateParser";
+import Icon from "svgs/Icon";
 
 export interface ProductInfoProps {
   product: Product;
@@ -47,19 +48,17 @@ export default function ProductInfo(props: ProductInfoProps) {
         </div>
       </section>
 
-      <section className="flex gap-4 h-min mb-8 hidden">
+      <section className="flex gap-4 h-min mb-8">
         <input
           type="number"
           placeholder="Enter 56$ or higher"
           className="outline outline-gray-200 indent-4 py-4 flex-grow"
           min={props.product.highestBid + 1}
         />
-        <Button
-          text="place bid"
-          className="lg:flex-shrink-0 text-sm font-bold border-2 border-purple px-8 py-2 flex justify-center gap-2 items-center duration-300 
-          uppercase hover:bg-purple hover:text-white shadow-purple-md none"
-          onClick={() => {}}
-        />
+        <Button type="primary">
+          <div>Place bid</div>
+          <Icon name="chevronRight" />
+        </Button>
       </section>
 
       <div className="flex border-b-2 border-slate-200">
