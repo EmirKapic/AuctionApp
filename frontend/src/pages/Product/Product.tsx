@@ -6,15 +6,20 @@ import ProductModel from "models/Product";
 import Container from "components/Common/Container";
 import ProductImages from "./ProductImages";
 import ProductInfo from "./ProductInfo";
+import ProductImage from "models/ProductImage";
 
 export default function Product() {
   const { id } = useParams();
-  const { data, isLoading } = useFetchOne<ProductModel>(
+  const { data, isLoading, isError } = useFetchOne<ProductModel>(
     new UrlBuilder().products().id(parseInt(id!!)).url,
   );
 
   if (isLoading) {
     return <div>Loading</div>;
+  }
+
+  if (isError) {
+    return <div>Error while loading product...</div>;
   }
 
   return (
@@ -26,7 +31,7 @@ export default function Product() {
       <Container>
         <div className="grid grid-rows-1 grid-cols-2">
           <div className="p-12 h-full pb-20">
-            <ProductImages />
+            <ProductImages images={data?.images || Array<ProductImage>()} />
           </div>
           <div className="p-12 h-full pb-20">
             <ProductInfo product={data!!} />

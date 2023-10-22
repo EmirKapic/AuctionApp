@@ -18,6 +18,12 @@ export default {
       },
       borderColor : {
         silver : "silver"
+      },
+      height : {
+        112 : "480px"
+      },
+      width : {
+        104 : "420px",
       }
     },
   },
