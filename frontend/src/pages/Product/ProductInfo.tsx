@@ -1,7 +1,7 @@
 import Button from "components/Common/Button";
 import ProductTitle from "components/Common/ProductTitle";
 import Product from "models/Product";
-import { getNormalized } from "services/DateParser";
+import { ReactNode } from "react";
 import Icon from "svgs/Icon";
 
 export interface ProductInfoProps {
@@ -13,16 +13,23 @@ interface WeeksAndDays {
   days: number;
 }
 
-function calculateTimeLeft(date: Date): WeeksAndDays {
-  const millis = date.getTime() - new Date().getTime();
-  const days = Math.round(millis / (1000 * 60 * 60 * 24)) + 1;
+function calculateTimeLeft(dateInstant: number): WeeksAndDays {
+  const millis = dateInstant - Date.now();
+  const days = Math.round(millis / (1000 * 60 * 60 * 24));
   return { weeks: Math.round(days / 7), days: days % 7 };
 }
 
-export default function ProductInfo(props: ProductInfoProps) {
-  const { weeks, days } = calculateTimeLeft(
-    getNormalized(props.product.dateEnd),
+function renderInfoField(title: string, value: string): ReactNode {
+  return (
+    <div>
+      {title}
+      <span className="text-purple ml-1">{value}</span>
+    </div>
   );
+}
+
+export default function ProductInfo(props: ProductInfoProps) {
+  const { weeks, days } = calculateTimeLeft(props.product.dateEnd * 1000);
   return (
     <div>
       <ProductTitle
@@ -30,32 +37,22 @@ export default function ProductInfo(props: ProductInfoProps) {
         startPrice={props.product.startBid}
       />
       <section className="p-5 border-1 border-silver w-fit mt-5 mb-14">
-        <div>
-          Highest bid:
-          <span className="text-purple ml-1">
-            ${props.product.highestBid.toFixed(2)}
-          </span>
-        </div>
-        <div>
-          Number of bids:{" "}
-          <span className="text-purple ml-1">{props.product.numberOfBids}</span>
-        </div>
-        <div>
-          Time left :
-          <span className="text-purple ml-1">
-            {weeks} Weeks {days} Days
-          </span>
-        </div>
+        {renderInfoField("Highest bid:", props.product.highestBid.toFixed(2))}
+        {renderInfoField(
+          "Number of bids:",
+          props.product.numberOfBids.toString(),
+        )}
+        {renderInfoField("Time left:", `${weeks} Weeks ${days} Days`)}
       </section>
 
-      <section className="flex gap-4 h-min mb-8">
+      <section className="flex gap-4 h-min mb-8 hidden">
         <input
           type="number"
           placeholder="Enter 56$ or higher"
           className="outline outline-gray-200 indent-4 py-4 flex-grow"
           min={props.product.highestBid + 1}
         />
-        <Button type="primary">
+        <Button type="primary" className="px-8 uppercase font-bold">
           <div>Place bid</div>
           <Icon name="chevronRight" />
         </Button>
