@@ -17,7 +17,7 @@ export default {
         "container-lg": "1280px",
       },
       borderWidth : {
-        1 : "0.2px",
+        1 : "1px",
       },
       borderColor : {
         silver : "silver"
