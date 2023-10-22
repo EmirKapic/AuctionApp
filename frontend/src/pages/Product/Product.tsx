@@ -28,7 +28,7 @@ export default function Product() {
         title={data!!.name}
         items={[{ title: "Shop", to: "/shop" }, { title: "Single product" }]}
       />
-      <Container>
+      <Container type="large">
         <div className="grid grid-rows-1 grid-cols-2">
           <div className="p-12 h-full pb-20">
             <ProductImages images={data?.images || Array<ProductImage>()} />

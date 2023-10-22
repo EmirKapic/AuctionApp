@@ -1,4 +1,5 @@
 import Breadcrumb from "components/Common/Breadcrumb";
+import Container from "components/Common/Container";
 
 export default function PrivacyPolicy() {
   return (
@@ -10,7 +11,10 @@ export default function PrivacyPolicy() {
           { title: "privacy and policy" },
         ]}
       />
-      <main className="max-w-container-lg w-full mx-auto px-64 pt-12 pb-36 [&>p]:text-lg [&>p]:text-lightgrey-200">
+      <Container
+        className="pt-12 pb-36 [&>p]:text-lg [&>p]:text-lightgrey-200"
+        type="small"
+      >
         <h1 className="text-5xl pb-6">Privacy and policy</h1>
         <p className="pb-6">
           We respect your privacy and are committed to protecting it through our
@@ -39,7 +43,7 @@ export default function PrivacyPolicy() {
           we do not own or control, or to individuals that we do not employ or
           manage.
         </p>
-      </main>
+      </Container>
     </div>
   );
 }

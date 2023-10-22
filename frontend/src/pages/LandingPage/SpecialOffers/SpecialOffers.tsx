@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
 import { defaultPageSize } from "constants";
 import Product from "models/Product";
+import Container from "components/Common/Container";
 
 export default function SpecialOffers() {
   const [selectedTab, setSelectedTab] = useState(1);
@@ -90,7 +91,7 @@ export default function SpecialOffers() {
   });
 
   return (
-    <section className="max-w-container-lg w-full mx-auto pb-10">
+    <Container className="pb-10" type="large">
       <section className="flex border-b-2 border-slate-200 [&>*]:px-5 [&>*]:py-2 text-lg mb-5">
         {renderTabButton("New Arrivals", 1)}
         {renderTabButton("Last Chance", 2)}
@@ -111,6 +112,6 @@ export default function SpecialOffers() {
           Error fetching data...
         </div>
       )}
-    </section>
+    </Container>
   );
 }
