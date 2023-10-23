@@ -41,7 +41,7 @@ export default function HeroProduct() {
         <Button
           type="primary"
           onClick={() => navigate(`/products/${data.id}`)}
-          className="px-9 py-2"
+          className="px-9 py-2 hidden"
         >
           <span>Bid now</span>
           <Icon name="chevronRight" />
