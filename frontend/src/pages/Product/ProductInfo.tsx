@@ -1,5 +1,4 @@
 import Button from "components/Common/Button";
-import ProductTitle from "components/Common/ProductTitle";
 import Product from "models/Product";
 import { ReactNode } from "react";
 import Icon from "svgs/Icon";
@@ -32,12 +31,19 @@ export default function ProductInfo(props: ProductInfoProps) {
   const { weeks, days } = calculateTimeLeft(props.product.dateEnd * 1000);
   return (
     <div>
-      <ProductTitle
-        title={props.product.name}
-        startPrice={props.product.startBid}
-      />
+      <section>
+        <h1 className="text-5xl font-normal text-grey_">
+          {props.product.name}
+        </h1>
+        <h3 className="text-2xl py-4 text-purple font-light">
+          Start From - ${props.product.startBid.toFixed(2)}
+        </h3>
+      </section>
       <section className="p-5 border-1 border-silver w-fit mt-5 mb-14">
-        {renderInfoField("Highest bid:", props.product.highestBid.toFixed(2))}
+        {renderInfoField(
+          "Highest bid:",
+          props.product.highestBid?.toFixed(2) || "None",
+        )}
         {renderInfoField(
           "Number of bids:",
           props.product.numberOfBids.toString(),
@@ -50,7 +56,11 @@ export default function ProductInfo(props: ProductInfoProps) {
           type="number"
           placeholder="Enter 56$ or higher"
           className="outline outline-gray-200 indent-4 py-4 flex-grow"
-          min={props.product.highestBid + 1}
+          min={
+            props.product.highestBid
+              ? props.product.highestBid + 1
+              : props.product.startBid
+          }
         />
         <Button type="primary" className="px-8 uppercase font-bold">
           <div>Place bid</div>
