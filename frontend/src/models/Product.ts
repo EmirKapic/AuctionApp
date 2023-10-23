@@ -7,7 +7,7 @@ type Product = {
   name: string;
   description: string;
   startBid: number;
-  highestBid: number;
+  highestBid?: number;
   numberOfBids: number;
   dateStart: Date;
   dateEnd: Date;

@@ -5,22 +5,29 @@ function buildFullUrl(
   base: string,
   pageNumber: number,
   pageSize: number,
-  sort?: string,
+  sort?: Sort,
 ): string {
   const searchParams = new URLSearchParams();
   searchParams.append("page", pageNumber.toString());
   searchParams.append("size", pageSize.toString());
   if (sort) {
-    searchParams.append("sort", sort);
+    searchParams.append("sort", `${sort.name},${sort.order}`);
   }
   return base + "?" + searchParams.toString();
 }
+
+type SortOrder = "asc" | "desc";
+
+export type Sort = {
+  name: string;
+  order: SortOrder;
+};
 
 export default function useFetchPage<T>(
   url: string,
   pageNumber: number,
   pageSize: number,
-  sort?: string,
+  sort?: Sort,
 ) {
   const [data, setData] = useState<Page<T>>({ content: [], last: false });
   const [isLoading, setIsLoading] = useState(true);

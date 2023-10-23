@@ -10,7 +10,7 @@ export default function CategoriesList() {
   const categoriesList = data.map((category) => (
     <li
       key={category.id}
-      className="p-3 pl-4 w-full font-regular text-grey_ border-b-1 border-silver"
+      className="p-3 pl-4 w-full font-regular text-grey_ border-b border-silver"
     >
       <button>{category.name}</button>
     </li>
