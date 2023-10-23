@@ -1,21 +1,11 @@
 import Button from "components/Common/Button";
 import Product from "models/Product";
 import { ReactNode } from "react";
+import DateUtility from "services/DateUtility";
 import Icon from "svgs/Icon";
 
 export interface ProductInfoProps {
   product: Product;
-}
-
-interface WeeksAndDays {
-  weeks: number;
-  days: number;
-}
-
-function calculateTimeLeft(dateInstant: number): WeeksAndDays {
-  const millis = dateInstant - Date.now();
-  const days = Math.round(millis / (1000 * 60 * 60 * 24));
-  return { weeks: Math.round(days / 7), days: days % 7 };
 }
 
 function renderInfoField(title: string, value: string): ReactNode {
@@ -28,7 +18,10 @@ function renderInfoField(title: string, value: string): ReactNode {
 }
 
 export default function ProductInfo(props: ProductInfoProps) {
-  const { weeks, days } = calculateTimeLeft(props.product.dateEnd * 1000);
+  const { weeks, days } = DateUtility.getWeeksAndDays(
+    props.product.dateEnd * 1000,
+    Date.now(),
+  );
   return (
     <div>
       <section>
