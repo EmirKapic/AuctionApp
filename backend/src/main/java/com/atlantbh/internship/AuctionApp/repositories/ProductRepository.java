@@ -10,7 +10,7 @@ import java.time.Instant;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "FROM Product where dateStart < current date and dateEnd > current date ORDER BY RANDOM() LIMIT 1")
-    Product findRandom();
+    Product getRandom();
 
     /**
      * Both parameters should be set to Instant.now(). It must be done this way

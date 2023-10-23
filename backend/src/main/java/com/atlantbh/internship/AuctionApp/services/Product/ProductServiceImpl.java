@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getRandom() {
-        return productRepository.findRandom();
+        return productRepository.getRandom();
     }
 
 }

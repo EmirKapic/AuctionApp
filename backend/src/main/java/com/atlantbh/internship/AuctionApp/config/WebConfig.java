@@ -1,4 +1,4 @@
-package com.atlantbh.internship.AuctionApp;
+package com.atlantbh.internship.AuctionApp.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
