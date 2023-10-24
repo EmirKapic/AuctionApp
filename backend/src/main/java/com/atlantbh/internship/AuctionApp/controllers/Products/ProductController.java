@@ -20,8 +20,6 @@ public class ProductController {
     public Page<Product> getAllActive(final Pageable pageable,
                                       final ProductParameters parameters
                                       ){
-        System.out.println(parameters.categoryId());
-        System.out.println(parameters.subcategoryId());
         return productService.getAllActive(pageable, parameters);
     }
 
