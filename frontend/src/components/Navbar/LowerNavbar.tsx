@@ -1,9 +1,25 @@
 import Container from "components/Common/Container";
-import { Link, useLocation } from "react-router-dom";
+import { LegacyRef, useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
 
 export default function LowerNavbar() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    window.addEventListener("keypress", (e) => {
+      if (e.key !== "enter") return;
+      handleSearch();
+    });
+  }, []);
+
+  function handleSearch(): void {
+    const inputValue = inputRef!.current?.value;
+    if (!inputValue) return;
+    navigate(`/shop?name=${inputValue}`);
+  }
 
   return (
     <section>
@@ -21,14 +37,18 @@ export default function LowerNavbar() {
         </section>
 
         <section className="flex w-full justify-end items-center gap-10">
-          <section className="max-w-[60%] flex-grow relative invisible">
+          <section className="max-w-[60%] flex-grow relative">
             <input
+              ref={inputRef}
               type="text"
               role="search"
               placeholder="Try enter: Shoes"
               className="outline outline-gray-200 w-full py-4 indent-4 shadow-lightgrey"
             />
-            <div className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer">
+            <div
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+              onClick={handleSearch}
+            >
               <Icon name="magnify" />
             </div>
           </section>
