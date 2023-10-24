@@ -8,9 +8,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface ProductService {
-    Page<Product> getAllActive(Pageable pageable);
+    Page<Product> getAllActive(Pageable pageable, ProductParameters params);
 
     Product getRandom();
 
     Product getById(Long id) throws ProductNotFoundException;
+
 }

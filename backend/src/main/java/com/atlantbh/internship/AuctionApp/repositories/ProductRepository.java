@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
 
@@ -12,9 +13,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "FROM Product where dateStart < current date and dateEnd > current date ORDER BY RANDOM() LIMIT 1")
     Product getRandom();
 
-    /**
-     * Both parameters should be set to Instant.now(). It must be done this way
-     * because spring jpa wont allow passing Instant.now() directly
-     */
-    Page<Product> findAllByDateEndAfterAndDateStartBefore(Pageable pageable, Instant today1, Instant today2);
+
+    @Query("from Product where (:categoryId is null or :categoryId = subCategory.category.id ) and (:subcategoryId is null or :subcategoryId = subCategory.id) and (dateStart < current date and dateEnd > current date )")
+    Page<Product> getAllActive(Pageable pageable,
+                         @Param("categoryId")Long categoryId,
+                         @Param("subcategoryId") Long subcategoryId);
 }

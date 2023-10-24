@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import java.time.Instant;
 
 @Service
 @AllArgsConstructor
@@ -18,8 +17,11 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Page<Product> getAllActive(Pageable pageable) {
-        return productRepository.findAllByDateEndAfterAndDateStartBefore(pageable, Instant.now(), Instant.now());
+    public Page<Product> getAllActive(Pageable pageable, ProductParameters params) {
+        if (params == null){
+            params = new ProductParameters(null, null);
+        }
+        return productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId());
     }
 
     @Override
@@ -36,5 +38,6 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductNotFoundException("No product with such id found");
         }
     }
+
 
 }
