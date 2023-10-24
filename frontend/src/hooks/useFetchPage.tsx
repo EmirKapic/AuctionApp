@@ -6,14 +6,17 @@ function buildFullUrl(
   pageNumber: number,
   pageSize: number,
   sort?: Sort,
+  queryParams?: URLSearchParams,
 ): string {
-  const searchParams = new URLSearchParams();
-  searchParams.append("page", pageNumber.toString());
-  searchParams.append("size", pageSize.toString());
+  let url = base + "?";
+  url += queryParams ? `${queryParams.toString()}&` : "";
+  const pageParams = new URLSearchParams();
+  pageParams.append("page", pageNumber.toString());
+  pageParams.append("size", pageSize.toString());
   if (sort) {
-    searchParams.append("sort", `${sort.name},${sort.order}`);
+    pageParams.append("sort", `${sort.name},${sort.order}`);
   }
-  return base + "?" + searchParams.toString();
+  return base + "?" + pageParams.toString();
 }
 
 type SortOrder = "asc" | "desc";
@@ -28,6 +31,7 @@ export default function useFetchPage<T>(
   pageNumber: number,
   pageSize: number,
   sort?: Sort,
+  queryParams?: URLSearchParams,
 ) {
   const [data, setData] = useState<Page<T>>({ content: [], last: false });
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +39,13 @@ export default function useFetchPage<T>(
 
   useEffect(() => {
     setIsLoading(true);
-    const completeUrl = buildFullUrl(url, pageNumber, pageSize, sort);
+    const completeUrl = buildFullUrl(
+      url,
+      pageNumber,
+      pageSize,
+      sort,
+      queryParams,
+    );
     const fetchData = async () => {
       try {
         const res = await fetch(completeUrl);

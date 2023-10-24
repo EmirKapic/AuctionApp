@@ -17,14 +17,17 @@ export default function CategoryListItem(props: CategoryListItemProps) {
   ));
   return (
     <div>
-      <div className="flex justify-between py-2">
+      <div
+        className="flex justify-between py-2 cursor-pointer"
+        onClick={() => setIsActive(!isActive)}
+      >
         <h1 className="text-sm">{props.category.name}</h1>
         {isActive ? (
-          <button onClick={() => setIsActive(false)}>
+          <button>
             <Icon name="minus" />
           </button>
         ) : (
-          <button onClick={() => setIsActive(true)}>
+          <button>
             <Icon name="plus" />
           </button>
         )}
