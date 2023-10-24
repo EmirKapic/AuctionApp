@@ -18,7 +18,6 @@ export default function Shop() {
     undefined,
     queryParams,
   );
-
   return (
     <Container type="large" className="flex gap-10">
       <aside className="flex-shrink-0">

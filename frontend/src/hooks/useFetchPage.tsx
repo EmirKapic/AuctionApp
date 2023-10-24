@@ -16,7 +16,7 @@ function buildFullUrl(
   if (sort) {
     pageParams.append("sort", `${sort.name},${sort.order}`);
   }
-  return base + "?" + pageParams.toString();
+  return url + "?" + pageParams.toString();
 }
 
 type SortOrder = "asc" | "desc";
@@ -65,7 +65,7 @@ export default function useFetchPage<T>(
       }
     };
     fetchData();
-  }, [pageNumber, pageSize, url]);
+  }, [pageNumber, pageSize, url, queryParams]);
 
   return { data, isLoading, isError };
 }
