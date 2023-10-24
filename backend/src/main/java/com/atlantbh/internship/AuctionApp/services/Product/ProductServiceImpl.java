@@ -19,9 +19,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getAllActive(Pageable pageable, ProductParameters params) {
         if (params == null){
-            params = new ProductParameters(null, null);
+            params = new ProductParameters(null, null, null);
         }
-        return productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId());
+        return productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
     }
 
     @Override

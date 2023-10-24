@@ -14,8 +14,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Product getRandom();
 
 
-    @Query("from Product where (:categoryId is null or :categoryId = subCategory.category.id ) and (:subcategoryId is null or :subcategoryId = subCategory.id) and (dateStart < current date and dateEnd > current date )")
+    @Query("from Product where (:categoryId is null or :categoryId = subCategory.category.id ) and (:subcategoryId is null or :subcategoryId = subCategory.id) and(:name is null or name like %:name%) and (dateStart < current date and dateEnd > current date )")
     Page<Product> getAllActive(Pageable pageable,
-                         @Param("categoryId")Long categoryId,
-                         @Param("subcategoryId") Long subcategoryId);
+                                @Param("categoryId")Long categoryId,
+                                @Param("subcategoryId") Long subcategoryId,
+                                @Param("name")String name);
 }

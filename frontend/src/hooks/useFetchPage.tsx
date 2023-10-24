@@ -16,7 +16,7 @@ function buildFullUrl(
   if (sort) {
     pageParams.append("sort", `${sort.name},${sort.order}`);
   }
-  return url + "?" + pageParams.toString();
+  return url + pageParams.toString();
 }
 
 type SortOrder = "asc" | "desc";
