@@ -1,5 +1,5 @@
 import Container from "components/Common/Container";
-import { LegacyRef, useEffect, useRef } from "react";
+import { LegacyRef, ReactNode, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
 
@@ -19,6 +19,19 @@ export default function LowerNavbar() {
     const inputValue = inputRef!.current?.value;
     if (!inputValue) return;
     navigate(`/shop?name=${inputValue}`, { state: { pageReset: 1 } });
+  }
+
+  function renderNavLink(title: string, to: string, path: string): ReactNode {
+    return (
+      <li className="cursor-pointer">
+        <Link
+          className={pathname === path ? "text-purple font-bold" : ""}
+          to={to}
+        >
+          {title}
+        </Link>
+      </li>
+    );
   }
 
   return (
@@ -55,17 +68,8 @@ export default function LowerNavbar() {
 
           <nav>
             <ul className="flex gap-5 uppercase">
-              <li className="cursor-pointer">
-                <Link
-                  className={pathname === "/" ? "text-purple font-bold" : ""}
-                  to={"/"}
-                >
-                  Home
-                </Link>
-              </li>
-              <li className="cursor-pointer">
-                <a className={"invisible "}>Shop</a>
-              </li>
+              {renderNavLink("Home", "/", "/")}
+              {renderNavLink("Shop", "/shop", "/shop")}
               <li className="cursor-pointer">
                 <a className={"invisible "}>My account</a>
               </li>
