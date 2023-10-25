@@ -1,4 +1,10 @@
-export type IconType = "insta" | "facebook" | "twitter" | "magnify" | "hammer";
+export type IconType =
+  | "insta"
+  | "facebook"
+  | "twitter"
+  | "magnify"
+  | "hammer"
+  | "chevronRight";
 
 export interface IconProps {
   name: IconType;
@@ -58,6 +64,23 @@ export default function Icon(props: IconProps) {
           <path d="M577.024 384c-5.12 0-10.24-1.024-14.848-4.096L315.904 237.568c-13.824-8.192-18.944-26.112-10.752-39.936 8.192-13.824 26.112-18.944 39.936-10.752l246.784 142.336c13.824 8.192 18.944 26.112 10.752 39.936C596.992 378.88 587.264 384 577.024 384z" />
           <path d="M407.04 590.336c-5.12 0-10.24-1.024-14.848-4.096L221.696 487.936c-13.824-8.192-18.944-26.112-10.752-39.936 8.192-13.824 26.112-18.944 39.936-10.752l170.496 98.816c13.824 8.192 18.944 26.112 10.752 39.936C427.008 585.216 417.28 590.336 407.04 590.336z" />
           <path d="M401.408 688.64c-5.12 0-10.24-1.024-14.848-4.096l-246.784-142.336c-13.824-8.192-18.944-26.112-10.752-39.936 8.192-13.824 26.112-18.944 39.936-10.752l246.784 142.336c13.824 8.192 18.944 26.112 10.752 39.936C421.376 683.52 411.648 688.64 401.408 688.64z" />
+        </svg>
+      );
+    case "chevronRight":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-4 h-4"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M8.25 4.5l7.5 7.5-7.5 7.5"
+          />
         </svg>
       );
   }

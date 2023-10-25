@@ -6,6 +6,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 import ScrollToTop from "./components/Common/ScrollToTop";
+import LandingPage from "pages/LandingPage/LandingPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Navbar />
       <ScrollToTop />
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsAndConditions />} />
