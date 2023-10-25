@@ -31,7 +31,7 @@ export default function CategoriesList() {
 
         <li
           key={"all-categories"}
-          className="p-3 pl-4 w-full border-b-1 border-silver"
+          className="p-3 pl-4 w-full border-b border-silver"
         >
           <button>All categories</button>
         </li>

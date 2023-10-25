@@ -50,7 +50,7 @@ export default function HeroProduct() {
       <aside className="w-1/2 h-full">
         <img
           className="h-96 object-cover"
-          src={data.images.length ? data.images[1].url : fallbackImageUrl}
+          src={data.images.length ? data.images[0].url : fallbackImageUrl}
         />
       </aside>
     </section>
