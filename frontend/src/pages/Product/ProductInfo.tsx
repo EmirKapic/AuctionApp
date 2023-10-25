@@ -32,7 +32,7 @@ export default function ProductInfo(props: ProductInfoProps) {
           Start From - ${props.product.startBid.toFixed(2)}
         </h3>
       </section>
-      <section className="p-5 border-1 border-silver w-fit mt-5 mb-14">
+      <section className="p-5 border border-silver w-fit mt-5 mb-14">
         {renderInfoField(
           "Highest bid:",
           props.product.highestBid?.toFixed(2) || "None",
