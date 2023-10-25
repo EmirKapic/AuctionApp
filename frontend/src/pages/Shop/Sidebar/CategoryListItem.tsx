@@ -1,5 +1,6 @@
 import CategoryWithSubs from "models/CategoryWithSubs";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import buildQueryParams, { QueryParameter } from "services/QueryParamsBuilder";
 import Icon from "svgs/Icon";
 
 export interface CategoryListItemProps {
@@ -8,10 +9,21 @@ export interface CategoryListItemProps {
 }
 
 export default function CategoryListItem(props: CategoryListItemProps) {
-  const [isActive, setIsActive] = useState(props.active);
+  const navigate = useNavigate();
 
   const subCategories = props.category.subCategories.map((subCategory) => (
-    <li className="text-lightgrey-200 list-none py-1" key={subCategory.id}>
+    <li
+      className="text-lightgrey-200 list-none py-1 cursor-pointer"
+      key={subCategory.id}
+      onClick={() => {
+        navigate(
+          `/shop?${buildQueryParams([
+            { key: "categoryId", value: props.category.id.toString() },
+            { key: "subcategoryId", value: subCategory.id.toString() },
+          ])}`,
+        );
+      }}
+    >
       {subCategory.name}
     </li>
   ));
@@ -19,10 +31,16 @@ export default function CategoryListItem(props: CategoryListItemProps) {
     <div>
       <div
         className="flex justify-between py-2 cursor-pointer"
-        onClick={() => setIsActive(!isActive)}
+        onClick={() => {
+          navigate(
+            `/shop?${buildQueryParams([
+              { key: "categoryId", value: props.category.id.toString() },
+            ])}`,
+          );
+        }}
       >
         <h1 className="text-sm">{props.category.name}</h1>
-        {isActive ? (
+        {props.active ? (
           <button>
             <Icon name="minus" />
           </button>
@@ -32,7 +50,7 @@ export default function CategoryListItem(props: CategoryListItemProps) {
           </button>
         )}
       </div>
-      {isActive && subCategories}
+      {props.active && subCategories}
     </div>
   );
 }

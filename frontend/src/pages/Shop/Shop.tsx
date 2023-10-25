@@ -1,6 +1,6 @@
 import Container from "components/Common/Container";
 import ProductCategories from "./Sidebar/ProductCategories";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useFetchPage from "hooks/useFetchPage";
 import UrlBuilder from "services/UrlBuilder";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import ProductList from "./ProductList/ProductList";
 
 export default function Shop() {
   const [page, setPage] = useState(0);
-  const [queryParams, setQueryParams] = useSearchParams();
+  const [queryParams] = useSearchParams();
   const { data, isLoading, isError } = useFetchPage<Product>(
     new UrlBuilder().products().url,
     page,
@@ -18,10 +18,10 @@ export default function Shop() {
     undefined,
     queryParams,
   );
-  const { state } = useLocation();
-
+  const { state } = useLocation(); //in place of props, actual props cant be used for this due to being navigated to
   useEffect(() => {
     if (state && state.pageReset) {
+      //this is to allow resetting when search input is used
       setPage(0);
     }
   }, [state]);
@@ -36,7 +36,9 @@ export default function Shop() {
   return (
     <Container type="large" className="flex gap-10">
       <aside className="flex-shrink-0">
-        <ProductCategories />
+        <ProductCategories
+          activeId={parseInt(queryParams.get("categoryId") || "-1")} //in case categoryId not present, -1 so no category is active
+        />
       </aside>
       <div className="flex-grow">
         <ProductList
