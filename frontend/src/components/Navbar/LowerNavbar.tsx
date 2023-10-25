@@ -21,11 +21,15 @@ export default function LowerNavbar() {
     navigate(`/shop?name=${inputValue}`, { state: { pageReset: 1 } });
   }
 
-  function renderNavLink(title: string, to: string, path: string): ReactNode {
+  function renderNavLink(
+    title: string,
+    to: string,
+    paths: string[],
+  ): ReactNode {
     return (
       <li className="cursor-pointer">
         <Link
-          className={pathname === path ? "text-purple font-bold" : ""}
+          className={paths.includes(pathname) ? "text-purple font-bold" : ""}
           to={to}
         >
           {title}
@@ -68,8 +72,13 @@ export default function LowerNavbar() {
 
           <nav>
             <ul className="flex gap-5 uppercase">
-              {renderNavLink("Home", "/", "/")}
-              {renderNavLink("Shop", "/shop", "/shop")}
+              {renderNavLink("Home", "/", ["/"])}
+              {renderNavLink("Shop", "/shop", [
+                "/shop",
+                "/terms",
+                "/privacy",
+                "/about",
+              ])}
               <li className="cursor-pointer">
                 <a className={"invisible "}>My account</a>
               </li>
