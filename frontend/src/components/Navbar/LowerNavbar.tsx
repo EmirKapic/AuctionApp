@@ -18,7 +18,7 @@ export default function LowerNavbar() {
   function handleSearch(): void {
     const inputValue = inputRef!.current?.value;
     if (!inputValue) return;
-    navigate(`/shop?name=${inputValue}`);
+    navigate(`/shop?name=${inputValue}`, { state: { pageReset: 1 } });
   }
 
   return (

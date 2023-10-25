@@ -52,11 +52,13 @@ export default function useFetchPage<T>(
         const newData: Page<T> = await res.json();
         if (!res.ok) {
           setIsError(true);
-        } else {
+        } else if (pageNumber !== 0) {
           setData({
             ...newData,
             content: [...data.content, ...newData.content],
           });
+        } else {
+          setData({ ...newData });
         }
       } catch (error) {
         setIsError(true);
