@@ -6,7 +6,6 @@ import ProductModel from "models/Product";
 import Container from "components/Common/Container";
 import ProductImages from "./ProductImages";
 import ProductInfo from "./ProductInfo";
-import ProductImage from "models/ProductImage";
 
 export default function Product() {
   const { id } = useParams();
@@ -18,23 +17,23 @@ export default function Product() {
     return <div>Loading</div>;
   }
 
-  if (isError) {
+  if (isError || !data) {
     return <div>Error while loading product...</div>;
   }
 
   return (
     <div className="w-full">
       <Breadcrumb
-        title={data!!.name}
+        title={data.name}
         items={[{ title: "Shop", to: "/shop" }, { title: "Single product" }]}
       />
       <Container type="large">
         <div className="grid grid-rows-1 grid-cols-2">
           <div className="p-12 h-full pb-20">
-            <ProductImages images={data?.images || Array<ProductImage>()} />
+            <ProductImages images={data.images} />
           </div>
           <div className="p-12 h-full pb-20">
-            <ProductInfo product={data!!} />
+            <ProductInfo product={data} />
           </div>
         </div>
       </Container>
