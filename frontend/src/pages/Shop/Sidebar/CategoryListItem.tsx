@@ -21,6 +21,11 @@ export default function CategoryListItem(props: CategoryListItemProps) {
             { key: "categoryId", value: props.category.id.toString() },
             { key: "subcategoryId", value: subCategory.id.toString() },
           ])}`,
+          {
+            state: {
+              pageReset: 1,
+            },
+          },
         );
       }}
     >
@@ -36,6 +41,11 @@ export default function CategoryListItem(props: CategoryListItemProps) {
             `/shop?${buildQueryParams([
               { key: "categoryId", value: props.category.id.toString() },
             ])}`,
+            {
+              state: {
+                pageReset: 1,
+              },
+            },
           );
         }}
       >
