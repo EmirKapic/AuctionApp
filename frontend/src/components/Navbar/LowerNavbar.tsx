@@ -1,24 +1,24 @@
 import Container from "components/Common/Container";
-import { LegacyRef, ReactNode, useEffect, useRef } from "react";
+import {
+  FormEvent,
+  LegacyRef,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
 
 export default function LowerNavbar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [searchText, setSearchText] = useState("");
 
-  useEffect(() => {
-    window.addEventListener("keypress", (e) => {
-      if (e.key !== "enter") return;
-      handleSearch();
-    });
-  }, []);
-
-  function handleSearch(): void {
-    const inputValue = inputRef!.current?.value;
-    if (!inputValue) return;
-    navigate(`/shop?name=${inputValue}`, { state: { pageReset: 1 } });
+  function handleSearch(e: FormEvent): void {
+    e.preventDefault();
+    if (!searchText) return;
+    navigate(`/shop?name=${searchText}`, { state: { pageReset: 1 } });
   }
 
   function renderNavLink(
@@ -54,21 +54,25 @@ export default function LowerNavbar() {
         </section>
 
         <section className="flex w-full justify-end items-center gap-10">
-          <section className="max-w-[60%] flex-grow relative">
+          <form
+            className="max-w-[60%] flex-grow relative"
+            onSubmit={handleSearch}
+          >
             <input
-              ref={inputRef}
               type="text"
               role="search"
               placeholder="Try enter: Shoes"
               className="outline outline-gray-200 w-full py-4 indent-4 shadow-lightgrey"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
-            <div
-              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
-              onClick={handleSearch}
+            <button
+              className="absolute top-1/2 right-4 -translate-y-1/2"
+              type="submit"
             >
               <Icon name="magnify" />
-            </div>
-          </section>
+            </button>
+          </form>
 
           <nav>
             <ul className="flex gap-5 uppercase">
