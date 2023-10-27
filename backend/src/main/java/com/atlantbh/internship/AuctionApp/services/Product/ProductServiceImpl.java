@@ -8,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import java.time.Instant;
 
 @Service
@@ -29,12 +27,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getById(Long id) throws ProductNotFoundException {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isPresent()) {
-            return product.get();
-        } else {
-            throw new ProductNotFoundException("No product with such id found");
-        }
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " does not exist"));
     }
 
 }
