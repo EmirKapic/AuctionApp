@@ -40,7 +40,7 @@ export default function HeroProduct() {
         <p className="pb-16">{data.description}</p>
         <Button
           type="primary"
-          onClick={() => navigate(`/products/${data.id}`)}
+          onClick={() => navigate(`/shop/products/${data.id}`)}
           className="px-9 py-2"
         >
           <span>Bid now</span>

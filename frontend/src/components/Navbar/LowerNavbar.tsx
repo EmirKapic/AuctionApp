@@ -8,21 +8,19 @@ export default function LowerNavbar() {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
 
+  const pathPrefix = pathname === "/" ? "/" : pathname.split("/")[1];
+
   function handleSearch(e: FormEvent): void {
     e.preventDefault();
     if (!searchText) return;
     navigate(`/shop?name=${searchText}`, { state: { pageReset: 1 } });
   }
 
-  function renderNavLink(
-    title: string,
-    to: string,
-    paths: string[],
-  ): ReactNode {
+  function renderNavLink(title: string, to: string, path: string): ReactNode {
     return (
       <li className="cursor-pointer">
         <Link
-          className={paths.includes(pathname) ? "text-purple font-bold" : ""}
+          className={path === pathPrefix ? "text-purple font-bold" : ""}
           to={to}
         >
           {title}
@@ -69,13 +67,8 @@ export default function LowerNavbar() {
 
           <nav>
             <ul className="flex gap-5 uppercase">
-              {renderNavLink("Home", "/", ["/"])}
-              {renderNavLink("Shop", "/shop", [
-                "/shop",
-                "/terms",
-                "/privacy",
-                "/about",
-              ])}
+              {renderNavLink("Home", "/", "/")}
+              {renderNavLink("Shop", "/shop", "shop")}
               <li className="cursor-pointer">
                 <a className={"invisible "}>My account</a>
               </li>
