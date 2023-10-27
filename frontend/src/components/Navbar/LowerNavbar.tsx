@@ -1,12 +1,5 @@
 import Container from "components/Common/Container";
-import {
-  FormEvent,
-  LegacyRef,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { FormEvent, ReactNode, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
 

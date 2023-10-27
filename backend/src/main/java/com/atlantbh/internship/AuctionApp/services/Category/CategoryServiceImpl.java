@@ -18,7 +18,5 @@ public class CategoryServiceImpl implements CategoryService {
     public Iterable<CategoryDto> getAll() {
         List<Category> categories =  categoryRepository.findAll();
         return categories.stream().map(categoryDtoConverter::convertToDto).toList();
-
-
     }
 }
