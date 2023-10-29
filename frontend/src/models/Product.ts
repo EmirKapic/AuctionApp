@@ -9,9 +9,9 @@ type Product = {
   startBid: number;
   highestBid?: number;
   numberOfBids: number;
-  dateStart: Date;
-  dateEnd: Date;
-  dateCreated: Date;
+  dateStart: string;
+  dateEnd: string;
+  dateCreated: string;
   subCategory: Subcategory;
   images: Array<ProductImage>;
   user: User;

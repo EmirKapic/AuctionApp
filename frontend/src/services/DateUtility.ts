@@ -7,7 +7,6 @@ export interface Difference {
 
 export type DateUnit = "years" | "months" | "weeks" | "days";
 
-//all methods work with UNIX time format (ms from january 1 1970)
 const DateUtility = {
   getDifference(
     dateFirst: Date,
