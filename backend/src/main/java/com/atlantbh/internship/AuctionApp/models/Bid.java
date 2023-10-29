@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -15,7 +14,6 @@ public class Bid {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private double bid;
     private Instant dateCreated;
 
