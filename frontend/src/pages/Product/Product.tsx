@@ -10,7 +10,7 @@ import ProductInfo from "./ProductInfo";
 export default function Product() {
   const { id } = useParams();
   const { data, isLoading, isError } = useFetchOne<ProductModel>(
-    new UrlBuilder().products().id(parseInt(id!!)).url,
+    new UrlBuilder().products().id(parseInt(id!)).url,
   );
 
   if (isLoading) {
