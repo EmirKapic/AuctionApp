@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 export interface Difference {
   years?: number;
   months?: number;
@@ -13,37 +14,41 @@ const DateUtility = {
     dateSecond: Date,
     largestUnit: DateUnit = "years",
   ): Difference {
-    const timeDifference = Math.abs(dateFirst.getTime() - dateSecond.getTime());
-    const daysDiff = Math.round(timeDifference / (1000 * 60 * 60 * 24)) + 1;
+    const date1 = dayjs(dateFirst);
+    const date2 = dayjs(dateSecond);
+
+    const yearsDiff = Math.abs(date1.diff(date2, "years"));
+    const monthsDiff = Math.abs(date1.diff(date2, "months"));
+    const weeksDiff = Math.abs(date1.diff(date2, "weeks"));
+    const daysDiff = Math.abs(date1.diff(date2, "days"));
+
     switch (largestUnit) {
       case "years": {
         return {
-          years: Math.floor(daysDiff / 365),
-          months: Math.floor((daysDiff % 365) / 30),
+          years: yearsDiff,
+          months: monthsDiff - yearsDiff * 12,
           weeks: Math.floor(((daysDiff % 365) % 30) / 7),
           days: Math.floor(((daysDiff % 365) % 30) % 7),
         };
       }
       case "months": {
         return {
-          months: Math.floor(daysDiff / 30),
+          months: monthsDiff,
           weeks: Math.floor(((daysDiff % 365) % 30) / 7),
           days: Math.floor(((daysDiff % 365) % 30) % 7),
         };
       }
       case "weeks": {
         return {
-          weeks: Math.floor(daysDiff / 7),
+          weeks: weeksDiff,
           days: Math.floor(((daysDiff % 365) % 30) % 7),
         };
       }
       case "days": {
         return {
-          days: Math.floor(daysDiff),
+          days: daysDiff,
         };
       }
-      default:
-        return {};
     }
   },
 };
