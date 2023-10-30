@@ -1,4 +1,5 @@
 import Breadcrumb from "components/Common/Breadcrumb";
+import Container from "components/Common/Container";
 
 export default function AboutUs() {
   return (
@@ -7,7 +8,7 @@ export default function AboutUs() {
         title="about us"
         items={[{ title: "shop", to: "/shop" }, { title: "about us" }]}
       />
-      <main className="max-w-container-lg w-full mx-auto mb-10">
+      <Container type="large">
         <h1 className="text-4xl font-normal py-10">About Us</h1>
         <section className="flex justify-stretch w-full flex-wrap">
           <article className="w-1/2 leading-7 text-lg opacity-50 word-spacing-3 [&>p]:pb-5 [&>p]:max-w-[60ch]">
@@ -58,7 +59,7 @@ export default function AboutUs() {
             </div>
           </aside>
         </section>
-      </main>
+      </Container>
     </div>
   );
 }

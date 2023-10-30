@@ -7,6 +7,7 @@ import AboutUs from "./pages/AboutUs/AboutUs";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 import ScrollToTop from "./components/Common/ScrollToTop";
 import LandingPage from "pages/LandingPage/LandingPage";
+import Product from "pages/Product/Product";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsAndConditions />} />
+        <Route path="/products/:id" element={<Product />} />
       </Routes>
       <div className="absolute bottom-0 w-full">
         <Footer />

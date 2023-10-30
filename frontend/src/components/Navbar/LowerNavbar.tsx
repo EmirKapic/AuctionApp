@@ -1,3 +1,4 @@
+import Container from "components/Common/Container";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "svgs/Icon";
 
@@ -6,7 +7,10 @@ export default function LowerNavbar() {
 
   return (
     <section>
-      <div className="flex max-w-container-lg w-full mx-auto items-center py-4 justify-between font-light">
+      <Container
+        type="large"
+        className="flex items-center py-4 justify-between font-light"
+      >
         <section className="flex items-center">
           <Link to={"/"} className="flex">
             <Icon name="hammer" />
@@ -48,7 +52,7 @@ export default function LowerNavbar() {
             </ul>
           </nav>
         </section>
-      </div>
+      </Container>
     </section>
   );
 }

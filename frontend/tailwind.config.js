@@ -15,10 +15,11 @@ export default {
       },
       maxWidth: {
         "container-lg": "1280px",
+        "container-sm" : "760px"
       },
       borderColor : {
         silver : "silver"
-      }
+      },
     },
   },
   plugins: [],

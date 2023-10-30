@@ -1,5 +1,6 @@
 package com.atlantbh.internship.AuctionApp.services.Product;
 
+import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -9,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
-
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
+
     @Override
     public Page<Product> getAllActive(Pageable pageable) {
         return productRepository.findAllByDateEndAfterAndDateStartBefore(pageable, Instant.now(), Instant.now());
@@ -22,6 +23,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getRandom() {
         return productRepository.getRandom();
+    }
+
+    @Override
+    public Product getById(Long id) throws ProductNotFoundException {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " does not exist"));
     }
 
 }

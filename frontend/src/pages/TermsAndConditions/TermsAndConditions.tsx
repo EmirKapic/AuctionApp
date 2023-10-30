@@ -1,4 +1,5 @@
 import Breadcrumb from "components/Common/Breadcrumb";
+import Container from "components/Common/Container";
 
 export default function TermsAndConditions() {
   return (
@@ -10,7 +11,10 @@ export default function TermsAndConditions() {
           { title: "terms and conditions" },
         ]}
       />
-      <main className="max-w-container-lg w-full mx-auto px-64 pt-12 pb-36 [&>p]:text-lg [&>p]:text-lightgrey-200 [&>h2]:text-grey_">
+      <Container
+        className="pt-12 pb-36 [&>p]:text-lg [&>p]:text-lightgrey-200 [&>h2]:text-grey_"
+        type="small"
+      >
         <h2 className="text-5xl pb-6">Introduction</h2>
 
         <p className="pb-6">
@@ -162,7 +166,7 @@ export default function TermsAndConditions() {
           jurisdiction of the state and federal courts located in ba for the
           resolution of any disputes.
         </p>
-      </main>
+      </Container>
     </div>
   );
 }
