@@ -1,5 +1,6 @@
 import Page from "models/Page";
 import { useEffect, useState } from "react";
+import buildQueryParams, { QueryParameter } from "services/QueryParamsBuilder";
 
 function buildFullUrl(
   base: string,
@@ -10,13 +11,14 @@ function buildFullUrl(
 ): string {
   let url = base + "?";
   url += queryParams ? `${queryParams.toString()}&` : "";
-  const pageParams = new URLSearchParams();
-  pageParams.append("page", pageNumber.toString());
-  pageParams.append("size", pageSize.toString());
+  const params: QueryParameter[] = [
+    { key: "page", value: pageNumber.toString() },
+    { key: "size", value: pageSize.toString() },
+  ];
   if (sort) {
-    pageParams.append("sort", `${sort.name},${sort.order}`);
+    params.push({ key: "sort", value: `${sort.name},${sort.order}` });
   }
-  return url + pageParams.toString();
+  return url + buildQueryParams(params);
 }
 
 type SortOrder = "asc" | "desc";

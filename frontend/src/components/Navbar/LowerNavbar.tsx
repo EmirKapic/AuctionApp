@@ -13,12 +13,12 @@ export default function LowerNavbar() {
   function handleSearch(e: FormEvent): void {
     e.preventDefault();
     if (!searchText) return;
-    navigate(`/shop?name=${searchText}`, { state: { pageReset: 1 } });
+    navigate(`/shop?name=${searchText}`, { state: { pageReset: true } });
   }
 
   function renderNavLink(title: string, to: string, path: string): ReactNode {
     return (
-      <li className="cursor-pointer">
+      <li className="cursor-pointer" key={to}>
         <Link
           className={path === pathPrefix ? "text-purple font-bold" : ""}
           to={to}
