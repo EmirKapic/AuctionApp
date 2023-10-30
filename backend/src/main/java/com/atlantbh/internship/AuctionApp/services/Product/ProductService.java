@@ -11,5 +11,4 @@ public interface ProductService {
     Product getRandom();
 
     Product getById(Long id) throws ProductNotFoundException;
-
 }
