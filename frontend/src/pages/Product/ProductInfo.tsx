@@ -18,11 +18,6 @@ function renderInfoField(title: string, value: string): ReactNode {
 }
 
 export default function ProductInfo(props: ProductInfoProps) {
-  const { weeks, days } = DateUtility.getDifference(
-    new Date(props.product.dateEnd),
-    new Date(),
-    "weeks",
-  );
   return (
     <div>
       <section>
@@ -42,7 +37,10 @@ export default function ProductInfo(props: ProductInfoProps) {
           "Number of bids:",
           props.product.numberOfBids.toString(),
         )}
-        {renderInfoField("Time left:", `${weeks} Weeks ${days} Days`)}
+        {renderInfoField(
+          "Time left:",
+          DateUtility.getDuration(new Date(props.product.dateEnd), new Date()),
+        )}
       </section>
 
       <section className="flex gap-4 h-min mb-8 hidden">
