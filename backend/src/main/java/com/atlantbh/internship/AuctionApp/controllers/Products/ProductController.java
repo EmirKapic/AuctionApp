@@ -1,6 +1,5 @@
 package com.atlantbh.internship.AuctionApp.controllers.Products;
 
-
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductParameters;
@@ -18,17 +17,14 @@ public class ProductController {
 
     @GetMapping
     public Page<Product> getAllActive(final Pageable pageable,
-                                      final ProductParameters parameters
-                                      ){
+            final ProductParameters parameters) {
         return productService.getAllActive(pageable, parameters);
     }
 
     @GetMapping("/random")
-    public Product getRandom(){
+    public Product getRandom() {
         return productService.getRandom();
     }
-
-
 
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable(name = "id") Long id) throws ProductNotFoundException {

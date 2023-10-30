@@ -18,10 +18,6 @@ function renderInfoField(title: string, value: string): ReactNode {
 }
 
 export default function ProductInfo(props: ProductInfoProps) {
-  const { weeks, days } = DateUtility.getWeeksAndDays(
-    props.product.dateEnd * 1000,
-    Date.now(),
-  );
   return (
     <div>
       <section>
@@ -41,13 +37,20 @@ export default function ProductInfo(props: ProductInfoProps) {
           "Number of bids:",
           props.product.numberOfBids.toString(),
         )}
-        {renderInfoField("Time left:", `${weeks} Weeks ${days} Days`)}
+        {renderInfoField(
+          "Time left:",
+          DateUtility.getDuration(new Date(props.product.dateEnd), new Date()),
+        )}
       </section>
 
       <section className="flex gap-4 h-min mb-8 hidden">
         <input
           type="number"
-          placeholder="Enter 56$ or higher"
+          placeholder={`Enter ${
+            props.product.highestBid
+              ? props.product.highestBid + 1
+              : props.product.startBid
+          }$ or higher`}
           className="outline outline-gray-200 indent-4 py-4 flex-grow"
           min={
             props.product.highestBid

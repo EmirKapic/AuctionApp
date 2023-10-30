@@ -1,7 +1,7 @@
 type Bid = {
   id: number;
   bid: number;
-  dateCreated: number;
+  dateCreated: string;
   sellerId: number;
   productId: number;
 };

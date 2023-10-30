@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -18,7 +17,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getAllActive(Pageable pageable, ProductParameters params) {
-        if (params == null){
+        if (params == null) {
             params = new ProductParameters(null, null, null);
         }
         return productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
@@ -31,13 +30,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getById(Long id) throws ProductNotFoundException {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isPresent()) {
-            return product.get();
-        } else {
-            throw new ProductNotFoundException("No product with such id found");
-        }
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id: " + id + " does not exist"));
     }
-
 
 }
