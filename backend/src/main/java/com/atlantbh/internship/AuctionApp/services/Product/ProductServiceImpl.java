@@ -15,7 +15,12 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public AllProductsDto getAllActive(Pageable pageable, ProductParameters params) {
+    public Page<Product> getAllActive(Pageable pageable, ProductParameters params) {
+        return productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
+    }
+
+    @Override
+    public AllProductsDto getAllActiveApproximate(Pageable pageable, ProductParameters params) {
         Page<Product> products = productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
         if (!products.isEmpty()){
             return new AllProductsDto(products, false);
