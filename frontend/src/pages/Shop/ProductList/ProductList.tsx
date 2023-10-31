@@ -20,17 +20,13 @@ export interface ProductListProps {
 export default function ProductList(props: ProductListProps) {
   return (
     <div className="pb-4">
-      {props.type === "grid" ? (
-        <div>
-          <ProductGrid
-            itemsClassName={productListClassName[props.type]}
-            imageClassName="w-full h-96"
-            items={props.items.content}
-          />
-        </div>
-      ) : (
-        <div>Not implemented yet</div>
-      )}
+      <div>
+        <ProductGrid
+          itemsClassName={productListClassName[props.type]}
+          imageClassName="w-full h-96"
+          items={props.items.content}
+        />
+      </div>
       {!props.items.last && (
         <div className="pt-10 pb-4">
           <Button
