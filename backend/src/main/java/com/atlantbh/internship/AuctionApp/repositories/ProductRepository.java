@@ -21,4 +21,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                 @Param("categoryId")Long categoryId,
                                 @Param("subcategoryId") Long subcategoryId,
                                 @Param("name")String name);
+
+
+    @Query("""
+            from Product where (:categoryId is null or :categoryId = subCategory.category.id )
+            and (:subcategoryId is null or :subcategoryId = subCategory.id)
+            and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
+            and (dateStart < current date and dateEnd > current date)
+            order by levenshtein(upper(name), upper(:name))""")
+    Page<Product> getAllActiveApproximate(Pageable pageable,
+                                          @Param("categoryId")Long categoryId,
+                                          @Param("subcategoryId") Long subcategoryId,
+                                          @Param("name")String name);
 }

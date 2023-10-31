@@ -1,5 +1,6 @@
 package com.atlantbh.internship.AuctionApp.services.Product;
 
+import com.atlantbh.internship.AuctionApp.dtos.AllProductsDto;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
@@ -14,8 +15,13 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Page<Product> getAllActive(Pageable pageable, ProductParameters params) {
-        return productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
+    public AllProductsDto getAllActive(Pageable pageable, ProductParameters params) {
+        Page<Product> products = productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
+        if (!products.isEmpty()){
+            return new AllProductsDto(products, false);
+        }
+        Page<Product> aprox = productRepository.getAllActiveApproximate(pageable, params.categoryId(), params.subcategoryId(), params.name());
+        return new AllProductsDto(aprox, true);
     }
 
     @Override
