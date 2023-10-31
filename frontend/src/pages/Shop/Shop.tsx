@@ -10,15 +10,15 @@ import ProductList from "./ProductList/ProductList";
 import Breadcrumb, { BreadcrumbItem } from "components/Common/Breadcrumb";
 import useFetchAll from "hooks/useFetchAll";
 import CategoryWithSubs from "models/CategoryWithSubs";
+import useFetchApproximate from "hooks/useFetchApproximate";
 
 export default function Shop() {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
-  const { data, isLoading, isError } = useFetchPage<Product>(
+  const { data, isLoading, isError } = useFetchApproximate(
     new UrlBuilder().products().url,
     page,
     pageSizeShop,
-    undefined,
     queryParams,
   );
 
@@ -86,7 +86,7 @@ export default function Shop() {
         <div className="flex-grow">
           <ProductList
             type="grid"
-            items={data}
+            items={data.products}
             handleNextPage={() => setPage(page + 1)}
           />
         </div>
