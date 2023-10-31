@@ -1,7 +1,7 @@
 import { MouseEventHandler, PropsWithChildren } from "react";
 import { className } from "services/ClassName";
 
-type ButtonType = "primary" | "secondary" | "primary-filled";
+type ButtonType = "primary" | "primary-filled";
 
 export interface ButtonProps {
   type: ButtonType;
@@ -12,7 +12,6 @@ export interface ButtonProps {
 const buttonClassName: Record<ButtonType, string> = {
   primary:
     "border-2 border-purple flex gap-2 items-center justify-center duration-300 hover:bg-purple hover:text-white shadow-purple-md",
-  secondary: "...",
   "primary-filled":
     "flex gap-2 items-center justify-center bg-purple text-white",
 };
