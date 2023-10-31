@@ -44,7 +44,6 @@ export default function Shop() {
   }
 
   function getBreadCrumbItems(): BreadcrumbItem[] {
-    const breadCrumbItems: BreadcrumbItem[] = [];
     const shopBreadcrumb: BreadcrumbItem = { title: "shop", to: "/shop" };
 
     if (queryParams.has("subcategoryId")) {
