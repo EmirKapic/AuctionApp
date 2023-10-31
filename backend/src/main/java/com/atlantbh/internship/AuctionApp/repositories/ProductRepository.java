@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("""
             from Product where (:categoryId is null or :categoryId = subCategory.category.id )
             and (:subcategoryId is null or :subcategoryId = subCategory.id)
-            and(:name is null or name like %:name%)
+            and(:name is null or upper(name) like upper(%:name%))
             and (dateStart < current date and dateEnd > current date)""")
     Page<Product> getAllActive(Pageable pageable,
                                 @Param("categoryId")Long categoryId,
