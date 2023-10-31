@@ -11,7 +11,7 @@ export interface CategoryListItemProps {
 export default function CategoryListItem(props: CategoryListItemProps) {
   const navigate = useNavigate();
 
-  function handleSelect(categoryId: string, subcategoryId?: string) {
+  function handleSelect(categoryId: string, subcategoryId?: string): void {
     const queryParams = buildQueryParams([
       { key: "categoryId", value: categoryId },
       { key: "subcategoryId", value: subcategoryId },
