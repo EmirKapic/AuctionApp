@@ -23,19 +23,17 @@ export default function CategoryListItem(props: CategoryListItemProps) {
     });
   }
 
-  const subCategories = props.category.subCategories
-    .sort((subCatA, subCatB) => subCatB.productCount - subCatA.productCount)
-    .map((subCategory) => (
-      <li
-        className="text-lightgrey-200 list-none py-1 cursor-pointer"
-        key={subCategory.id}
-        onClick={() =>
-          handleSelect(props.category.id.toString(), subCategory.id.toString())
-        }
-      >
-        {`${subCategory.name} (${subCategory.productCount})`}
-      </li>
-    ));
+  const subCategories = props.category.subCategories.map((subCategory) => (
+    <li
+      className="text-lightgrey-200 list-none py-1 cursor-pointer"
+      key={subCategory.id}
+      onClick={() =>
+        handleSelect(props.category.id.toString(), subCategory.id.toString())
+      }
+    >
+      {`${subCategory.name} (${subCategory.productCount})`}
+    </li>
+  ));
   return (
     <div>
       <div
