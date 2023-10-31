@@ -8,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -17,9 +15,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getAllActive(Pageable pageable, ProductParameters params) {
-        if (params == null) {
-            params = new ProductParameters(null, null, null);
-        }
         return productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
     }
 
