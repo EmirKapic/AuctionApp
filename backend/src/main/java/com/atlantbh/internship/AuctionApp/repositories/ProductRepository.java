@@ -7,14 +7,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.Instant;
-
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "FROM Product where dateStart < current date and dateEnd > current date ORDER BY RANDOM() LIMIT 1")
     Product getRandom();
 
 
-    @Query("from Product where (:categoryId is null or :categoryId = subCategory.category.id ) and (:subcategoryId is null or :subcategoryId = subCategory.id) and(:name is null or name like %:name%) and (dateStart < current date and dateEnd > current date )")
+    @Query("""
+            from Product where (:categoryId is null or :categoryId = subCategory.category.id )
+            and (:subcategoryId is null or :subcategoryId = subCategory.id)
+            and(:name is null or name like %:name%)
+            and (dateStart < current date and dateEnd > current date)""")
     Page<Product> getAllActive(Pageable pageable,
                                 @Param("categoryId")Long categoryId,
                                 @Param("subcategoryId") Long subcategoryId,
