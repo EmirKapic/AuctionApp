@@ -43,12 +43,40 @@ export default function Shop() {
     return <div>Error while fetching data...</div>;
   }
 
-  const breadCrumbItems: BreadcrumbItem[] = [];
-  if (queryParams.has("categoryId")) breadCrumbItems.push({ title: "" });
+  function getBreadCrumbItems(): BreadcrumbItem[] {
+    const breadCrumbItems: BreadcrumbItem[] = [];
+    const shopBreadcrumb: BreadcrumbItem = { title: "shop", to: "/shop" };
+
+    if (queryParams.has("subcategoryId")) {
+      const selectedCategory = categories.find(
+        (cat) => cat.id === parseInt(queryParams.get("categoryId") || "-1"),
+      )!; // if there is subcatid surely there is also catId
+      const selectedSubcategory = selectedCategory.subCategories.find(
+        (subCat) => subCat.id === parseInt(queryParams.get("subcategoryId")!),
+      )!;
+      return [
+        shopBreadcrumb,
+        {
+          title: selectedCategory.name,
+          to: `/shop?categoryId=${selectedCategory.id}`,
+        },
+        { title: selectedSubcategory.name },
+      ];
+    } else if (queryParams.has("categoryId")) {
+      const selectedCategory = categories.find(
+        (cat) => cat.id === parseInt(queryParams.get("categoryId") || "-1"),
+      )!;
+      return [shopBreadcrumb, { title: selectedCategory.name }];
+    } else if (queryParams.has("name")) {
+      return [shopBreadcrumb, { title: "search" }];
+    } else {
+      return [];
+    }
+  }
 
   return (
     <div>
-      <Breadcrumb title="shop" items={[]} />
+      <Breadcrumb title="shop" items={getBreadCrumbItems()} />
       <Container type="large" className="flex gap-10">
         <aside className="flex-shrink-0">
           <ProductCategories
