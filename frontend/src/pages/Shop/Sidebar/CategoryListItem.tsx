@@ -41,15 +41,9 @@ export default function CategoryListItem(props: CategoryListItemProps) {
         onClick={() => handleSelect(props.category.id.toString())}
       >
         <h1 className="text-sm">{props.category.name}</h1>
-        {props.active ? (
-          <button>
-            <Icon name="minus" />
-          </button>
-        ) : (
-          <button>
-            <Icon name="plus" />
-          </button>
-        )}
+        <button>
+          <Icon name={props.active ? "minus" : "plus"} />
+        </button>
       </div>
       {props.active && subCategories}
     </div>
