@@ -1,6 +1,5 @@
 import Page from "models/Page";
 import Product from "models/Product";
-import ProductDidYouMean from "models/ProductDidYouMean";
 import { useEffect, useState } from "react";
 import buildQueryParams, { QueryParameter } from "services/QueryParamsBuilder";
 
@@ -11,7 +10,7 @@ function buildFullUrl(
   sort?: Sort,
   queryParams?: URLSearchParams,
 ): string {
-  let url = base + (queryParams?.has("name") ? "/search" : "") + "?";
+  let url = base + "?";
   url += queryParams ? `${queryParams.toString()}&` : "";
   const params: QueryParameter[] = [
     { key: "page", value: pageNumber.toString() },
@@ -34,15 +33,14 @@ export default function useFetchPage(
   url: string,
   pageNumber: number,
   pageSize: number,
+  pathToData: string[],
   sort?: Sort,
   queryParams?: URLSearchParams,
 ) {
   const [data, setData] = useState<Page<Product>>({ content: [], last: false });
+  const [rawData, setRawData] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [didYouMean, setDidYouMean] = useState(false);
-
-  const search = queryParams?.has("name");
 
   useEffect(() => {
     setIsLoading(true);
@@ -56,16 +54,21 @@ export default function useFetchPage(
     const fetchData = async () => {
       try {
         const res = await fetch(completeUrl);
-        const newData: Page<Product> = await res.json();
+        let newDataJson = await res.json();
+        setRawData(newDataJson);
+
+        for (const property of pathToData) {
+          newDataJson = newDataJson[property];
+        }
         if (!res.ok) {
           setIsError(true);
         } else if (pageNumber !== 0) {
           setData({
-            ...newData,
-            content: [...data.content, ...newData.content],
+            ...newDataJson,
+            content: [...data.content, ...newDataJson.content],
           });
         } else {
-          setData({ ...newData });
+          setData({ ...newDataJson });
         }
       } catch (error) {
         setIsError(true);
@@ -74,39 +77,8 @@ export default function useFetchPage(
       }
     };
 
-    const fetchDidYouMean = async () => {
-      try {
-        const res = await fetch(completeUrl);
-        const newData: ProductDidYouMean = await res.json();
-        if (!res.ok) {
-          setIsError(true);
-          setIsLoading(false);
-          return false;
-        } else if (pageNumber !== 0) {
-          setData({
-            ...newData.products,
-            content: [...data.content, ...newData.products.content],
-          });
-          setIsLoading(false);
-          return newData.approximation;
-        } else {
-          setData({ ...newData.products });
-          setIsLoading(false);
-          return newData.approximation;
-        }
-      } catch (error) {
-        setIsError(true);
-        setIsLoading(false);
-        return false;
-      }
-    };
-    if (!search) fetchData();
-    else {
-      fetchDidYouMean().then((res) => {
-        setDidYouMean(res);
-      });
-    }
+    fetchData();
   }, [pageNumber, pageSize, url, queryParams]);
 
-  return { data, isLoading, isError, didYouMean };
+  return { data, isLoading, isError, rawData };
 }

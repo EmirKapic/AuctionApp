@@ -29,6 +29,7 @@ export default function SpecialOffers() {
     new UrlBuilder().products().url,
     pageRecent,
     defaultPageSize,
+    [],
     recentSort,
   );
 
@@ -40,6 +41,7 @@ export default function SpecialOffers() {
     new UrlBuilder().products().url,
     pageExpiring,
     defaultPageSize,
+    [],
     expiringSort,
   );
 

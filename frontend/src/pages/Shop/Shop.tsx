@@ -13,10 +13,11 @@ import CategoryWithSubs from "models/CategoryWithSubs";
 export default function Shop() {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
-  const { data, isLoading, isError, didYouMean } = useFetchPage(
-    new UrlBuilder().products().url,
+  const { data, isLoading, isError, rawData } = useFetchPage(
+    new UrlBuilder().products().search().url,
     page,
     pageSizeShop,
+    ["products"],
     undefined,
     queryParams,
   );
@@ -71,10 +72,10 @@ export default function Shop() {
       return [];
     }
   }
-
+  console.log(rawData);
   return (
     <div>
-      {didYouMean && data.content.length !== 0 ? (
+      {rawData?.approximation && data.content.length !== 0 ? (
         <aside className="w-full bg-lightgrey-100">
           <Container type="small" className="py-5">
             <div>
