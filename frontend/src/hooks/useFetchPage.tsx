@@ -1,5 +1,4 @@
 import Page from "models/Page";
-import Product from "models/Product";
 import { useEffect, useState } from "react";
 import buildQueryParams, { QueryParameter } from "services/QueryParamsBuilder";
 
@@ -29,7 +28,7 @@ export type Sort = {
   order: SortOrder;
 };
 
-export default function useFetchPage(
+export default function useFetchPage<T, R = T>(
   url: string,
   pageNumber: number,
   pageSize: number,
@@ -37,8 +36,8 @@ export default function useFetchPage(
   queryParams?: URLSearchParams,
   pathToData: string[] = [],
 ) {
-  const [data, setData] = useState<Page<Product>>({ content: [], last: false });
-  const [rawData, setRawData] = useState<any>();
+  const [data, setData] = useState<Page<T>>({ content: [], last: false });
+  const [rawData, setRawData] = useState<R>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 

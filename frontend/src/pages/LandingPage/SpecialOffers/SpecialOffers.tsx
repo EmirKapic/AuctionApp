@@ -25,7 +25,7 @@ export default function SpecialOffers() {
     data: newProducts,
     isLoading: isLoadingNew,
     isError: errorNew,
-  } = useFetchPage(
+  } = useFetchPage<Product>(
     new UrlBuilder().products().url,
     pageRecent,
     defaultPageSize,
@@ -36,7 +36,7 @@ export default function SpecialOffers() {
     data: lastChanceProducts,
     isLoading: isLoadingLastChance,
     isError: errorLastChance,
-  } = useFetchPage(
+  } = useFetchPage<Product>(
     new UrlBuilder().products().url,
     pageExpiring,
     defaultPageSize,

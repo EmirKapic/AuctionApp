@@ -9,11 +9,16 @@ import ProductList from "./ProductList/ProductList";
 import Breadcrumb, { BreadcrumbItem } from "components/Common/Breadcrumb";
 import useFetchAll from "hooks/useFetchAll";
 import CategoryWithSubs from "models/CategoryWithSubs";
+import Product from "models/Product";
+import ProductDidYouMean from "models/ProductDidYouMean";
 
 export default function Shop() {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
-  const { data, isLoading, isError, rawData } = useFetchPage(
+  const { data, isLoading, isError, rawData } = useFetchPage<
+    Product,
+    ProductDidYouMean
+  >(
     new UrlBuilder().products().search().url,
     page,
     pageSizeShop,
