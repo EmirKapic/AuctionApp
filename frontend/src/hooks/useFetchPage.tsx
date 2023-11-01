@@ -33,9 +33,9 @@ export default function useFetchPage(
   url: string,
   pageNumber: number,
   pageSize: number,
-  pathToData: string[],
   sort?: Sort,
   queryParams?: URLSearchParams,
+  pathToData: string[] = [],
 ) {
   const [data, setData] = useState<Page<Product>>({ content: [], last: false });
   const [rawData, setRawData] = useState<any>();

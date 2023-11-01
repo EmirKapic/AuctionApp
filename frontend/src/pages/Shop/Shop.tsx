@@ -17,9 +17,9 @@ export default function Shop() {
     new UrlBuilder().products().search().url,
     page,
     pageSizeShop,
-    ["products"],
     undefined,
     queryParams,
+    ["products"],
   );
 
   const {

@@ -1,6 +1,6 @@
 import ProductGrid from "components/Common/ProductGrid";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
 import { defaultPageSize, maxPagesSpecialOffers } from "../../../constants";
 import Product from "models/Product";
@@ -29,7 +29,6 @@ export default function SpecialOffers() {
     new UrlBuilder().products().url,
     pageRecent,
     defaultPageSize,
-    [],
     recentSort,
   );
 
@@ -41,7 +40,6 @@ export default function SpecialOffers() {
     new UrlBuilder().products().url,
     pageExpiring,
     defaultPageSize,
-    [],
     expiringSort,
   );
 
