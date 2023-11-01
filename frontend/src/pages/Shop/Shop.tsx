@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useFetchPage from "hooks/useFetchPage";
 import UrlBuilder from "services/UrlBuilder";
 import { useEffect, useState } from "react";
-import { pageSizeShop } from "constants";
+import { pageSizeShop } from "defaultConstants";
 import Product from "models/Product";
 import ProductList from "./ProductList/ProductList";
 

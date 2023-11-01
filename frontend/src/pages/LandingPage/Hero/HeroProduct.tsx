@@ -4,7 +4,7 @@ import Product from "models/Product";
 import UrlBuilder from "services/UrlBuilder";
 import { useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
-import { fallbackImageUrl } from "constants";
+import { fallbackImageUrl } from "defaultConstants";
 
 export default function HeroProduct() {
   const navigate = useNavigate();
