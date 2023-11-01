@@ -95,7 +95,7 @@ export default function Shop() {
         <Breadcrumb title="shop" items={getBreadCrumbItems()} />
       )}
 
-      <Container type="large" className="flex gap-10">
+      <Container type="large" className="flex gap-10 mt-10">
         <aside className="flex-shrink-0">
           <ProductCategories
             categories={categories}
