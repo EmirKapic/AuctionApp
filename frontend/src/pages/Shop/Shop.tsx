@@ -5,20 +5,19 @@ import useFetchPage from "hooks/useFetchPage";
 import UrlBuilder from "services/UrlBuilder";
 import { useEffect, useState } from "react";
 import { pageSizeShop } from "../../constants"; //it gets mixed up with "constants" package if absolute path
-import Product from "models/Product";
 import ProductList from "./ProductList/ProductList";
 import Breadcrumb, { BreadcrumbItem } from "components/Common/Breadcrumb";
 import useFetchAll from "hooks/useFetchAll";
 import CategoryWithSubs from "models/CategoryWithSubs";
-import useFetchApproximate from "hooks/useFetchApproximate";
 
 export default function Shop() {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
-  const { data, isLoading, isError } = useFetchApproximate(
+  const { data, isLoading, isError, didYouMean } = useFetchPage(
     new UrlBuilder().products().url,
     page,
     pageSizeShop,
+    undefined,
     queryParams,
   );
 
@@ -75,7 +74,21 @@ export default function Shop() {
 
   return (
     <div>
-      <Breadcrumb title="shop" items={getBreadCrumbItems()} />
+      {didYouMean && data.content.length !== 0 ? (
+        <aside className="w-full bg-lightgrey-100">
+          <Container type="small" className="py-5">
+            <div>
+              <span className="text-lg opacity-50">Did you mean?</span>
+              <span className="ml-6 text-purple text-lg">
+                {data.content[0].name}
+              </span>
+            </div>
+          </Container>
+        </aside>
+      ) : (
+        <Breadcrumb title="shop" items={getBreadCrumbItems()} />
+      )}
+
       <Container type="large" className="flex gap-10">
         <aside className="flex-shrink-0">
           <ProductCategories
@@ -86,7 +99,7 @@ export default function Shop() {
         <div className="flex-grow">
           <ProductList
             type="grid"
-            items={data.products}
+            items={data}
             handleNextPage={() => setPage(page + 1)}
           />
         </div>

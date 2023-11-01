@@ -1,9 +1,9 @@
 import Page from "./Page";
 import Product from "./Product";
 
-type AllProductsDto = {
+type ProductDidYouMean = {
   products: Page<Product>;
   approximation: boolean;
 };
 
-export default AllProductsDto;
+export default ProductDidYouMean;

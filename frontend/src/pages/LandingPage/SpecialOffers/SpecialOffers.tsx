@@ -2,7 +2,7 @@ import ProductGrid from "components/Common/ProductGrid";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
-import { defaultPageSize, maxPagesSpecialOffers } from "constants";
+import { defaultPageSize, maxPagesSpecialOffers } from "../../../constants";
 import Product from "models/Product";
 import Container from "components/Common/Container";
 
@@ -25,7 +25,7 @@ export default function SpecialOffers() {
     data: newProducts,
     isLoading: isLoadingNew,
     isError: errorNew,
-  } = useFetchPage<Product>(
+  } = useFetchPage(
     new UrlBuilder().products().url,
     pageRecent,
     defaultPageSize,
@@ -36,7 +36,7 @@ export default function SpecialOffers() {
     data: lastChanceProducts,
     isLoading: isLoadingLastChance,
     isError: errorLastChance,
-  } = useFetchPage<Product>(
+  } = useFetchPage(
     new UrlBuilder().products().url,
     pageExpiring,
     defaultPageSize,
