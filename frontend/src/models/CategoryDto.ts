@@ -1,9 +1,9 @@
 import Subcategory from "./Subcategory";
 
-type CategoryWithSubs = {
+type CategoryDto = {
   id: number;
   name: string;
   subCategories: Array<Subcategory>;
 };
 
-export default CategoryWithSubs;
+export default CategoryDto;

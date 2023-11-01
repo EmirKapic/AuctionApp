@@ -1,5 +1,5 @@
 import useFetchAll from "hooks/useFetchAll";
-import CategoryWithSubs from "models/CategoryWithSubs";
+import CategoryDto from "models/CategoryDto";
 import UrlBuilder from "services/UrlBuilder";
 import Sidebar from "./Sidebar";
 import CategoryListItem from "./CategoryListItem";
@@ -9,7 +9,7 @@ export interface ProductCategoriesProps {
 }
 
 export default function ProductCategories(props: ProductCategoriesProps) {
-  const { data, isLoading, isError } = useFetchAll<CategoryWithSubs>(
+  const { data, isLoading, isError } = useFetchAll<CategoryDto>(
     new UrlBuilder().categories().url,
   );
 
