@@ -21,11 +21,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductsApproximate getAllActiveApproximate(Pageable pageable, ProductParameters params) {
-        Page<Product> products = productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
-        if (!products.isEmpty()){
+        Page<Product> products = productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(),
+                params.name());
+        if (!products.isEmpty()) {
             return new ProductsApproximate(products, false);
         }
-        Page<Product> aprox = productRepository.getAllActiveApproximate(pageable, params.categoryId(), params.subcategoryId(), params.name());
+        Page<Product> aprox = productRepository.getAllActiveApproximate(pageable, params.categoryId(),
+                params.subcategoryId(), params.name());
         return new ProductsApproximate(aprox, true);
     }
 

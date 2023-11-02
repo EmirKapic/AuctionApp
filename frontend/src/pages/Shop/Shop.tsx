@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useFetchPage from "hooks/useFetchPage";
 import UrlBuilder from "services/UrlBuilder";
 import { useEffect, useState } from "react";
-import { pageSizeShop } from "../../constants"; //it gets mixed up with "constants" package if absolute path
+import { pageSizeShop } from "defaultConstants"; //it gets mixed up with "constants" package if absolute path
 import ProductList from "./ProductList/ProductList";
 import Breadcrumb, { BreadcrumbItem } from "components/Common/Breadcrumb";
 import useFetchAll from "hooks/useFetchAll";

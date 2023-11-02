@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
     Page<Product> getAllActive(Pageable pageable, ProductParameters params);
+
     ProductsApproximate getAllActiveApproximate(Pageable pageable, ProductParameters params);
 
     Product getRandom();

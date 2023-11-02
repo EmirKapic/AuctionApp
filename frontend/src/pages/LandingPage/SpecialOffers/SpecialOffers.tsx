@@ -2,7 +2,7 @@ import ProductGrid from "components/Common/ProductGrid";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import { ReactNode, useEffect, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
-import { defaultPageSize, maxPagesSpecialOffers } from "../../../constants";
+import { defaultPageSize, maxPagesSpecialOffers } from "defaultConstants";
 import Product from "models/Product";
 import Container from "components/Common/Container";
 

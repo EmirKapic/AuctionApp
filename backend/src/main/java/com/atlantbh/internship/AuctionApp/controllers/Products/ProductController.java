@@ -20,13 +20,13 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public Page<Product> getAllActive(final Pageable pageable, final ProductParameters parameters){
+    public Page<Product> getAllActive(final Pageable pageable, final ProductParameters parameters) {
         return productService.getAllActive(pageable, parameters);
     }
 
     @GetMapping("/search")
     public ProductsApproximate getAllActiveApproximate(final Pageable pageable,
-                                                       final ProductParameters parameters) {
+            final ProductParameters parameters) {
         return productService.getAllActiveApproximate(pageable, parameters);
     }
 
