@@ -24,11 +24,12 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> products = productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(),
                 params.name());
         if (!products.isEmpty()) {
-            return new ProductDidYouMean(products, false);
+            return new ProductDidYouMean(products, null);
         }
         Page<Product> aprox = productRepository.getAllActiveApproximate(pageable, params.categoryId(),
                 params.subcategoryId(), params.name());
-        return new ProductDidYouMean(aprox, true);
+        String didYouMeanQuery = aprox.isEmpty() ? null : aprox.getContent().get(0).getName();
+        return new ProductDidYouMean(aprox, didYouMeanQuery);
     }
 
     @Override
