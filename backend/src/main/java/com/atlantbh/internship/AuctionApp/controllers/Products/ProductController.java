@@ -1,6 +1,6 @@
 package com.atlantbh.internship.AuctionApp.controllers.Products;
 
-import com.atlantbh.internship.AuctionApp.dtos.ProductsApproximate;
+import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductParameters;
@@ -25,8 +25,8 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ProductsApproximate getAllActiveApproximate(final Pageable pageable,
-            final ProductParameters parameters) {
+    public ProductDidYouMean getAllActiveApproximate(final Pageable pageable,
+                                                     final ProductParameters parameters) {
         return productService.getAllActiveApproximate(pageable, parameters);
     }
 

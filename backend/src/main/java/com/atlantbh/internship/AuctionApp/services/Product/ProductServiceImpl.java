@@ -1,6 +1,6 @@
 package com.atlantbh.internship.AuctionApp.services.Product;
 
-import com.atlantbh.internship.AuctionApp.dtos.ProductsApproximate;
+import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
@@ -20,15 +20,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductsApproximate getAllActiveApproximate(Pageable pageable, ProductParameters params) {
+    public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
         Page<Product> products = productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(),
                 params.name());
         if (!products.isEmpty()) {
-            return new ProductsApproximate(products, false);
+            return new ProductDidYouMean(products, false);
         }
         Page<Product> aprox = productRepository.getAllActiveApproximate(pageable, params.categoryId(),
                 params.subcategoryId(), params.name());
-        return new ProductsApproximate(aprox, true);
+        return new ProductDidYouMean(aprox, true);
     }
 
     @Override
