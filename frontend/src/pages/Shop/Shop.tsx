@@ -11,6 +11,7 @@ import useFetchAll from "hooks/useFetchAll";
 import CategoryDto from "models/CategoryDto";
 import Product from "models/Product";
 import ProductDidYouMean from "models/ProductDidYouMean";
+import buildQueryParams from "services/QueryParamsBuilder";
 
 export default function Shop() {
   const [page, setPage] = useState(0);
@@ -49,33 +50,33 @@ export default function Shop() {
   }
 
   function getBreadCrumbItems(): BreadcrumbItem[] {
-    const shopBreadcrumb: BreadcrumbItem = { title: "shop", to: "/shop" };
-
-    if (queryParams.has("subcategoryId")) {
-      const selectedCategory = categories.find(
-        (cat) => cat.id === parseInt(queryParams.get("categoryId") || "-1"),
-      )!; // if there is subcatid surely there is also catId
-      const selectedSubcategory = selectedCategory.subCategories.find(
-        (subCat) => subCat.id === parseInt(queryParams.get("subcategoryId")!),
-      )!;
-      return [
-        shopBreadcrumb,
-        {
-          title: selectedCategory.name,
-          to: `/shop?categoryId=${selectedCategory.id}`,
-        },
-        { title: selectedSubcategory.name },
-      ];
-    } else if (queryParams.has("categoryId")) {
-      const selectedCategory = categories.find(
-        (cat) => cat.id === parseInt(queryParams.get("categoryId") || "-1"),
-      )!;
-      return [shopBreadcrumb, { title: selectedCategory.name }];
-    } else if (queryParams.has("name")) {
-      return [shopBreadcrumb, { title: "search" }];
-    } else {
-      return [];
+    const breadcrumbItems: BreadcrumbItem[] = [{ title: "shop", to: "/shop" }];
+    const catId = queryParams.get("categoryId");
+    const subCatId = queryParams.get("subcategoryId");
+    const name = queryParams.get("name");
+    if (catId) {
+      const category = categories.find((cat) => cat.id === parseInt(catId))!;
+      breadcrumbItems.push({
+        title: category.name,
+        to: `/shop?categoryId=${category.id}`,
+      });
     }
+    if (subCatId) {
+      //if there is subCatId there will also be catId as one of the query params
+      const category = categories.find((cat) => cat.id === parseInt(catId!))!;
+      const subcategory = category.subCategories.find(
+        (subCat) => subCat.id === parseInt(subCatId),
+      )!;
+      const params = buildQueryParams([
+        { key: "categoryId", value: category.id.toString() },
+        { key: "subcategoryId", value: subcategory.id.toString() },
+      ]);
+      breadcrumbItems.push({ title: subcategory.name, to: `/shop?${params}` });
+    }
+    if (name) {
+      breadcrumbItems.push({ title: "Search" });
+    }
+    return breadcrumbItems;
   }
   return (
     <div>
