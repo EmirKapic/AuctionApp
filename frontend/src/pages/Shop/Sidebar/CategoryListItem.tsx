@@ -1,10 +1,10 @@
-import CategoryWithSubs from "models/CategoryWithSubs";
+import CategoryDto from "models/CategoryDto";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import buildQueryParams from "services/QueryParamsBuilder";
 import Icon from "svgs/Icon";
 
 export interface CategoryListItemProps {
-  category: CategoryWithSubs;
+  category: CategoryDto;
   active: boolean;
 }
 

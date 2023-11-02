@@ -1,9 +1,9 @@
-import CategoryWithSubs from "models/CategoryWithSubs";
+import CategoryDto from "models/CategoryDto";
 import Sidebar from "./Sidebar";
 import CategoryListItem from "./CategoryListItem";
 
 export interface ProductCategoriesProps {
-  categories: Array<CategoryWithSubs>;
+  categories: Array<CategoryDto>;
   activeId?: number;
 }
 

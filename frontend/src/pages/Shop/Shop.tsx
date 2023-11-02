@@ -8,7 +8,7 @@ import { pageSizeShop } from "defaultConstants";
 import ProductList from "./ProductList/ProductList";
 import Breadcrumb, { BreadcrumbItem } from "components/Common/Breadcrumb";
 import useFetchAll from "hooks/useFetchAll";
-import CategoryWithSubs from "models/CategoryWithSubs";
+import CategoryDto from "models/CategoryDto";
 import Product from "models/Product";
 import ProductDidYouMean from "models/ProductDidYouMean";
 
@@ -31,7 +31,7 @@ export default function Shop() {
     data: categories,
     isLoading: categoriesLoading,
     isError: categoriesError,
-  } = useFetchAll<CategoryWithSubs>(new UrlBuilder().categories().url);
+  } = useFetchAll<CategoryDto>(new UrlBuilder().categories().url);
 
   const { state } = useLocation(); //in place of props, actual props cant be used for this due to being navigated to
   useEffect(() => {
