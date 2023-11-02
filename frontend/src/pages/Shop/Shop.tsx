@@ -46,7 +46,7 @@ export default function Shop() {
     return <div>Loading data...</div>;
   }
   if (isError || categoriesError) {
-    return <div>Error while fetching data...</div>;
+    return <div>Error while fetching data...wtf?</div>;
   }
 
   function getBreadCrumbItems(): BreadcrumbItem[] {
@@ -80,13 +80,13 @@ export default function Shop() {
   }
   return (
     <div>
-      {rawData?.approximation && data.content.length !== 0 ? (
+      {rawData?.didYouMeanQuery ? (
         <aside className="w-full bg-lightgrey-100">
           <Container type="small" className="py-5">
             <div>
               <span className="text-lg opacity-50">Did you mean?</span>
               <span className="ml-6 text-purple text-lg">
-                {data.content[0].name}
+                {rawData.didYouMeanQuery}
               </span>
             </div>
           </Container>
@@ -103,11 +103,23 @@ export default function Shop() {
           />
         </aside>
         <div className="flex-grow">
-          <ProductList
-            type="grid"
-            items={data}
-            handleNextPage={() => setPage(page + 1)}
-          />
+          {data.content.length === 0 ? (
+            <div className="flex flex-col gap-8">
+              <div className="text-center">No matching products found...</div>
+              <div className="text-center text-xl">
+                Check out some of our products in the{" "}
+                <span className="text-purple">categories list</span> on the side
+                or try <span className="text-purple">searching</span> for your
+                favorite products.
+              </div>
+            </div>
+          ) : (
+            <ProductList
+              type="grid"
+              items={data}
+              handleNextPage={() => setPage(page + 1)}
+            />
+          )}
         </div>
       </Container>
     </div>

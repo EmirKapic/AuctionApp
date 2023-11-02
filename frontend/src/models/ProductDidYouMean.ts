@@ -3,7 +3,7 @@ import Product from "./Product";
 
 type ProductDidYouMean = {
   products: Page<Product>;
-  approximation: boolean;
+  didYouMeanQuery: string;
 };
 
 export default ProductDidYouMean;
