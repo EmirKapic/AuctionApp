@@ -9,13 +9,13 @@ export default function Footer() {
         <nav>
           <ul className="flex flex-col gap-3 opacity-80">
             <li>
-              <Link to="/about">About us</Link>
+              <Link to="/shop/about">About us</Link>
             </li>
             <li>
-              <Link to="/terms">Terms and conditions</Link>
+              <Link to="/shop/terms">Terms and conditions</Link>
             </li>
             <li>
-              <Link to="/privacy">Privacy policy</Link>
+              <Link to="/shop/privacy">Privacy policy</Link>
             </li>
           </ul>
         </nav>

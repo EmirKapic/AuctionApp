@@ -4,7 +4,7 @@ import Product from "models/Product";
 import UrlBuilder from "services/UrlBuilder";
 import { useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
-import { fallbackImageUrl } from "constants";
+import { fallbackImageUrl } from "defaultConstants";
 
 export default function HeroProduct() {
   const navigate = useNavigate();
@@ -40,8 +40,8 @@ export default function HeroProduct() {
         <p className="pb-16">{data.description}</p>
         <Button
           type="primary"
-          onClick={() => navigate(`/products/${data.id}`)}
-          className="px-9 py-2 hidden"
+          onClick={() => navigate(`/shop/products/${data.id}`)}
+          className="px-9 py-2"
         >
           <span>Bid now</span>
           <Icon name="chevronRight" />

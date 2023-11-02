@@ -1,9 +1,33 @@
 import Container from "components/Common/Container";
-import { Link, useLocation } from "react-router-dom";
+import { FormEvent, ReactNode, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
 
 export default function LowerNavbar() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [searchText, setSearchText] = useState("");
+
+  const pathPrefix = pathname === "/" ? "/" : pathname.split("/")[1];
+
+  function handleSearch(e: FormEvent): void {
+    e.preventDefault();
+    if (!searchText) return;
+    navigate(`/shop?name=${searchText}`, { state: { pageReset: true } });
+  }
+
+  function renderNavLink(title: string, to: string, path: string): ReactNode {
+    return (
+      <li className="cursor-pointer" key={to}>
+        <Link
+          className={path === pathPrefix ? "text-purple font-bold" : ""}
+          to={to}
+        >
+          {title}
+        </Link>
+      </li>
+    );
+  }
 
   return (
     <section>
@@ -21,31 +45,30 @@ export default function LowerNavbar() {
         </section>
 
         <section className="flex w-full justify-end items-center gap-10">
-          <section className="max-w-[60%] flex-grow relative invisible">
+          <form
+            className="max-w-[60%] flex-grow relative"
+            onSubmit={handleSearch}
+          >
             <input
               type="text"
               role="search"
               placeholder="Try enter: Shoes"
               className="outline outline-gray-200 w-full py-4 indent-4 shadow-lightgrey"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
-            <div className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer">
+            <button
+              className="absolute top-1/2 right-4 -translate-y-1/2"
+              type="submit"
+            >
               <Icon name="magnify" />
-            </div>
-          </section>
+            </button>
+          </form>
 
           <nav>
             <ul className="flex gap-5 uppercase">
-              <li className="cursor-pointer">
-                <Link
-                  className={pathname === "/" ? "text-purple font-bold" : ""}
-                  to={"/"}
-                >
-                  Home
-                </Link>
-              </li>
-              <li className="cursor-pointer">
-                <a className={"invisible "}>Shop</a>
-              </li>
+              {renderNavLink("Home", "/", "/")}
+              {renderNavLink("Shop", "/shop", "shop")}
               <li className="cursor-pointer">
                 <a className={"invisible "}>My account</a>
               </li>

@@ -19,7 +19,7 @@ export default function UpperNavbar() {
             </a>
           </ul>
         </nav>
-        <p className="text-white">Hi, John Doe</p>
+        <p className="text-white hidden">Hi, John Doe</p>
       </Container>
     </section>
   );

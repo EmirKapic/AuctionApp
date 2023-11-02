@@ -2,7 +2,7 @@ import ProductGrid from "components/Common/ProductGrid";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
-import { defaultPageSize } from "constants";
+import { defaultPageSize, maxPagesSpecialOffers } from "defaultConstants";
 import Product from "models/Product";
 import Container from "components/Common/Container";
 
@@ -77,9 +77,17 @@ export default function SpecialOffers() {
       document.documentElement.scrollHeight - 10 <=
       Math.floor(window.scrollY + window.innerHeight)
     ) {
-      if (selectedTab === 1 && !newProducts.last) {
+      if (
+        selectedTab === 1 &&
+        !newProducts.last &&
+        pageRecent < maxPagesSpecialOffers
+      ) {
         setPageRecent(pageRecent + 1);
-      } else if (selectedTab === 2 && !lastChanceProducts.last)
+      } else if (
+        selectedTab === 2 &&
+        !lastChanceProducts.last &&
+        pageExpiring < maxPagesSpecialOffers
+      )
         setPageExpiring(pageExpiring + 1);
     }
 

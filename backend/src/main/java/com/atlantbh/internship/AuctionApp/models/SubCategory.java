@@ -18,4 +18,6 @@ public class SubCategory {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    private long productCount;
+
 }

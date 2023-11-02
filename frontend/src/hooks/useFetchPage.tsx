@@ -1,19 +1,24 @@
 import Page from "models/Page";
 import { useEffect, useState } from "react";
+import buildQueryParams, { QueryParameter } from "services/QueryParamsBuilder";
 
 function buildFullUrl(
   base: string,
   pageNumber: number,
   pageSize: number,
   sort?: Sort,
+  queryParams?: URLSearchParams,
 ): string {
-  const searchParams = new URLSearchParams();
-  searchParams.append("page", pageNumber.toString());
-  searchParams.append("size", pageSize.toString());
+  let url = base + "?";
+  url += queryParams ? `${queryParams.toString()}&` : "";
+  const params: QueryParameter[] = [
+    { key: "page", value: pageNumber.toString() },
+    { key: "size", value: pageSize.toString() },
+  ];
   if (sort) {
-    searchParams.append("sort", `${sort.name},${sort.order}`);
+    params.push({ key: "sort", value: `${sort.name},${sort.order}` });
   }
-  return base + "?" + searchParams.toString();
+  return url + buildQueryParams(params);
 }
 
 type SortOrder = "asc" | "desc";
@@ -28,6 +33,7 @@ export default function useFetchPage<T>(
   pageNumber: number,
   pageSize: number,
   sort?: Sort,
+  queryParams?: URLSearchParams,
 ) {
   const [data, setData] = useState<Page<T>>({ content: [], last: false });
   const [isLoading, setIsLoading] = useState(true);
@@ -35,18 +41,26 @@ export default function useFetchPage<T>(
 
   useEffect(() => {
     setIsLoading(true);
-    const completeUrl = buildFullUrl(url, pageNumber, pageSize, sort);
+    const completeUrl = buildFullUrl(
+      url,
+      pageNumber,
+      pageSize,
+      sort,
+      queryParams,
+    );
     const fetchData = async () => {
       try {
         const res = await fetch(completeUrl);
         const newData: Page<T> = await res.json();
         if (!res.ok) {
           setIsError(true);
-        } else {
+        } else if (pageNumber !== 0) {
           setData({
             ...newData,
             content: [...data.content, ...newData.content],
           });
+        } else {
+          setData({ ...newData });
         }
       } catch (error) {
         setIsError(true);
@@ -55,7 +69,7 @@ export default function useFetchPage<T>(
       }
     };
     fetchData();
-  }, [pageNumber, pageSize, url]);
+  }, [pageNumber, pageSize, url, queryParams]);
 
   return { data, isLoading, isError };
 }

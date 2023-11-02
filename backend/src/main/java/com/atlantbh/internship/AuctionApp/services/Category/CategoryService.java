@@ -1,9 +1,7 @@
 package com.atlantbh.internship.AuctionApp.services.Category;
 
-import com.atlantbh.internship.AuctionApp.models.Category;
-
-import java.util.List;
+import com.atlantbh.internship.AuctionApp.dtos.CategoryDto;
 
 public interface CategoryService {
-    Iterable<Category> getAll();
+    Iterable<CategoryDto> getAll();
 }

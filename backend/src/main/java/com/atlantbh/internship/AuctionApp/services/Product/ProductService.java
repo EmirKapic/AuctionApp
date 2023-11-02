@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
-    Page<Product> getAllActive(Pageable pageable);
+    Page<Product> getAllActive(Pageable pageable, ProductParameters params);
 
     Product getRandom();
 
