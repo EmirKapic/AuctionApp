@@ -77,7 +77,6 @@ export default function Shop() {
       return [];
     }
   }
-  console.log(rawData);
   return (
     <div>
       {rawData?.approximation && data.content.length !== 0 ? (
