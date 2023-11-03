@@ -1,8 +1,12 @@
 import Button from "components/Common/Button";
 import ProductGrid from "components/Common/ProductGrid";
-import Page from "models/Page";
+import { pageSizeShop } from "defaultConstants";
+import useFetchPage from "hooks/useFetchPage";
 import Product from "models/Product";
-import { MouseEventHandler } from "react";
+import ProductDidYouMean from "models/ProductDidYouMean";
+import { useEffect, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import UrlBuilder from "services/UrlBuilder";
 
 type ProductListType = "grid" | "list";
 
@@ -12,27 +16,73 @@ const productListClassName: Record<ProductListType, string> = {
 };
 
 export interface ProductListProps {
-  items: Page<Product>;
   type: ProductListType;
-  handleNextPage: MouseEventHandler<HTMLButtonElement>;
+  setDidYouMeanQuery: (didYouMean?: string) => void;
 }
 
 export default function ProductList(props: ProductListProps) {
+  const [page, setPage] = useState(0);
+  const [queryParams] = useSearchParams();
+  const { data, isLoading, isError, rawData } = useFetchPage<
+    Product,
+    ProductDidYouMean
+  >(
+    new UrlBuilder().products().search().url,
+    page,
+    pageSizeShop,
+    undefined,
+    queryParams,
+    ["products"],
+  );
+
+  const { state } = useLocation(); //in place of props, actual props cant be used for this due to being navigated to
+  useEffect(() => {
+    if (state && state.pageReset) {
+      //this is to allow resetting when search input is used
+      setPage(0);
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      props.setDidYouMeanQuery(rawData?.didYouMeanQuery);
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <div>Loading data...</div>;
+  }
+  if (isError) {
+    return <div>Error while fetching data...</div>;
+  }
   return (
     <div className="pb-4">
-      <div>
-        <ProductGrid
-          itemsClassName={productListClassName[props.type]}
-          imageClassName="w-full h-96"
-          items={props.items.content}
-        />
-      </div>
-      {!props.items.last && (
+      {data.content.length !== 0 ? (
+        <div>
+          <ProductGrid
+            itemsClassName={productListClassName[props.type]}
+            imageClassName="w-full h-96"
+            items={data.content}
+          />
+        </div>
+      ) : (
+        <div className="flex flex-col gap-8">
+          <div className="text-center">No matching products found...</div>
+          <div className="text-center text-xl">
+            Check out some of our products in the{" "}
+            <span className="text-purple">categories list</span> on the side or
+            try <span className="text-purple">searching</span> for your favorite
+            products.
+          </div>
+        </div>
+      )}
+
+      {!data.last && (
         <div className="pt-10 pb-4">
           <Button
             type="primary-filled"
             className="mx-auto px-16 py-4"
-            onClick={props.handleNextPage}
+            onClick={() => setPage(page + 1)}
           >
             Explore more
           </Button>
