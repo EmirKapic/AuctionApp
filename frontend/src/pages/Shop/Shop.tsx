@@ -46,7 +46,7 @@ export default function Shop() {
     return <div>Loading data...</div>;
   }
   if (isError || categoriesError) {
-    return <div>Error while fetching data...wtf?</div>;
+    return <div>Error while fetching data...</div>;
   }
 
   function getBreadCrumbItems(): BreadcrumbItem[] {
