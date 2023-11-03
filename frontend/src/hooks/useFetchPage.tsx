@@ -28,14 +28,16 @@ export type Sort = {
   order: SortOrder;
 };
 
-export default function useFetchPage<T>(
+export default function useFetchPage<T, R = T>(
   url: string,
   pageNumber: number,
   pageSize: number,
   sort?: Sort,
   queryParams?: URLSearchParams,
+  pathToData: string[] = [],
 ) {
   const [data, setData] = useState<Page<T>>({ content: [], last: false });
+  const [rawData, setRawData] = useState<R>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -51,16 +53,21 @@ export default function useFetchPage<T>(
     const fetchData = async () => {
       try {
         const res = await fetch(completeUrl);
-        const newData: Page<T> = await res.json();
+        let newDataJson = await res.json();
+        setRawData(newDataJson);
+
+        for (const property of pathToData) {
+          newDataJson = newDataJson[property];
+        }
         if (!res.ok) {
           setIsError(true);
         } else if (pageNumber !== 0) {
           setData({
-            ...newData,
-            content: [...data.content, ...newData.content],
+            ...newDataJson,
+            content: [...data.content, ...newDataJson.content],
           });
         } else {
-          setData({ ...newData });
+          setData({ ...newDataJson });
         }
       } catch (error) {
         setIsError(true);
@@ -68,8 +75,9 @@ export default function useFetchPage<T>(
         setIsLoading(false);
       }
     };
+
     fetchData();
   }, [pageNumber, pageSize, url, queryParams]);
 
-  return { data, isLoading, isError };
+  return { data, isLoading, isError, rawData };
 }

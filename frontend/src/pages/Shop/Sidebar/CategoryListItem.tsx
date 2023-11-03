@@ -1,5 +1,5 @@
 import CategoryDto from "models/CategoryDto";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import buildQueryParams from "services/QueryParamsBuilder";
 import Icon from "svgs/Icon";
 
@@ -10,6 +10,7 @@ export interface CategoryListItemProps {
 
 export default function CategoryListItem(props: CategoryListItemProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   function handleSelect(categoryId: string, subcategoryId?: string): void {
     const queryParams = buildQueryParams([
@@ -22,10 +23,18 @@ export default function CategoryListItem(props: CategoryListItemProps) {
       },
     });
   }
+  const selectedSubcategoryId = parseInt(
+    searchParams.get("subcategoryId") || "-1",
+  );
 
   const subCategories = props.category.subCategories.map((subCategory) => (
     <li
-      className="text-lightgrey-200 list-none py-1 cursor-pointer"
+      className={
+        "text-lightgrey-200 list-none py-1 cursor-pointer" +
+        (selectedSubcategoryId && selectedSubcategoryId === subCategory.id
+          ? " text-purple"
+          : "")
+      }
       key={subCategory.id}
       onClick={() =>
         handleSelect(props.category.id.toString(), subCategory.id.toString())

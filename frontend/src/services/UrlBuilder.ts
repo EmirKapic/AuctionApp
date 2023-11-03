@@ -20,4 +20,8 @@ export default class UrlBuilder {
     this._url += `/${id.toFixed(0)}`;
     return this;
   }
+  public search(): UrlBuilder {
+    this._url += "/search";
+    return this;
+  }
 }

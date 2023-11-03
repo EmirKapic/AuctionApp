@@ -1,6 +1,5 @@
 package com.atlantbh.internship.AuctionApp.controllers.Categories;
 
-
 import com.atlantbh.internship.AuctionApp.dtos.CategoryDto;
 import com.atlantbh.internship.AuctionApp.services.Category.CategoryService;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public Iterable<CategoryDto> getAll(){
+    public Iterable<CategoryDto> getAll() {
         return categoryService.getAll();
     }
 }
