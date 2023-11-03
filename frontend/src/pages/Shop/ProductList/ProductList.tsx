@@ -35,8 +35,6 @@ export default function ProductList(props: ProductListProps) {
     ["products"],
   );
 
-  useEffect(() => {});
-
   useEffect(() => {
     setPage(0);
   }, [queryParams]);
