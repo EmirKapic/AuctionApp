@@ -62,10 +62,12 @@ export default function useFetchPage<T, R = T>(
         if (!res.ok) {
           setIsError(true);
         } else if (pageNumber !== 0) {
-          setData({
-            ...newDataJson,
-            content: [...data.content, ...newDataJson.content],
-          });
+          if (!newDataJson.last) {
+            setData({
+              ...newDataJson,
+              content: [...data.content, ...newDataJson.content],
+            });
+          }
         } else {
           setData({ ...newDataJson });
         }
