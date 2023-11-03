@@ -35,19 +35,17 @@ export default function ProductList(props: ProductListProps) {
     ["products"],
   );
 
-  const { state } = useLocation(); //in place of props, actual props cant be used for this due to being navigated to
+  useEffect(() => {});
+
   useEffect(() => {
-    if (state && state.pageReset) {
-      //this is to allow resetting when search input is used
-      setPage(0);
-    }
-  }, [state]);
+    setPage(0);
+  }, [queryParams]);
 
   useEffect(() => {
     if (!isLoading) {
       props.setDidYouMeanQuery(rawData?.didYouMeanQuery);
     }
-  }, [data]);
+  }, [data, isLoading]);
 
   if (isLoading) {
     return <div>Loading data...</div>;

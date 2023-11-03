@@ -1,6 +1,5 @@
 import CategoryDto from "models/CategoryDto";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import buildQueryParams from "services/QueryParamsBuilder";
 import Icon from "svgs/Icon";
 
 export interface CategoryListItemProps {
@@ -9,19 +8,15 @@ export interface CategoryListItemProps {
 }
 
 export default function CategoryListItem(props: CategoryListItemProps) {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   function handleSelect(categoryId: string, subcategoryId?: string): void {
-    const queryParams = buildQueryParams([
-      { key: "categoryId", value: categoryId },
-      { key: "subcategoryId", value: subcategoryId },
-    ]);
-    navigate(`/shop?${queryParams}`, {
-      state: {
-        pageReset: true,
-      },
-    });
+    const queryParams = new URLSearchParams();
+    queryParams.append("categoryId", categoryId);
+    if (subcategoryId) {
+      queryParams.append("subcategoryId", subcategoryId);
+    }
+    setSearchParams(queryParams);
   }
   const selectedSubcategoryId = parseInt(
     searchParams.get("subcategoryId") || "-1",
