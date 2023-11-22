@@ -13,7 +13,7 @@ export default function LowerNavbar() {
   function handleSearch(e: FormEvent): void {
     e.preventDefault();
     if (!searchText) return;
-    navigate(`/shop?name=${searchText}`, { state: { pageReset: true } });
+    navigate(`/shop?name=${searchText}`);
   }
 
   function renderNavLink(title: string, to: string, path: string): ReactNode {
