@@ -43,7 +43,7 @@ public class JwtServiceImpl implements JwtService{
     @Override
     public String extractToken(String bearerToken) {
         if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX))
-            return bearerToken.substring(TOKEN_PREFIX.length());
+            return bearerToken.substring(TOKEN_PREFIX.length()).trim();
         return null;
     }
 
