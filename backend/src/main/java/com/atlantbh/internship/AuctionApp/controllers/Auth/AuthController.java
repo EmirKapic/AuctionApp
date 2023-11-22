@@ -51,6 +51,7 @@ public class AuthController {
         user.setPassword(request.password());
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
+        user.setRole("user");
         if (registerService.registerUser(user)){
             String token = jwtService.createToken(user);
             return ResponseEntity.ok(new RegisterResponse(user.getEmail(), token));
