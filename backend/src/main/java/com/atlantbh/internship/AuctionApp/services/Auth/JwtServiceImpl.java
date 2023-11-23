@@ -10,20 +10,22 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 
 @Service
 public class JwtServiceImpl implements JwtService{
 
-    private final String SECRET_KEY = System.getenv("JWT_KEY");
-    private final String TOKEN_PREFIX = "Bearer";
-    private final long TOKEN_VALIDITY_TIME = 30*60*1000; //30minutes in ms
+    private final static String SECRET_KEY = System.getenv("JWT_KEY");
+    private final static String TOKEN_PREFIX = "Bearer";
+    private final static Duration TOKEN_VALIDITY_TIME = Duration.ofMinutes(30);
     @Override
     public String createToken(User user) {
         Claims claims = Jwts.claims().subject(user.getEmail()).build();
         return Jwts.builder()
                 .claims(claims)
-                .expiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY_TIME))
+                .expiration(Date.from(Instant.now().plus(TOKEN_VALIDITY_TIME)))
                 .signWith(getSignInKey())
                 .compact();
     }
