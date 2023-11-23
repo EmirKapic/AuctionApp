@@ -5,7 +5,7 @@ import useFetchPage from "hooks/useFetchPage";
 import Product from "models/Product";
 import ProductDidYouMean from "models/ProductDidYouMean";
 import { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 
 type ProductListType = "grid" | "list";
