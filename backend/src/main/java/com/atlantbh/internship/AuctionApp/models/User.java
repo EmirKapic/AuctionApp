@@ -1,7 +1,6 @@
 package com.atlantbh.internship.AuctionApp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -23,9 +22,7 @@ public class User {
     private String lastName;
 
 
-    @JsonIgnore
-    @Column(unique = true)
-    @Nonnull
+    @Column(unique = true, nullable = false)
     private String email;
     @JsonIgnore
     private String password;
@@ -40,9 +37,17 @@ public class User {
     private List<Product> wishlist = new ArrayList<>();
 
     @Nullable
-    @JsonIgnore
     private String phoneNumber;
 
-    @JsonIgnore
     private String role;
+
+    public User(String email){
+        this.email = email;
+    }
+    public User(String email, String password, String firstName, String lastName){
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

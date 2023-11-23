@@ -1,14 +1,16 @@
 package com.atlantbh.internship.AuctionApp.controllers.Auth;
 
+import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.login.LoginRequest;
 import com.atlantbh.internship.AuctionApp.dtos.login.LoginResponse;
-import com.atlantbh.internship.AuctionApp.dtos.register.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.register.RegisterRequest;
 import com.atlantbh.internship.AuctionApp.dtos.register.RegisterResponse;
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.services.Auth.JwtService;
 import com.atlantbh.internship.AuctionApp.services.Auth.RegisterService;
+import com.atlantbh.internship.AuctionApp.services.User.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,31 +28,25 @@ public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RegisterService registerService;
+    private final UserService userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequest request){
         try{
             Authentication authentication =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
-            String email = authentication.getName();
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword("");
+            User user = userDetailsService.getUser(authentication.getName());
             String token = jwtService.createToken(user);
-            return ResponseEntity.ok(new LoginResponse(email, token));
+            return ResponseEntity.ok(new LoginResponse(user, token));
         }
         catch(AuthenticationException exception){
-            return ResponseEntity.badRequest().body(new ErrorResponse("Could not log in"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Could not log in"));
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequest request){
-        User user = new User();
-        user.setEmail(request.email());
-        user.setPassword(request.password());
-        user.setFirstName(request.firstName());
-        user.setLastName(request.lastName());
+        User user = new User(request.email(), request.password(), request.firstName(), request.lastName());
         user.setRole("user");
         if (registerService.registerUser(user)){
             String token = jwtService.createToken(user);
