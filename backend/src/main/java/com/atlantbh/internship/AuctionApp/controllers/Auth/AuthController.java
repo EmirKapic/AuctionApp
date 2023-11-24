@@ -4,7 +4,6 @@ import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.login.LoginRequest;
 import com.atlantbh.internship.AuctionApp.dtos.login.LoginResponse;
 import com.atlantbh.internship.AuctionApp.dtos.register.RegisterRequest;
-import com.atlantbh.internship.AuctionApp.dtos.register.RegisterResponse;
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.services.Auth.JwtService;
 import com.atlantbh.internship.AuctionApp.services.Auth.RegisterService;
@@ -47,9 +46,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequest request){
         User user = new User(request.email(), request.password(), request.firstName(), request.lastName());
-        if (registerService.registerUser(user)){
+        User newUser = registerService.registerUser(user);
+        if (newUser != null){
             String token = jwtService.createToken(user);
-            return ResponseEntity.ok(new RegisterResponse(user.getEmail(), token));
+            return ResponseEntity.ok(new LoginResponse(newUser, token));
         }
         else{
             return ResponseEntity.badRequest().body(new ErrorResponse("Could not create new user account"));

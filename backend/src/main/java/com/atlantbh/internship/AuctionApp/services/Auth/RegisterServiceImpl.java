@@ -14,12 +14,12 @@ public class RegisterServiceImpl implements RegisterService{
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public boolean registerUser(User user) {
+    public User registerUser(User user) {
         if (!EmailValidator.validate(user.getEmail()) || userRepository.existsUserByEmail(user.getEmail()))
-            return false;
+            return null;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("user");
         userRepository.save(user);
-        return true;
+        return user;
     }
 }
