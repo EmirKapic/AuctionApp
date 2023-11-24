@@ -1,7 +1,7 @@
 package com.atlantbh.internship.AuctionApp.config;
 
 
-import com.atlantbh.internship.AuctionApp.services.Auth.AuctionUserDetailsService;
+import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

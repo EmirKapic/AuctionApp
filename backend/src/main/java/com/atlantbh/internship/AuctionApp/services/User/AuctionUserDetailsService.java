@@ -1,4 +1,4 @@
-package com.atlantbh.internship.AuctionApp.services.Auth;
+package com.atlantbh.internship.AuctionApp.services.User;
 
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.repositories.UserRepository;

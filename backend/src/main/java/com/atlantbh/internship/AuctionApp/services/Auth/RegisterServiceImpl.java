@@ -4,7 +4,6 @@ import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.repositories.UserRepository;
 import com.atlantbh.internship.AuctionApp.services.Utility.EmailValidator;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +15,11 @@ public class RegisterServiceImpl implements RegisterService{
 
     @Override
     public boolean registerUser(User user) {
-        if (!EmailValidator.validate(user.getEmail()))
+        if (!EmailValidator.validate(user.getEmail()) || userRepository.existsUserByEmail(user.getEmail()))
             return false;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("user");
-        try{
-            userRepository.save(user);
-            return true;
-        }
-        catch(DataIntegrityViolationException exception){
-            System.out.println("email already exists");
-            return false;
-        }
+        userRepository.save(user);
+        return true;
     }
-
 }
