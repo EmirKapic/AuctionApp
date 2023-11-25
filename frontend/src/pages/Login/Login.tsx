@@ -1,4 +1,5 @@
 import Breadcrumb from "components/Common/Breadcrumb";
+import Button from "components/Common/Button";
 import Form from "components/Common/Form";
 import Input from "components/Common/Input";
 import User from "models/User";
@@ -27,6 +28,13 @@ export default function Login(props: LoginProps) {
           setValue={setPassword}
           label="Password"
         />
+        <div className="flex gap-3">
+          <input type="checkbox" />
+          <label>Remember me</label>
+        </div>
+        <Button type="primary-filled" className="py-3 shadow-lightgrey">
+          Login
+        </Button>
       </Form>
     </div>
   );

@@ -18,6 +18,7 @@ export default function Form(props: PropsWithChildren<FormProps>) {
       <form
         onSubmit={props.onSubmit}
         className="flex flex-col gap-10 py-8 px-12"
+        noValidate
       >
         {props.children}
       </form>

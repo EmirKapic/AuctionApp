@@ -13,6 +13,7 @@ import User from "models/User";
 import { useState } from "react";
 import { UserContext } from "contexts/UserContext";
 import Login from "pages/Login/Login";
+import Register from "pages/Register/Register";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -31,6 +32,10 @@ function App() {
           <Route
             path="/account/login"
             element={<Login handleLogin={setCurrentUser} />}
+          />
+          <Route
+            path="/account/register"
+            element={<Register handleRegister={() => {}} />}
           />
         </Routes>
         <div className="absolute bottom-0 w-full">
