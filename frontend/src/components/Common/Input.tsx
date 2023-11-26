@@ -12,7 +12,6 @@ export interface InputProps {
   placeholder?: string;
   type?: HTMLInputTypeAttribute;
   label?: string;
-  warningMessage?: string;
 }
 
 /*
