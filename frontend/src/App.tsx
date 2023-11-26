@@ -17,6 +17,7 @@ import Register from "pages/Register/Register";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
+  function handleLogin(email: string, password: string) {}
   return (
     <main className="relative min-h-screen pb-72">
       <UserContext.Provider value={currentUser}>
@@ -31,7 +32,7 @@ function App() {
           <Route path="/shop/products/:id" element={<Product />} />
           <Route
             path="/account/login"
-            element={<Login handleLogin={setCurrentUser} />}
+            element={<Login handleLogin={handleLogin} />}
           />
           <Route
             path="/account/register"

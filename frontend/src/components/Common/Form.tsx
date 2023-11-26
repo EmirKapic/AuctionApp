@@ -1,9 +1,9 @@
-import { FormEvent, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import Container from "./Container";
 
 export interface FormProps {
   title: string;
-  onSubmit: (e: FormEvent) => void;
+  onSubmit: (e?: React.BaseSyntheticEvent | undefined) => Promise<void>;
 }
 
 export default function Form(props: PropsWithChildren<FormProps>) {
