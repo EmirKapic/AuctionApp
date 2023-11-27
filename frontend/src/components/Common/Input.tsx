@@ -32,6 +32,7 @@ export default function Input(props: InputProps) {
   } = useFormContext();
   return (
     <div className="flex flex-col gap-2 text-grey_ tracking-wide">
+      {/* maybe without the conditional render?*/}
       {props.label && (
         <label className="text-lg" htmlFor={props.id}>
           {props.label}
@@ -41,9 +42,7 @@ export default function Input(props: InputProps) {
         id={props.id}
         placeholder={props.placeholder}
         type={props.type}
-        className={
-          "border border-silver border-opacity-50 bg-lightgrey-50 indent-3 py-3"
-        }
+        className="border border-silver border-opacity-50 bg-lightgrey-50 indent-3 py-3"
         {...register(props.id, props.validationOptions)}
       ></input>
       {isInputInvalid(errors, props.id) && (

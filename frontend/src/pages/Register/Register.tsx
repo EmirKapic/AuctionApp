@@ -2,12 +2,7 @@ import Breadcrumb from "components/Common/Breadcrumb";
 import Button from "components/Common/Button";
 import Form from "components/Common/Form";
 import Input from "components/Common/Input";
-import {
-  FieldValues,
-  FormProvider,
-  RegisterOptions,
-  useForm,
-} from "react-hook-form";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
   emailValidationOptions,
