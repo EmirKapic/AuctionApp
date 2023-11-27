@@ -20,7 +20,7 @@ public class RegisterServiceImpl implements RegisterService{
         if (!EmailValidator.validate(user.getEmail()) || userRepository.existsUserByEmail(user.getEmail()))
             return Optional.empty();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("user");
+        user.setRole("ROLE_USER");
         userRepository.save(user);
         return Optional.of(user);
     }

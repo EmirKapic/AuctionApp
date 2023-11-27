@@ -7,7 +7,7 @@ import com.atlantbh.internship.AuctionApp.dtos.register.RegisterRequest;
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.services.Auth.JwtService;
 import com.atlantbh.internship.AuctionApp.services.Auth.RegisterService;
-import com.atlantbh.internship.AuctionApp.services.User.UserService;
+import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +29,14 @@ public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RegisterService registerService;
-    private final UserService userDetailsService;
+    private final AuctionUserDetailsService userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequest request){
         try{
             Authentication authentication =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
-            User user = userDetailsService.getUser(authentication.getName());
+            User user = userDetailsService.loadUserByUsername(authentication.getName());
             String token = jwtService.createToken(user);
             return ResponseEntity.ok(new LoginResponse(user, token));
         }
