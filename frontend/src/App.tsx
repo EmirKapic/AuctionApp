@@ -10,14 +10,26 @@ import LandingPage from "pages/LandingPage/LandingPage";
 import Product from "pages/Product/Product";
 import Shop from "pages/Shop/Shop";
 import User from "models/User";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserContext } from "contexts/UserContext";
 import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
-  function handleLogin(email: string, password: string) {}
+  function handleLogin(user: User, token: string) {
+    setCurrentUser(user);
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
+  useEffect(() => {
+    const userStringified = localStorage.getItem("user");
+    if (userStringified) {
+      setCurrentUser(JSON.parse(userStringified));
+    }
+  }, []);
+
   return (
     <main className="relative min-h-screen pb-72">
       <UserContext.Provider value={currentUser}>

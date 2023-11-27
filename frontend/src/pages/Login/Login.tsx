@@ -4,6 +4,7 @@ import Checkbox from "components/Common/Checkbox";
 import Form from "components/Common/Form";
 import Input from "components/Common/Input";
 import Category from "models/Category";
+import LoginResponse from "models/LoginResponse";
 import User from "models/User";
 import { useState } from "react";
 import {
@@ -23,21 +24,21 @@ const EMAIL_INPUT_ID = "emailInput";
 const PASSWORD_INPUT_ID = "passwordInput";
 
 export interface LoginProps {
-  handleLogin: (user: User) => void;
+  handleLogin: (user: User, token: string) => void;
 }
 
 export default function Login(props: LoginProps) {
   const methods = useForm();
   const [rememberMe, setRememberMe] = useState(false);
 
-  function resolveFetchData(data: FetchReturnType<User>): void {
+  function resolveFetchData(data: FetchReturnType<LoginResponse>): void {
     if (!data.success) {
       methods.setError(PASSWORD_INPUT_ID, {
         type: "custom",
         message: "Incorrect email or password",
       });
     } else {
-      props.handleLogin(data.data);
+      props.handleLogin(data.data.user, data.data.token);
     }
   }
 
@@ -51,7 +52,7 @@ export default function Login(props: LoginProps) {
       email: data[EMAIL_INPUT_ID],
       password: data[PASSWORD_INPUT_ID],
     };
-    fetchData<User>(url, {
+    fetchData<LoginResponse, LoginRequest>(url, {
       method: "POST",
       body: requestBody,
       headers: headers,
