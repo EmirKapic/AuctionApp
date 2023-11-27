@@ -12,7 +12,8 @@ export default function UpperNavbar() {
         <button
           className="text-white"
           onClick={() => {
-            localStorage.clear();
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
           }}
         >
           clear local storage

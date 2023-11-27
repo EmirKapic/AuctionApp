@@ -3,16 +3,12 @@ import Button from "components/Common/Button";
 import Checkbox from "components/Common/Checkbox";
 import Form from "components/Common/Form";
 import Input from "components/Common/Input";
-import Category from "models/Category";
+import LoggedIn from "components/Common/LoggedInError";
+import { UserContext } from "contexts/UserContext";
 import LoginResponse from "models/LoginResponse";
 import User from "models/User";
-import { useState } from "react";
-import {
-  FieldErrors,
-  FieldValues,
-  FormProvider,
-  useForm,
-} from "react-hook-form";
+import { useContext, useEffect, useState } from "react";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { FetchReturnType, fetchData } from "services/FetchData";
 import UrlBuilder from "services/UrlBuilder";
 import {
@@ -30,6 +26,7 @@ export interface LoginProps {
 export default function Login(props: LoginProps) {
   const methods = useForm();
   const [rememberMe, setRememberMe] = useState(false);
+  const userContext = useContext(UserContext);
 
   function resolveFetchData(data: FetchReturnType<LoginResponse>): void {
     if (!data.success) {
@@ -38,6 +35,11 @@ export default function Login(props: LoginProps) {
         message: "Incorrect email or password",
       });
     } else {
+      if (rememberMe) {
+        localStorage.setItem("rememberEmail", data.data.user.email);
+      } else {
+        localStorage.removeItem("rememberEmail");
+      }
       props.handleLogin(data.data.user, data.data.token);
     }
   }
@@ -57,6 +59,18 @@ export default function Login(props: LoginProps) {
       body: requestBody,
       headers: headers,
     }).then(resolveFetchData);
+  }
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberEmail");
+    if (rememberedEmail) {
+      methods.setValue(EMAIL_INPUT_ID, rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
+  if (userContext) {
+    return <LoggedIn />;
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, redirect, useNavigate } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
@@ -17,10 +17,12 @@ import Register from "pages/Register/Register";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
+  const navigate = useNavigate();
   function handleLogin(user: User, token: string) {
     setCurrentUser(user);
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
+    navigate("/");
   }
 
   useEffect(() => {
@@ -48,7 +50,7 @@ function App() {
           />
           <Route
             path="/account/register"
-            element={<Register handleRegister={() => {}} />}
+            element={<Register handleRegister={handleLogin} />}
           />
         </Routes>
         <div className="absolute bottom-0 w-full">

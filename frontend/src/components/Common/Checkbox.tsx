@@ -13,6 +13,7 @@ export default function Checkbox(props: CheckboxProps) {
         id={props.id}
         type="checkbox"
         onChange={(e) => props.onChange(e.target.checked)}
+        checked={props.checked}
       />
       <label htmlFor={props.id} className={props.labelClassName}>
         {[props.label]}

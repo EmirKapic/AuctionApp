@@ -32,4 +32,8 @@ export default class UrlBuilder {
     this._url += "/login";
     return this;
   }
+  public register(): UrlBuilder {
+    this._url += "/register";
+    return this;
+  }
 }
