@@ -2,19 +2,19 @@ import HttpMethod from "./HttpMethods";
 export type HttpHeader = {
   headerName: string;
 };
-export interface FetchOptions {
+export interface FetchOptions<T> {
   method?: HttpMethod;
-  body?: any;
+  body?: T;
   headers?: Headers;
   contentType?: string;
 }
 
 export type FetchReturnType<T> = { data: T; success: boolean };
 
-export async function fetchData<T>(
+export async function fetchData<R, B = any>(
   url: string,
-  options?: FetchOptions,
-): Promise<FetchReturnType<T>> {
+  options?: FetchOptions<B>,
+): Promise<FetchReturnType<R>> {
   const res = await fetch(url, {
     method: options?.method,
     headers: options?.headers,
