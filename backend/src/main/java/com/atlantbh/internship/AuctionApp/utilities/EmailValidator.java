@@ -1,4 +1,4 @@
-package com.atlantbh.internship.AuctionApp.services.Utility;
+package com.atlantbh.internship.AuctionApp.utilities;
 
 import java.util.regex.Pattern;
 

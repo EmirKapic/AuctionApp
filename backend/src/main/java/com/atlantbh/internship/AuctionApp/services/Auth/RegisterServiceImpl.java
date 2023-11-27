@@ -2,7 +2,7 @@ package com.atlantbh.internship.AuctionApp.services.Auth;
 
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.repositories.UserRepository;
-import com.atlantbh.internship.AuctionApp.services.Utility.EmailValidator;
+import com.atlantbh.internship.AuctionApp.utilities.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

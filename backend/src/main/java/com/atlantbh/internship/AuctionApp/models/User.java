@@ -3,6 +3,7 @@ package com.atlantbh.internship.AuctionApp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "AppUser") //not just "user" because it is reserved keyword
 public class User {
@@ -42,12 +44,9 @@ public class User {
     private String role;
 
     public User(String email){
-        this.email = email;
+        this(email, null, null, null);
     }
     public User(String email, String password, String firstName, String lastName){
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this(0, firstName, lastName, email, password,null, null, null);
     }
 }
