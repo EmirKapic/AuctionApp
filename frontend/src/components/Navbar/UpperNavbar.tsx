@@ -9,15 +9,6 @@ export default function UpperNavbar() {
   return (
     <section className="w-full py-2 bg-grey_">
       <Container className="flex justify-between items-center" type="large">
-        <button
-          className="text-white"
-          onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-          }}
-        >
-          clear local storage
-        </button>
         <nav>
           <ul className="flex items-center gap-4">
             <a href="https://bs-ba.facebook.com/Emir.Kapic02">

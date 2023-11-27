@@ -99,8 +99,8 @@ export default function Register(props: RegisterProps) {
             type="password"
             validationOptions={passwordValidationOptions()}
           />
-          <Button type="primary" className="py-3">
-            REGISTER
+          <Button type="primary" className="py-3 uppercase">
+            Register
           </Button>
           <div className="flex justify-center gap-3">
             <span className="text-lightgrey-200">Already have an account?</span>
