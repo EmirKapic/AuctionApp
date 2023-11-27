@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class RegisterServiceImpl implements RegisterService{
@@ -14,12 +16,12 @@ public class RegisterServiceImpl implements RegisterService{
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User registerUser(User user) {
+    public Optional<User> registerUser(User user) {
         if (!EmailValidator.validate(user.getEmail()) || userRepository.existsUserByEmail(user.getEmail()))
-            return null;
+            return Optional.empty();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("user");
         userRepository.save(user);
-        return user;
+        return Optional.of(user);
     }
 }

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
@@ -46,10 +48,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequest request){
         User user = new User(request.email(), request.password(), request.firstName(), request.lastName());
-        User newUser = registerService.registerUser(user);
-        if (newUser != null){
+        Optional<User> newUser = registerService.registerUser(user);
+        if (newUser.isPresent()){
             String token = jwtService.createToken(user);
-            return ResponseEntity.ok(new LoginResponse(newUser, token));
+            return ResponseEntity.ok(new LoginResponse(newUser.get(), token));
         }
         else{
             return ResponseEntity.badRequest().body(new ErrorResponse("Could not create new user account"));
