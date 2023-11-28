@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
 export interface TableProps {
-  headers?: ReactNode[];
-  content?: ReactNode[];
+  headers?: ReactNode;
+  content?: ReactNode;
   rowClassName?: string;
   headerClassName?: string;
 }
