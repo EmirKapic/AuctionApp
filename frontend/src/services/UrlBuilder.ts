@@ -1,3 +1,5 @@
+export type RelationshipType = "seller" | "bidder";
+
 export default class UrlBuilder {
   constructor(private _url: string = import.meta.env.VITE_BACKEND_URL) {}
 
@@ -34,6 +36,18 @@ export default class UrlBuilder {
   }
   public register(): UrlBuilder {
     this._url += "/register";
+    return this;
+  }
+  public bids(): UrlBuilder {
+    this._url += "/bids";
+    return this;
+  }
+  public relationship(rel: RelationshipType) {
+    this._url += `/${rel}`;
+    return this;
+  }
+  public user(): UrlBuilder {
+    this._url += "/user";
     return this;
   }
 }

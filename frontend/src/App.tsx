@@ -1,4 +1,4 @@
-import { Route, Routes, redirect, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { UserContext } from "contexts/UserContext";
 import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
+import UserProfile from "pages/UserProfile/UserProfile";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -52,6 +53,7 @@ function App() {
             path="/account/register"
             element={<Register handleRegister={handleLogin} />}
           />
+          <Route path="/account" element={<UserProfile />} />
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />
