@@ -15,4 +15,9 @@ public class BidServiceImpl implements BidService{
     public Page<Bid> getBidsByUser(long userId, Pageable pageable) {
         return bidRepository.findAllByBidderId(userId, pageable);
     }
+
+    @Override
+    public Page<Bid> getSoldByUser(long userId, Pageable pageable) {
+        return bidRepository.findAllByProduct_UserId(userId, pageable);
+    }
 }

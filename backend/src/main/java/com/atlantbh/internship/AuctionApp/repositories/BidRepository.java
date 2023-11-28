@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BidRepository extends JpaRepository<Bid, Long> {
     Page<Bid> findAllByBidderId(long bidderId, Pageable pageable);
+    Page<Bid> findAllByProduct_UserId(long sellerId, Pageable pageable);
 }

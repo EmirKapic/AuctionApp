@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface BidService {
     Page<Bid> getBidsByUser(long userId, Pageable pageable);
+
+    Page<Bid> getSoldByUser(long userId, Pageable pageable);
 }
