@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -16,10 +17,11 @@ import java.util.Date;
 
 @Service
 public class JwtServiceImpl implements JwtService{
-
-    private final static String SECRET_KEY = System.getenv("JWT_KEY");
     private final static String TOKEN_PREFIX = "Bearer";
-    private final static Duration TOKEN_VALIDITY_TIME = Duration.ofMinutes(30);
+    @Value("${config.secret-key}")
+    private String SECRET_KEY;
+    @Value("${config.token-validity-time}")
+    private Duration TOKEN_VALIDITY_TIME;
     @Override
     public String createToken(User user) {
         Claims claims = Jwts.claims().subject(user.getEmail()).build();

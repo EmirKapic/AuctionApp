@@ -1,5 +1,6 @@
-package com.atlantbh.internship.AuctionApp.services.Utility;
+package com.atlantbh.internship.AuctionApp.utilities;
 
+import com.atlantbh.internship.AuctionApp.utilities.EmailValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

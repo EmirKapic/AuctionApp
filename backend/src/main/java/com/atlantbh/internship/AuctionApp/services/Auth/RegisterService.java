@@ -2,6 +2,8 @@ package com.atlantbh.internship.AuctionApp.services.Auth;
 
 import com.atlantbh.internship.AuctionApp.models.User;
 
+import java.util.Optional;
+
 public interface RegisterService {
-    User registerUser(User user);
+    Optional<User> registerUser(User user);
 }

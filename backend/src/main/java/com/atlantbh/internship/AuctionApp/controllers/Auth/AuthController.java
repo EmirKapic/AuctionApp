@@ -7,7 +7,7 @@ import com.atlantbh.internship.AuctionApp.dtos.register.RegisterRequest;
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.services.Auth.JwtService;
 import com.atlantbh.internship.AuctionApp.services.Auth.RegisterService;
-import com.atlantbh.internship.AuctionApp.services.User.UserService;
+import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
@@ -27,14 +29,14 @@ public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RegisterService registerService;
-    private final UserService userDetailsService;
+    private final AuctionUserDetailsService userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequest request){
         try{
             Authentication authentication =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
-            User user = userDetailsService.getUser(authentication.getName());
+            User user = userDetailsService.loadUserByUsername(authentication.getName());
             String token = jwtService.createToken(user);
             return ResponseEntity.ok(new LoginResponse(user, token));
         }
@@ -46,10 +48,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequest request){
         User user = new User(request.email(), request.password(), request.firstName(), request.lastName());
-        User newUser = registerService.registerUser(user);
-        if (newUser != null){
+        Optional<User> newUser = registerService.registerUser(user);
+        if (newUser.isPresent()){
             String token = jwtService.createToken(user);
-            return ResponseEntity.ok(new LoginResponse(newUser, token));
+            return ResponseEntity.ok(new LoginResponse(newUser.get(), token));
         }
         else{
             return ResponseEntity.badRequest().body(new ErrorResponse("Could not create new user account"));
