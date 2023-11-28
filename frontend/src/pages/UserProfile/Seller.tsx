@@ -11,5 +11,11 @@ export default function Seller() {
     .user()
     .relationship("seller")
     .id(userContext?.id || -1).url;
-  return <BidTable fetchUrl={fetchUrl} emptyAlternative={<NotSelling />} />;
+  return (
+    <BidTable
+      fetchUrl={fetchUrl}
+      emptyAlternative={<NotSelling />}
+      activity="selling"
+    />
+  );
 }

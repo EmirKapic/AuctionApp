@@ -10,6 +10,7 @@ import DateUtility from "services/DateUtility";
 export interface BidTableProps {
   fetchUrl: string;
   emptyAlternative: ReactNode;
+  activity: "selling" | "buying";
 }
 
 export default function BidTable(props: BidTableProps) {
@@ -51,7 +52,12 @@ export default function BidTable(props: BidTableProps) {
       <td>
         {DateUtility.getDuration(new Date(bid.product.dateEnd), new Date())}
       </td>
-      <td>${bid.bid.toFixed(2)}</td>
+      <td>
+        $
+        {props.activity === "selling"
+          ? bid.product.startBid.toFixed(2)
+          : bid.bid.toFixed(2)}
+      </td>
       <td>{bid.product.numberOfBids}</td>
       <td>{bid.product.highestBid}</td>
       <td>
