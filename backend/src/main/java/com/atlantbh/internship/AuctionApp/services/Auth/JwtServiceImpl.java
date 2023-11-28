@@ -17,13 +17,11 @@ import java.util.Date;
 
 @Service
 public class JwtServiceImpl implements JwtService{
-
+    private final static String TOKEN_PREFIX = "Bearer";
     @Value("${config.secret-key}")
     private String SECRET_KEY;
     @Value("${config.token-validity-time}")
-    private long tokenValidityDuration;
-    private final static String TOKEN_PREFIX = "Bearer";
-    private final Duration TOKEN_VALIDITY_TIME = Duration.ofMinutes(tokenValidityDuration);
+    private Duration TOKEN_VALIDITY_TIME;
     @Override
     public String createToken(User user) {
         Claims claims = Jwts.claims().subject(user.getEmail()).build();

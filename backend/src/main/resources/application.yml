@@ -11,5 +11,5 @@ spring:
     driver-class-name: org.postgresql.Driver
 config:
   secret-key: ${JWT_KEY}
-  token-validity-time: 30
+  token-validity-time: PT30M
 
