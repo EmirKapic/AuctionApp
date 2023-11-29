@@ -68,7 +68,15 @@ export default function BidTable(props: BidTableProps) {
           : bid.bid.toFixed(2)}
       </td>
       <td>{bid.product.numberOfBids}</td>
-      <td>{`$${bid.product.highestBid?.toFixed(2)}` || "None"}</td>
+      <td
+        className={
+          bid.bid == bid.product.highestBid ? "text-green-700" : "text-blue-600"
+        }
+      >
+        {bid.product.highestBid
+          ? `$${bid.product.highestBid.toFixed(2)}`
+          : "None"}
+      </td>
       <td>
         <Button
           type="primary"
