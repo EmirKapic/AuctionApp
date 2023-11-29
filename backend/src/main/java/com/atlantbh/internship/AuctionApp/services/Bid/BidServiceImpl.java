@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 @AllArgsConstructor
 public class BidServiceImpl implements BidService{
@@ -17,7 +19,13 @@ public class BidServiceImpl implements BidService{
     }
 
     @Override
-    public Page<Bid> getSoldByUser(long userId, Pageable pageable) {
-        return bidRepository.findAllByProduct_UserId(userId, pageable);
+    public Page<Bid> getSoldByUser(long userId, Pageable pageable, boolean active) {
+        if (active){
+            return bidRepository.findAllByProduct_UserIdAndProduct_DateEndAfter(userId, pageable, Instant.now());
+        }
+        else{
+            return bidRepository.findAllByProduct_UserIdAndProduct_DateEndBefore(userId, pageable, Instant.now());
+        }
+
     }
 }
