@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class CategoryController {
     private CategoryService categoryService;
-
     @GetMapping
     public Iterable<CategoryDto> getAll() {
         return categoryService.getAll();
