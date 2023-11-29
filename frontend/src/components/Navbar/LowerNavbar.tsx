@@ -69,6 +69,7 @@ export default function LowerNavbar() {
             <ul className="flex gap-5 uppercase">
               {renderNavLink("Home", "/", "/")}
               {renderNavLink("Shop", "/shop", "shop")}
+              {renderNavLink("My Account", "/account", "account")}
               <li className="cursor-pointer">
                 <a className={"invisible "}>My account</a>
               </li>
