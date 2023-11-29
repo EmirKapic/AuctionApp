@@ -25,14 +25,15 @@ export default function BidTable(props: BidTableProps) {
   );
   const navigate = useNavigate();
   function handleScroll() {
-    if (isLoading || isError) return;
+    if (isLoading || isError || data.last) return;
     if (
       document.documentElement.scrollHeight - 10 <=
-        Math.floor(window.scrollY + window.innerHeight) &&
-      !data.last &&
-      page < data.totalPages
-    )
-      setPage(page + 1);
+      Math.floor(window.scrollY + window.innerHeight)
+    ) {
+      setTimeout(() => {
+        setPage(page + 1);
+      }, 200);
+    }
   }
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
