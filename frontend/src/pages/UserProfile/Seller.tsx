@@ -43,7 +43,7 @@ export default function Seller() {
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-end">
         <div className="flex">
           {renderTabButton("Active", activeTab === 0, () => setActiveTab(0))}
           {renderTabButton("Sold", activeTab === 1, () => setActiveTab(1))}
