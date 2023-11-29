@@ -47,7 +47,13 @@ export default function BidTable(props: BidTableProps) {
 
   const tableContent = data.content.map((bid) => (
     <tr className={rowClassName + "items-center"} key={bid.id}>
-      <td>img</td>
+      <td>
+        <img
+          src={bid.product.images[0].url}
+          alt="Product image"
+          className="w-24"
+        ></img>
+      </td>
       <td className="col-span-2">
         <div>{bid.product.name}</div>
         <div className="text-purple">#{bid.product.id}</div>
