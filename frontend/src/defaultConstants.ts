@@ -3,3 +3,4 @@ export const maxPagesSpecialOffers = 3;
 export const fallbackImageUrl =
   "https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg";
 export const pageSizeShop = 9;
+export const bidsPageSize = 10;

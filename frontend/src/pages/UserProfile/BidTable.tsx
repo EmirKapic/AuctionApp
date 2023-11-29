@@ -1,9 +1,9 @@
 import Button from "components/Common/Button";
 import Table from "components/Common/Table/Table";
-import { UserContext } from "contexts/UserContext";
+import { bidsPageSize } from "defaultConstants";
 import useFetchPage from "hooks/useFetchPage";
 import Bid from "models/Bid";
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DateUtility from "services/DateUtility";
 
@@ -19,16 +19,26 @@ export default function BidTable(props: BidTableProps) {
   const { data, isLoading, isError } = useFetchPage<Bid>(
     props.fetchUrl,
     page,
-    20,
+    bidsPageSize,
     undefined,
     props.fetchParams,
   );
   const navigate = useNavigate();
+  function handleScroll() {
+    if (isLoading || isError) return;
+    if (
+      document.documentElement.scrollHeight - 10 <=
+        Math.floor(window.scrollY + window.innerHeight) &&
+      !data.last &&
+      page < data.totalPages
+    )
+      setPage(page + 1);
+  }
+  useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+  });
   if (isError) {
     return <div>Error</div>;
-  }
-  if (isLoading) {
-    return <div>Loading</div>;
   }
   const rowClassName = "grid grid-cols-8 py-3 px-4 ";
   const headerNames = [
@@ -70,7 +80,9 @@ export default function BidTable(props: BidTableProps) {
       <td>{bid.product.numberOfBids}</td>
       <td
         className={
-          bid.bid == bid.product.highestBid ? "text-green-700" : "text-blue-600"
+          props.activity === "buying" && bid.bid == bid.product.highestBid
+            ? "text-green-700"
+            : "text-blue-600"
         }
       >
         {bid.product.highestBid
@@ -96,6 +108,7 @@ export default function BidTable(props: BidTableProps) {
         content={data.content.length ? tableContent : props.emptyAlternative}
         headerClassName="bg-lightgrey-200 bg-opacity-20"
       />
+      {isLoading && <div>Loading...</div>}
     </div>
   );
 }
