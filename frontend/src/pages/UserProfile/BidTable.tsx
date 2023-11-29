@@ -9,7 +9,8 @@ import DateUtility from "services/DateUtility";
 
 export interface BidTableProps {
   fetchUrl: string;
-  emptyAlternative: ReactNode;
+  fetchParams?: URLSearchParams;
+  emptyAlternative?: ReactNode;
   activity: "selling" | "buying";
 }
 
@@ -19,6 +20,8 @@ export default function BidTable(props: BidTableProps) {
     props.fetchUrl,
     page,
     20,
+    undefined,
+    props.fetchParams,
   );
   const navigate = useNavigate();
   if (isError) {
