@@ -2,6 +2,7 @@ import { UserContext } from "contexts/UserContext";
 import { useContext } from "react";
 import BidTable from "./BidTable";
 import UrlBuilder from "services/UrlBuilder";
+import NotBidding from "./NotBidding";
 
 export default function Bids() {
   const userContext = useContext(UserContext);
@@ -13,7 +14,7 @@ export default function Bids() {
   return (
     <BidTable
       fetchUrl={fetchUrl}
-      emptyAlternative={<div>empty</div>}
+      emptyAlternative={<NotBidding />}
       activity="buying"
     />
   );
