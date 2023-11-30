@@ -14,7 +14,10 @@ export default function NotSelling() {
         type="primary"
         className="py-3 uppercase px-20"
         onClick={
-          () => navigate(`/`) /* this will go to sell page, once implemented*/
+          () =>
+            navigate(
+              `/account/sell`,
+            ) /* this will go to sell page, once implemented*/
         }
       >
         Start selling
