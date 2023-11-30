@@ -57,20 +57,12 @@ export default function Seller() {
           Add item
         </Button>
       </div>
-      {activeTab === 0 ? (
-        <BidTable
-          fetchUrl={fetchUrl}
-          fetchParams={activeParams}
-          emptyAlternative={<NotSelling />}
-          activity="selling"
-        />
-      ) : (
-        <BidTable
-          fetchUrl={fetchUrl}
-          activity="selling"
-          fetchParams={soldParams}
-        />
-      )}
+      <BidTable
+        fetchUrl={fetchUrl}
+        fetchParams={activeTab === 0 ? activeParams : soldParams}
+        emptyAlternative={activeTab === 0 ? <NotSelling /> : ""}
+        activity="selling"
+      />
     </div>
   );
 }
