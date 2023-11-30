@@ -1,11 +1,13 @@
 import Button from "components/Common/Button";
-import Table from "components/Common/Table/Table";
+import Table, { Header, Row } from "components/Common/Table/Table";
 import { bidsPageSize } from "defaultConstants";
 import useFetchPage from "hooks/useFetchPage";
 import Bid from "models/Bid";
 import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DateUtility from "services/DateUtility";
+import NotBidding from "./NotBidding";
+import NotSelling from "./NotSelling";
 
 export interface BidTableProps {
   fetchUrl: string;
@@ -41,7 +43,7 @@ export default function BidTable(props: BidTableProps) {
   if (isError) {
     return <div>Error</div>;
   }
-  const rowClassName = "grid grid-cols-8 py-3 px-4 ";
+  const rowClassName = "grid grid-cols-8 py-3 px-4 text-left items-center";
   const headerNames = [
     "Item",
     "Name",
@@ -50,64 +52,53 @@ export default function BidTable(props: BidTableProps) {
     "No. Bids",
     "Highest Bid",
   ];
-  const headers = headerNames.map((headerName, index) => (
-    <td className={index === 1 ? "col-span-2" : ""} key={index}>
-      {headerName}
-    </td>
-  ));
+  const headers: Header[] = headerNames.map((headerName, index) => ({
+    name: headerName,
+    className: index == 1 ? "col-span-2" : "",
+  }));
 
-  const tableContent = data.content.map((bid) => (
-    <tr className={rowClassName + "items-center"} key={bid.id}>
-      <td>
-        <img
-          src={bid.product.images[0].url}
-          alt="Product image"
-          className="w-24"
-        ></img>
-      </td>
-      <td className="col-span-2">
-        <div>{bid.product.name}</div>
-        <div className="text-purple">#{bid.product.id}</div>
-      </td>
-      <td>
-        {DateUtility.getDuration(new Date(bid.product.dateEnd), new Date())}
-      </td>
-      <td>
-        $
-        {props.activity === "selling"
-          ? bid.product.startBid.toFixed(2)
-          : bid.bid.toFixed(2)}
-      </td>
-      <td>{bid.product.numberOfBids}</td>
-      <td
-        className={
-          props.activity === "buying" && bid.bid == bid.product.highestBid
-            ? "text-green-700"
-            : "text-blue-600"
-        }
-      >
-        {bid.product.highestBid
-          ? `$${bid.product.highestBid.toFixed(2)}`
-          : "None"}
-      </td>
-      <td>
+  const tableContent: Row[] = [];
+  data.content.forEach((bid) =>
+    tableContent.push({
+      dataCells: [
+        <img src={bid.product.images[0].url} className="w-24 h-16" />,
+        bid.product.name,
+        DateUtility.getDuration(new Date(bid.product.dateEnd), new Date()),
+        props.activity === "selling"
+          ? `$${bid.product.startBid.toFixed(2)}`
+          : `$${bid.bid.toFixed(2)}`,
+        bid.product.numberOfBids,
+        bid.product.highestBid ? (
+          <div
+            className={
+              props.activity === "buying" && bid.product.highestBid === bid.bid
+                ? "text-green-600"
+                : "text-blue-600"
+            }
+          >
+            {`$${bid.product.highestBid.toFixed(2)}`}
+          </div>
+        ) : (
+          "None"
+        ),
         <Button
           type="primary"
           className="py-2 px-8"
           onClick={() => navigate(`/shop/products/${bid.product.id}`)}
         >
           View
-        </Button>
-      </td>
-    </tr>
-  ));
+        </Button>,
+      ],
+      classNames: [undefined, "col-span-2", undefined, undefined, undefined],
+    }),
+  );
   return (
     <div className="flex justify-center border border-silver mb-5">
       <Table
         headers={headers}
         rowClassName={rowClassName}
-        content={data.content.length ? tableContent : props.emptyAlternative}
-        headerClassName="bg-lightgrey-200 bg-opacity-20"
+        content={tableContent}
+        emptyContentAlternative={props.emptyAlternative}
       />
       {isLoading && <div>Loading...</div>}
     </div>
