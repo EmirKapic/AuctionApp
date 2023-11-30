@@ -10,11 +10,17 @@ export interface SelectProps {
 }
 
 export default function Select(props: SelectProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(props.placeholder);
   const options = props.items.map((item) => (
     <li
       className="py-2 hover:text-purple cursor-pointer hover:bg-lightgrey-200 hover:bg-opacity-20 indent-5"
       key={item}
+      onClick={() => {
+        setSelectedOption(item);
+        setIsOpen(false);
+        props.onChange(item);
+      }}
     >
       {item}
     </li>
@@ -31,8 +37,10 @@ export default function Select(props: SelectProps) {
         disabled={props.disabled}
       >
         <div className="flex justify-between items-center">
-          {props.placeholder}
-          <Icon name="chevronDown" />
+          {selectedOption}
+          <div className={"duration-300" + (isOpen ? " rotate-180" : "")}>
+            <Icon name="chevronDown" />
+          </div>
         </div>
       </button>
       {isOpen && (
