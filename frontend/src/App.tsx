@@ -15,6 +15,7 @@ import { UserContext } from "contexts/UserContext";
 import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
 import UserProfile from "pages/UserProfile/UserProfile";
+import SellForm from "pages/SellingProcess/SellForm";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -54,6 +55,7 @@ function App() {
             element={<Register handleRegister={handleLogin} />}
           />
           <Route path="/account" element={<UserProfile />} />
+          <Route path="/account/sell" element={<SellForm />} />
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />
