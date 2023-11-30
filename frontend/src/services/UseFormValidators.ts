@@ -32,3 +32,13 @@ export function requiredFieldsOptions(
 ): RegisterOptions<FieldValues, string> {
   return { required: { value: true, message: message } };
 }
+
+export function phoneNumberValidationOptions(): RegisterOptions<
+  FieldValues,
+  string
+> {
+  return {
+    required: { value: true, message: "Please enter a phone number" },
+    pattern: { value: /^\+\d+$/, message: "Please enter a valid phone number" },
+  };
+}
