@@ -50,7 +50,7 @@ export default function ItemInfo(props: ItemInfoProps) {
   ));
 
   return (
-    <div className="z-0 relative">
+    <div>
       <Input
         id={props.titleId}
         label="What do you sell?"

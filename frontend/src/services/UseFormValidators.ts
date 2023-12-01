@@ -42,3 +42,10 @@ export function phoneNumberValidationOptions(): RegisterOptions<
     pattern: { value: /^\+\d+$/, message: "Please enter a valid phone number" },
   };
 }
+
+export function nonNegativeNumberOptions() {
+  return {
+    required: { value: true, message: "Please enter a number" },
+    min: { value: 1, message: "Must be greater than zero" },
+  };
+}

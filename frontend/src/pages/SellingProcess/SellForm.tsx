@@ -13,8 +13,8 @@ import CategoryDto from "models/CategoryDto";
 import { useState } from "react";
 import Subcategory from "models/Subcategory";
 //make this an pbject too
-const addItemIds = ["ProductTitle"];
-const pricesIds = [];
+const addItemIds = "ProductTitle";
+const pricesIds = ["StartPriceId"];
 const shippingIds: ShippingInfoProps = {
   addressId: "addressInput",
   emailId: "Email",
@@ -35,15 +35,18 @@ const btnClassName = "py-2 px-8 uppercase";
 export default function SellForm() {
   const { data } = useFetchAll<CategoryDto>(new UrlBuilder().categories().url);
   const navigate = useNavigate();
+  //First form state
   const [uploadedImages, setUploadedImages] = useState<ImageFile[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryDto>();
   const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory>();
   const [categorySelectWarning, setCategorySelectWarning] = useState<string>();
   const [imagesWarningText, setImagesWarningText] = useState<string>();
+  //Second form state
+
   const { step, stepIndex, next, back, isFirstStep, isLastStep } =
     useMultistepForm([
       <ItemInfo
-        titleId={addItemIds[0]}
+        titleId={addItemIds}
         categories={data}
         uploadedImages={uploadedImages}
         handleUploadImage={(file) =>
@@ -57,7 +60,11 @@ export default function SellForm() {
         selectorsWarningMessage={categorySelectWarning}
         imagesWarningMessage={imagesWarningText}
       />,
-      <Prices />,
+      <Prices
+        startPriceId="startPrice"
+        startDateId="startDate"
+        endDateId="endDate"
+      />,
       <ShippingInfo {...shippingIds} />,
     ]);
 
@@ -75,7 +82,7 @@ export default function SellForm() {
     } else {
       setCategorySelectWarning(undefined);
     }
-    if (uploadedImages.length < 3) {
+    if (uploadedImages.length < 0) {
       setImagesWarningText("Please upload at least 3 photos.");
       valid = false;
     } else {
