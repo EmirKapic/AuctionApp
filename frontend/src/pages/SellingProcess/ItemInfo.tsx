@@ -48,6 +48,8 @@ export default function ItemInfo(props: ItemInfoProps) {
     </div>
   ));
 
+  console.log(props.selectedCategory, props.selectedSubcategory);
+
   return (
     <div>
       <Input
@@ -68,7 +70,6 @@ export default function ItemInfo(props: ItemInfoProps) {
           }
           onChange={(data) => {
             props.onCategorySelect(data?.value);
-            props.onSubcategorySelect();
           }}
           placeholder="Choose a category"
           options={props.categories.map((cat) => {
@@ -87,9 +88,11 @@ export default function ItemInfo(props: ItemInfoProps) {
           }
           onChange={(data) => props.onSubcategorySelect(data?.value)}
           placeholder="Choose a subcategory"
-          options={props.selectedCategory?.subCategories.map((subCat) => {
-            return { value: subCat, label: subCat.name };
-          })}
+          options={
+            props.selectedCategory?.subCategories.map((subCat) => {
+              return { value: subCat, label: subCat.name };
+            }) || []
+          }
           isDisabled={!props.selectedCategory}
         />
       </div>

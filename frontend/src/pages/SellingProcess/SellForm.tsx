@@ -54,7 +54,10 @@ export default function SellForm() {
         handleCancelImage={handleRemoveImage}
         selectedCategory={selectedCategory}
         selectedSubcategory={selectedSubcategory}
-        onCategorySelect={setSelectedCategory}
+        onCategorySelect={(cat) => {
+          setSelectedCategory(cat);
+          setSelectedSubcategory(cat?.subCategories[0]);
+        }}
         onSubcategorySelect={setSelectedSubcategory}
         selectorsWarningMessage={categorySelectWarning}
         imagesWarningMessage={imagesWarningText}
