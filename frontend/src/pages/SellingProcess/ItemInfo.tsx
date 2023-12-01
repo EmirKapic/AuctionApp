@@ -2,6 +2,7 @@ import DragAndDrop from "components/Common/DragAndDrop";
 import Input from "components/Common/Input";
 import Select from "components/Common/Select";
 import CategoryDto from "models/CategoryDto";
+import Subcategory from "models/Subcategory";
 import { useState } from "react";
 import { requiredFieldsOptions } from "services/UseFormValidators";
 import Icon from "svgs/Icon";
@@ -14,11 +15,15 @@ export interface ItemInfoProps {
   uploadedImages: ImageFile[];
   handleUploadImage: (image: ImageFile) => void;
   handleCancelImage: (imageIndex: number) => void;
+  selectedCategory: CategoryDto | undefined;
+  onCategorySelect: (newCategory?: CategoryDto) => void;
+  selectedSubcategory: Subcategory | undefined;
+  onSubcategorySelect: (newSubcategory?: Subcategory) => void;
+  selectorsWarningMessage?: string;
+  imagesWarningMessage?: string;
 }
 
 export default function ItemInfo(props: ItemInfoProps) {
-  const categoryNames = props.categories.map((cat) => cat.name);
-
   const fileReader = new FileReader();
   fileReader.onload = () => {
     props.handleUploadImage(fileReader.result);
@@ -54,23 +59,42 @@ export default function ItemInfo(props: ItemInfoProps) {
       />
       <div className="grid grid-cols-2 gap-3">
         <Select
-          items={categoryNames}
-          placeholder="Select category"
+          items={props.categories.map((cat) => cat.name)}
+          placeholder={props.selectedCategory?.name || "Select category"}
           className="mt-5"
-          onChange={(selectedItem) => console.log(selectedItem)}
+          onChange={(selectedItem) =>
+            props.onCategorySelect(
+              props.categories.find((cat) => cat.name === selectedItem),
+            )
+          }
         />
-        <Select
-          items={categoryNames}
-          placeholder="Select subcategory"
-          className="mt-5"
-          onChange={(selectedItem) => console.log(selectedItem)}
-          disabled
-        />
+        {
+          <Select
+            items={
+              props.selectedCategory?.subCategories.map(
+                (subCat) => subCat.name,
+              ) || []
+            }
+            placeholder={
+              props.selectedSubcategory?.name || "Select subcategory"
+            }
+            className="mt-5"
+            onChange={(selectedItem) =>
+              props.onSubcategorySelect(
+                props.selectedCategory?.subCategories.find(
+                  (subcat) => subcat.name === selectedItem,
+                ),
+              )
+            }
+            disabled={props.selectedCategory == undefined}
+          />
+        }
       </div>
+      <div className="text-red-500 mt-1">{props.selectorsWarningMessage}</div>
 
       <DragAndDrop
         onDrop={onFileDrop}
-        className="mt-3 w-full aspect-video border relative p-3"
+        className="mt-3 w-full aspect-video border relative p-3 cursor-pointer"
       >
         <div className="flex flex-wrap gap-3">{images}</div>
         <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
@@ -81,6 +105,7 @@ export default function ItemInfo(props: ItemInfoProps) {
           <p className="text-lightgrey-200 text-sm">(Add at least 3 photos)</p>
         </div>
       </DragAndDrop>
+      <div className="text-red-500 mt-1">{props.imagesWarningMessage}</div>
     </div>
   );
 }

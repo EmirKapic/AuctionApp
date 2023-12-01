@@ -11,6 +11,7 @@ import useFetchAll from "hooks/useFetchAll";
 import UrlBuilder from "services/UrlBuilder";
 import CategoryDto from "models/CategoryDto";
 import { useState } from "react";
+import Subcategory from "models/Subcategory";
 //make this an pbject too
 const addItemIds = ["ProductTitle"];
 const pricesIds = [];
@@ -35,6 +36,10 @@ export default function SellForm() {
   const { data } = useFetchAll<CategoryDto>(new UrlBuilder().categories().url);
   const navigate = useNavigate();
   const [uploadedImages, setUploadedImages] = useState<ImageFile[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryDto>();
+  const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory>();
+  const [categorySelectWarning, setCategorySelectWarning] = useState<string>();
+  const [imagesWarningText, setImagesWarningText] = useState<string>();
   const { step, stepIndex, next, back, isFirstStep, isLastStep } =
     useMultistepForm([
       <ItemInfo
@@ -45,18 +50,39 @@ export default function SellForm() {
           setUploadedImages([...uploadedImages, file])
         }
         handleCancelImage={handleRemoveImage}
+        selectedCategory={selectedCategory}
+        selectedSubcategory={selectedSubcategory}
+        onCategorySelect={setSelectedCategory}
+        onSubcategorySelect={setSelectedSubcategory}
+        selectorsWarningMessage={categorySelectWarning}
+        imagesWarningMessage={imagesWarningText}
       />,
       <Prices />,
       <ShippingInfo {...shippingIds} />,
     ]);
 
   function handleRemoveImage(imgIndex: number) {
-    const newImgs = uploadedImages.filter((img, index) => {
-      if (index !== imgIndex) return img;
-    });
     setUploadedImages(
       uploadedImages.filter((img, index) => index !== imgIndex && img),
     );
+  }
+
+  function validateFirstStep(): boolean {
+    let valid = true;
+    if (!selectedCategory || !selectedSubcategory) {
+      setCategorySelectWarning("Please select a category and a subcategory");
+      valid = false;
+    } else {
+      setCategorySelectWarning(undefined);
+    }
+    if (uploadedImages.length < 3) {
+      setImagesWarningText("Please upload at least 3 photos.");
+      valid = false;
+    } else {
+      setImagesWarningText(undefined);
+    }
+    methods.trigger();
+    return valid;
   }
   const methods = useForm();
   return (
@@ -108,7 +134,11 @@ export default function SellForm() {
                 <Button
                   type="primary-filled"
                   className={btnClassName + " hover:bg-opacity-70 duration-300"}
-                  onClick={() => {
+                  onClick={(e) => {
+                    if (stepIndex === 0 && !validateFirstStep()) {
+                      e.stopPropagation();
+                      return;
+                    }
                     methods.trigger().then((noErrors) => {
                       if (noErrors) next();
                     });
