@@ -1,13 +1,17 @@
 import Breadcrumb from "components/Common/Breadcrumb";
 import useMultistepForm from "hooks/useMultistepForm";
-import ItemInfo from "./ItemInfo";
+import ItemInfo, { ImageFile } from "./ItemInfo";
 import Prices from "./Prices";
 import ShippingInfo, { ShippingInfoProps } from "./ShippingInfo";
 import Form from "components/Common/Form";
 import Button from "components/Common/Button";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
+import useFetchAll from "hooks/useFetchAll";
+import UrlBuilder from "services/UrlBuilder";
+import CategoryDto from "models/CategoryDto";
+import { useState } from "react";
+//make this an pbject too
 const addItemIds = ["ProductTitle"];
 const pricesIds = [];
 const shippingIds: ShippingInfoProps = {
@@ -28,13 +32,32 @@ const titleMap: Record<number, string> = {
 const btnClassName = "py-2 px-8 uppercase";
 
 export default function SellForm() {
+  const { data } = useFetchAll<CategoryDto>(new UrlBuilder().categories().url);
   const navigate = useNavigate();
+  const [uploadedImages, setUploadedImages] = useState<ImageFile[]>([]);
   const { step, stepIndex, next, back, isFirstStep, isLastStep } =
     useMultistepForm([
-      <ItemInfo titleId={addItemIds[0]} />,
+      <ItemInfo
+        titleId={addItemIds[0]}
+        categories={data}
+        uploadedImages={uploadedImages}
+        handleUploadImage={(file) =>
+          setUploadedImages([...uploadedImages, file])
+        }
+        handleCancelImage={handleRemoveImage}
+      />,
       <Prices />,
       <ShippingInfo {...shippingIds} />,
     ]);
+
+  function handleRemoveImage(imgIndex: number) {
+    const newImgs = uploadedImages.filter((img, index) => {
+      if (index !== imgIndex) return img;
+    });
+    setUploadedImages(
+      uploadedImages.filter((img, index) => index !== imgIndex && img),
+    );
+  }
   const methods = useForm();
   return (
     <div>

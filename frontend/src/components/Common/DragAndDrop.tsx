@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react";
 import { useDropzone } from "react-dropzone";
-import { useFormContext } from "react-hook-form";
 
 export interface DragAndDropProps {
   onDrop: (acceptedFiles: Array<File>) => void;
