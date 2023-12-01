@@ -41,7 +41,6 @@ export default function SellForm() {
   const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory>();
   const [categorySelectWarning, setCategorySelectWarning] = useState<string>();
   const [imagesWarningText, setImagesWarningText] = useState<string>();
-  //Second form state
 
   const { step, stepIndex, next, back, isFirstStep, isLastStep } =
     useMultistepForm([
@@ -101,7 +100,9 @@ export default function SellForm() {
       <FormProvider {...methods}>
         <Form
           title={titleMap[stepIndex]}
-          onSubmit={methods.handleSubmit((data) => console.log(data))}
+          onSubmit={methods.handleSubmit((data) => {
+            console.log(data, selectedCategory, selectedSubcategory);
+          })}
         >
           {step}
           <div className="flex justify-between">

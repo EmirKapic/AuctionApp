@@ -1,11 +1,10 @@
 import DragAndDrop from "components/Common/DragAndDrop";
 import Input from "components/Common/Input";
-import Select from "components/Common/Select";
 import CategoryDto from "models/CategoryDto";
 import Subcategory from "models/Subcategory";
-import { useState } from "react";
 import { requiredFieldsOptions } from "services/UseFormValidators";
 import Icon from "svgs/Icon";
+import Select from "react-select";
 
 export type ImageFile = string | ArrayBuffer | null;
 
@@ -57,38 +56,42 @@ export default function ItemInfo(props: ItemInfoProps) {
         type="text"
         validationOptions={requiredFieldsOptions("You must enter a name")}
       />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 mt-3">
         <Select
-          items={props.categories.map((cat) => cat.name)}
-          placeholder={props.selectedCategory?.name || "Select category"}
-          className="mt-5"
-          onChange={(selectedItem) =>
-            props.onCategorySelect(
-              props.categories.find((cat) => cat.name === selectedItem),
-            )
+          value={
+            props.selectedCategory
+              ? {
+                  value: props.selectedCategory,
+                  label: props.selectedCategory?.name,
+                }
+              : undefined
           }
+          onChange={(data) => {
+            props.onCategorySelect(data?.value);
+            props.onSubcategorySelect();
+          }}
+          placeholder="Choose a category"
+          options={props.categories.map((cat) => {
+            return { value: cat, label: cat.name };
+          })}
         />
-        {
-          <Select
-            items={
-              props.selectedCategory?.subCategories.map(
-                (subCat) => subCat.name,
-              ) || []
-            }
-            placeholder={
-              props.selectedSubcategory?.name || "Select subcategory"
-            }
-            className="mt-5"
-            onChange={(selectedItem) =>
-              props.onSubcategorySelect(
-                props.selectedCategory?.subCategories.find(
-                  (subcat) => subcat.name === selectedItem,
-                ),
-              )
-            }
-            disabled={props.selectedCategory == undefined}
-          />
-        }
+
+        <Select
+          value={
+            props.selectedSubcategory
+              ? {
+                  value: props.selectedSubcategory,
+                  label: props.selectedSubcategory?.name,
+                }
+              : undefined
+          }
+          onChange={(data) => props.onSubcategorySelect(data?.value)}
+          placeholder="Choose a subcategory"
+          options={props.selectedCategory?.subCategories.map((subCat) => {
+            return { value: subCat, label: subCat.name };
+          })}
+          isDisabled={!props.selectedCategory}
+        />
       </div>
       <div className="text-red-500 mt-1">{props.selectorsWarningMessage}</div>
 
