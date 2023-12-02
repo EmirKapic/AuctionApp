@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { UserContext } from "contexts/UserContext";
 import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
+import GuestRoute from "components/Common/GuestRoute";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -44,14 +45,16 @@ function App() {
           <Route path="/shop/terms" element={<TermsAndConditions />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/products/:id" element={<Product />} />
-          <Route
-            path="/account/login"
-            element={<Login handleLogin={handleLogin} />}
-          />
-          <Route
-            path="/account/register"
-            element={<Register handleRegister={handleLogin} />}
-          />
+          <Route element={<GuestRoute />}>
+            <Route
+              path="/account/login"
+              element={<Login handleLogin={handleLogin} />}
+            />
+            <Route
+              path="/account/register"
+              element={<Register handleRegister={handleLogin} />}
+            />
+          </Route>
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />
