@@ -44,7 +44,10 @@ export default function SellForm() {
   const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory>();
   const [categorySelectWarning, setCategorySelectWarning] = useState<string>();
   const [imagesWarningText, setImagesWarningText] = useState<string>();
-
+  //Second form state
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const [datesWarningText, setDatesWarningText] = useState<string>();
   const { step, stepIndex, next, back, isFirstStep, isLastStep } =
     useMultistepForm([
       <ItemInfo
@@ -69,6 +72,9 @@ export default function SellForm() {
         startPriceId="startPrice"
         startDateId="startDate"
         endDateId="endDate"
+        startDate={{ date: startDate, onChange: setStartDate }}
+        endDate={{ date: endDate, onChange: setEndDate }}
+        datesWarningText={datesWarningText}
       />,
       <ShippingInfo {...shippingIds} />,
     ]);
@@ -95,6 +101,19 @@ export default function SellForm() {
     }
     methods.trigger();
     return valid;
+  }
+
+  function validateSecondStep(): boolean {
+    if (!startDate || !endDate) {
+      setDatesWarningText("Please choose a start date and an end date");
+      return false;
+    } else if (startDate.getTime() >= endDate.getTime()) {
+      setDatesWarningText("End date cannot be earlier than start date");
+      return false;
+    } else {
+      setDatesWarningText(undefined);
+      return true;
+    }
   }
   const methods = useForm();
   return (
@@ -149,7 +168,10 @@ export default function SellForm() {
                   type="primary-filled"
                   className={btnClassName + " hover:bg-opacity-70 duration-300"}
                   onClick={(e) => {
-                    if (stepIndex === 0 && !validateFirstStep()) {
+                    if (
+                      (stepIndex === 0 && !validateFirstStep()) ||
+                      (stepIndex === 1 && !validateSecondStep())
+                    ) {
                       e.stopPropagation();
                       return;
                     }
