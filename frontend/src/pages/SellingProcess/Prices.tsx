@@ -3,16 +3,18 @@ import DatePicker from "react-datepicker";
 import { nonNegativeNumberOptions } from "services/UseFormValidators";
 import "react-datepicker/dist/react-datepicker.css";
 
-export type DateState = { date?: Date; onChange: (newDate: Date) => void };
-
-export interface PricesProps {
+export type PricesFields = {
   startPriceId: string;
   startDateId: string;
   endDateId: string;
-  startDate: DateState;
-  endDate: DateState;
+  startDate: Date | null;
+  endDate: Date | null;
   datesWarningText?: string;
-}
+};
+
+export type PricesProps = PricesFields & {
+  updateFields: (fields: Partial<PricesFields>) => void;
+};
 
 export default function Prices(props: PricesProps) {
   return (
@@ -34,8 +36,8 @@ export default function Prices(props: PricesProps) {
             Start date
             <DatePicker
               id={props.startDateId}
-              selected={props.startDate.date}
-              onChange={props.startDate.onChange}
+              selected={props.startDate}
+              onChange={(date) => props.updateFields({ startDate: date })}
               placeholderText="12/12/2024"
               className="border border-silver py-2 px-5 cursor-pointer"
               minDate={new Date()}
@@ -50,11 +52,11 @@ export default function Prices(props: PricesProps) {
             End date
             <DatePicker
               id={props.endDateId}
-              selected={props.endDate.date}
-              onChange={props.endDate.onChange}
+              selected={props.endDate}
+              onChange={(date) => props.updateFields({ endDate: date })}
               placeholderText="12/12/2024"
               className="border border-silver py-2 px-5 cursor-pointer"
-              minDate={props.startDate.date}
+              minDate={props.startDate}
             />
           </label>
         </div>

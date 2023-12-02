@@ -12,12 +12,16 @@ import UrlBuilder from "services/UrlBuilder";
 import CategoryDto from "models/CategoryDto";
 import { useState } from "react";
 import Subcategory from "models/Subcategory";
-//make this an pbject too
+
 const addItemIds = {
   titleId: "ProductTitle",
   descriptionId: "productDescription",
 };
-const pricesIds = ["StartPriceId"];
+const pricesIds = {
+  startPriceId: "StartPriceId",
+  startDateId: "startDateId",
+  endDateId: "endDateId",
+};
 const shippingIds: ShippingInfoProps = {
   addressId: "addressInput",
   emailId: "Email",
@@ -33,85 +37,86 @@ const titleMap: Record<number, string> = {
   2: "Location and shipping",
 };
 
+export type FormState = {
+  images: ImageFile[];
+  selectedCategory?: CategoryDto;
+  selectedSubcategory?: Subcategory;
+  selectorsWarningMessage?: string;
+  imagesWarningMessage?: string;
+  startDate: Date | null;
+  endDate: Date | null;
+  datesWarningText?: string;
+};
+
+const INITIAL: FormState = {
+  images: [],
+  startDate: null,
+  endDate: null,
+};
+
 const btnClassName = "py-2 px-8 uppercase";
 
 export default function SellForm() {
   const { data } = useFetchAll<CategoryDto>(new UrlBuilder().categories().url);
   const navigate = useNavigate();
-  //First form state
-  const [uploadedImages, setUploadedImages] = useState<ImageFile[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryDto>();
-  const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory>();
-  const [categorySelectWarning, setCategorySelectWarning] = useState<string>();
-  const [imagesWarningText, setImagesWarningText] = useState<string>();
-  //Second form state
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
-  const [datesWarningText, setDatesWarningText] = useState<string>();
+
+  const [formState, setFormState] = useState<FormState>(INITIAL);
+  function updateFields(fields: Partial<FormState>): void {
+    setFormState({ ...formState, ...fields });
+  }
   const { step, stepIndex, next, back, isFirstStep, isLastStep } =
     useMultistepForm([
       <ItemInfo
         {...addItemIds}
+        {...formState}
         categories={data}
-        uploadedImages={uploadedImages}
-        handleUploadImage={(file) =>
-          setUploadedImages([...uploadedImages, file])
-        }
-        handleCancelImage={handleRemoveImage}
-        selectedCategory={selectedCategory}
-        selectedSubcategory={selectedSubcategory}
-        onCategorySelect={(cat) => {
-          setSelectedCategory(cat);
-          setSelectedSubcategory(cat?.subCategories[0]);
-        }}
-        onSubcategorySelect={setSelectedSubcategory}
-        selectorsWarningMessage={categorySelectWarning}
-        imagesWarningMessage={imagesWarningText}
+        updateFields={updateFields}
       />,
-      <Prices
-        startPriceId="startPrice"
-        startDateId="startDate"
-        endDateId="endDate"
-        startDate={{ date: startDate, onChange: setStartDate }}
-        endDate={{ date: endDate, onChange: setEndDate }}
-        datesWarningText={datesWarningText}
-      />,
+      <Prices {...pricesIds} {...formState} updateFields={updateFields} />,
       <ShippingInfo {...shippingIds} />,
     ]);
 
-  function handleRemoveImage(imgIndex: number) {
-    setUploadedImages(
-      uploadedImages.filter((img, index) => index !== imgIndex && img),
-    );
-  }
-
   function validateFirstStep(): boolean {
-    let valid = true;
-    if (!selectedCategory || !selectedSubcategory) {
-      setCategorySelectWarning("Please select a category and a subcategory");
-      valid = false;
-    } else {
-      setCategorySelectWarning(undefined);
+    if (!formState.selectedCategory || !formState.selectedSubcategory) {
+      setFormState({
+        ...formState,
+        selectorsWarningMessage: "Please select a category and a subcategory",
+      });
+      return false;
     }
-    if (uploadedImages.length < 0) {
-      setImagesWarningText("Please upload at least 3 photos.");
-      valid = false;
-    } else {
-      setImagesWarningText(undefined);
+    if (formState.images.length < 0) {
+      setFormState({
+        ...formState,
+        imagesWarningMessage: "Please upload at least 3 photos",
+      });
+      return false;
     }
-    methods.trigger();
-    return valid;
+    setFormState({
+      ...formState,
+      selectorsWarningMessage: undefined,
+      imagesWarningMessage: undefined,
+    });
+    return true;
   }
 
   function validateSecondStep(): boolean {
-    if (!startDate || !endDate) {
-      setDatesWarningText("Please choose a start date and an end date");
+    if (!formState.startDate || !formState.endDate) {
+      setFormState({
+        ...formState,
+        datesWarningText: "Please choose a start date and an end date",
+      });
       return false;
-    } else if (startDate.getTime() >= endDate.getTime()) {
-      setDatesWarningText("End date cannot be earlier than start date");
+    } else if (formState.startDate.getTime() >= formState.endDate.getTime()) {
+      setFormState({
+        ...formState,
+        datesWarningText: "End date cannot be earlier than start date",
+      });
       return false;
     } else {
-      setDatesWarningText(undefined);
+      setFormState({
+        ...formState,
+        datesWarningText: undefined,
+      });
       return true;
     }
   }
@@ -126,7 +131,11 @@ export default function SellForm() {
         <Form
           title={titleMap[stepIndex]}
           onSubmit={methods.handleSubmit((data) => {
-            console.log(data, selectedCategory, selectedSubcategory);
+            console.log(
+              data,
+              formState.selectedCategory,
+              formState.selectedSubcategory,
+            );
           })}
         >
           {step}
