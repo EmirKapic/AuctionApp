@@ -1,6 +1,8 @@
 package com.atlantbh.internship.AuctionApp.controllers.Products;
 
+import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
+import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductParameters;
@@ -8,10 +10,11 @@ import com.atlantbh.internship.AuctionApp.services.Product.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/products")
@@ -38,6 +41,16 @@ public class ProductController {
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable(name = "id") Long id) throws ProductNotFoundException {
         return productService.getById(id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping
+    public ResponseEntity makeNewProduct(@RequestBody NewProductRequest request){
+        Optional<Product> insertedProduct = productService.createNewProduct(request);
+        if (insertedProduct.isEmpty()){
+            return ResponseEntity.badRequest().body(new ErrorResponse("Could not create your auction."));
+        }
+        return ResponseEntity.ok().body(insertedProduct.get());
     }
 
 }
