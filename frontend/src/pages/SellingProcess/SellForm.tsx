@@ -13,7 +13,10 @@ import CategoryDto from "models/CategoryDto";
 import { useState } from "react";
 import Subcategory from "models/Subcategory";
 //make this an pbject too
-const addItemIds = "ProductTitle";
+const addItemIds = {
+  titleId: "ProductTitle",
+  descriptionId: "productDescription",
+};
 const pricesIds = ["StartPriceId"];
 const shippingIds: ShippingInfoProps = {
   addressId: "addressInput",
@@ -45,7 +48,7 @@ export default function SellForm() {
   const { step, stepIndex, next, back, isFirstStep, isLastStep } =
     useMultistepForm([
       <ItemInfo
-        titleId={addItemIds}
+        {...addItemIds}
         categories={data}
         uploadedImages={uploadedImages}
         handleUploadImage={(file) =>

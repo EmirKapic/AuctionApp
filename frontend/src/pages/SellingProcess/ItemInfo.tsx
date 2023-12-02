@@ -10,6 +10,7 @@ export type ImageFile = string | ArrayBuffer | null;
 
 export interface ItemInfoProps {
   titleId: string;
+  descriptionId: string;
   categories: CategoryDto[];
   uploadedImages: ImageFile[];
   handleUploadImage: (image: ImageFile) => void;
@@ -48,15 +49,15 @@ export default function ItemInfo(props: ItemInfoProps) {
     </div>
   ));
 
-  console.log(props.selectedCategory, props.selectedSubcategory);
-
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <Input
         id={props.titleId}
         label="What do you sell?"
         type="text"
-        validationOptions={requiredFieldsOptions("You must enter a name")}
+        validationOptions={requiredFieldsOptions(
+          "Please enter your product's title",
+        )}
       />
       <div className="grid grid-cols-2 gap-3 mt-3">
         <Select
@@ -96,7 +97,26 @@ export default function ItemInfo(props: ItemInfoProps) {
           isDisabled={!props.selectedCategory}
         />
       </div>
-      <div className="text-red-500 mt-1">{props.selectorsWarningMessage}</div>
+      <div className="text-red-500">{props.selectorsWarningMessage}</div>
+      <div>
+        <Input
+          id={props.descriptionId}
+          label="Description"
+          multiline
+          rows={7}
+          maxLength={700}
+          validationOptions={{
+            ...requiredFieldsOptions("Please enter your product's description"),
+            maxLength: {
+              value: 700,
+              message: "Maximum length is 700characters",
+            },
+          }}
+        />
+        <p className="text-right text-lightgrey-200">
+          Max. 100 words (700 characters)
+        </p>
+      </div>
 
       <DragAndDrop
         onDrop={onFileDrop}
