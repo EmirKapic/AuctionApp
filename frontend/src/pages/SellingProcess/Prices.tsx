@@ -15,7 +15,7 @@ export default function Prices(props: PricesProps) {
   return (
     <div className="flex flex-col gap-5">
       <Input
-        id="temp"
+        id={props.startPriceId}
         type="number"
         validationOptions={nonNegativeNumberOptions()}
         label="Your start price"
