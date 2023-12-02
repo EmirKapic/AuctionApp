@@ -9,7 +9,8 @@ import LoginResponse from "models/LoginResponse";
 import User from "models/User";
 import { useContext, useEffect, useState } from "react";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
-import { FetchReturnType, fetchData } from "services/FetchData";
+import { FetchReturnType, fetchData } from "services/fetching/FetchData";
+import post from "services/fetching/Post";
 import UrlBuilder from "services/UrlBuilder";
 import {
   emailValidationOptions,
@@ -47,18 +48,11 @@ export default function Login(props: LoginProps) {
   async function onSubmit(data: FieldValues): Promise<void> {
     const url = new UrlBuilder().auth().login().url;
 
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
     const requestBody: LoginRequest = {
       email: data[EMAIL_INPUT_ID],
       password: data[PASSWORD_INPUT_ID],
     };
-    fetchData<LoginResponse, LoginRequest>(url, {
-      method: "POST",
-      body: requestBody,
-      headers: headers,
-    }).then(resolveFetchData);
+    post<LoginResponse, LoginRequest>(url, requestBody).then(resolveFetchData);
   }
 
   useEffect(() => {

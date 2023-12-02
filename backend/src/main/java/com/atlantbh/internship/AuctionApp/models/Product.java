@@ -18,7 +18,7 @@ public class Product {
     private String name;
     private String description;
     private double startBid;
-    private double highestBid;
+    private Double highestBid;
     private int numberOfBids;
     private Instant dateStart;
     private Instant dateEnd;
