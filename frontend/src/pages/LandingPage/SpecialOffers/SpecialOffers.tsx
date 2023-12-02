@@ -1,6 +1,6 @@
 import ProductGrid from "components/Common/ProductGrid";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
 import { defaultPageSize, maxPagesSpecialOffers } from "defaultConstants";
 import Product from "models/Product";
@@ -21,6 +21,12 @@ export default function SpecialOffers() {
     order: "asc",
   };
 
+  const activeParams = useMemo(() => {
+    const params = new URLSearchParams();
+    params.append("active", "true");
+    return params;
+  }, []);
+
   const {
     data: newProducts,
     isLoading: isLoadingNew,
@@ -30,6 +36,7 @@ export default function SpecialOffers() {
     pageRecent,
     defaultPageSize,
     recentSort,
+    activeParams,
   );
 
   const {
@@ -41,6 +48,7 @@ export default function SpecialOffers() {
     pageExpiring,
     defaultPageSize,
     expiringSort,
+    activeParams,
   );
 
   function renderTabButton(title: string, tabNumber: number): ReactNode {

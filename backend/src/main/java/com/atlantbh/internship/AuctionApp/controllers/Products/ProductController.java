@@ -23,7 +23,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public Page<Product> getAllActive(final Pageable pageable, final ProductParameters parameters) {
+    public Page<Product> getAll(final Pageable pageable, final ProductParameters parameters) {
         return productService.getAll(pageable, parameters);
     }
 
