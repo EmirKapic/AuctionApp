@@ -15,12 +15,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             from Product where (:categoryId is null or :categoryId = subCategory.category.id )
             and (:subcategoryId is null or :subcategoryId = subCategory.id)
             and (:name is null or name ilike concat('%', :name, '%'))
+            and (:sellerId is null or user.id = :sellerId)
+            and(:active is null or (:active = false and dateEnd < current_date) or (:active = true and dateEnd > current_date))
             """)
-    Page<Product> getAllActive(Pageable pageable,
+    Page<Product> getAll(Pageable pageable,
                                @Param("categoryId") Long categoryId,
                                @Param("subcategoryId") Long subcategoryId,
-                               @Param("name") String name);
-
+                               @Param("name") String name,
+                               @Param("sellerId")Long sellerId,
+                               @Param("active")Boolean active);
     @Query("""
             from Product where (:categoryId is null or :categoryId = subCategory.category.id )
             and (:subcategoryId is null or :subcategoryId = subCategory.id)

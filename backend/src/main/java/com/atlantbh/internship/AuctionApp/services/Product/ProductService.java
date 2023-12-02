@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface ProductService {
-    Page<Product> getAllActive(Pageable pageable, ProductParameters params);
+    Page<Product> getAll(Pageable pageable, ProductParameters params);
 
     ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params);
 
