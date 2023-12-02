@@ -5,13 +5,38 @@ import Prices from "./Prices";
 import ShippingInfo, { ShippingInfoProps } from "./ShippingInfo";
 import Form from "components/Common/Form";
 import Button from "components/Common/Button";
-import { FormProvider, useForm } from "react-hook-form";
+import {
+  FieldValue,
+  FieldValues,
+  FormProvider,
+  useForm,
+} from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import useFetchAll from "hooks/useFetchAll";
 import UrlBuilder from "services/UrlBuilder";
 import CategoryDto from "models/CategoryDto";
 import { useState } from "react";
 import Subcategory from "models/Subcategory";
+import post from "services/fetching/Post";
+import Product from "models/Product";
+import { getAuthorizationHeaders } from "services/UserAuth";
+
+export type NewProductRequest = {
+  title: string;
+  categoryId: number;
+  subcategoryId: number;
+  description: string;
+  imageUrls: string[];
+  startPrice: number;
+  startDate: string;
+  endDate: string;
+  address: string;
+  email: string;
+  city: string;
+  zipCode: string;
+  country: string;
+  phoneNumber: string;
+};
 
 const addItemIds = {
   titleId: "ProductTitle",
@@ -121,6 +146,31 @@ export default function SellForm() {
     }
   }
   const methods = useForm();
+
+  function onFormSubmit(data: FieldValues): void {
+    const newProduct: NewProductRequest = {
+      title: data[addItemIds.titleId],
+      categoryId: formState.selectedCategory!.id,
+      subcategoryId: formState.selectedSubcategory!.id,
+      description: data[addItemIds.descriptionId],
+      imageUrls: formState.images.map((img) => "ovdjeideS3Url"),
+      startPrice: data[pricesIds.startPriceId],
+      startDate: formState.startDate!.toISOString(),
+      endDate: formState.endDate!.toISOString(),
+      address: data[shippingIds.addressId],
+      email: data[shippingIds.emailId],
+      zipCode: data[shippingIds.zipId],
+      city: data[shippingIds.cityId],
+      country: data[shippingIds.countryId],
+      phoneNumber: data[shippingIds.phoneId],
+    };
+    const url = new UrlBuilder().products().url;
+    post<Product, NewProductRequest>(url, newProduct, {
+      headers: getAuthorizationHeaders(),
+    }).then(() => navigate("/"));
+    //Ovo promjeniti da bude neki interesantniji screen kao new auction sucessful
+  }
+
   return (
     <div>
       <Breadcrumb
@@ -130,12 +180,9 @@ export default function SellForm() {
       <FormProvider {...methods}>
         <Form
           title={titleMap[stepIndex]}
-          onSubmit={methods.handleSubmit((data) => {
-            console.log(
-              data,
-              formState.selectedCategory,
-              formState.selectedSubcategory,
-            );
+          onSubmit={methods.handleSubmit((data, e) => {
+            e?.preventDefault();
+            onFormSubmit(data);
           })}
         >
           {step}

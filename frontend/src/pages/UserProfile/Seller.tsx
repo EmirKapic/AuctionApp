@@ -51,7 +51,7 @@ export default function Seller() {
         <Button
           type="primary"
           className="py-2 px-16 mb-3"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/account/sell")}
         >
           <Icon name="plus" />
           Add item
