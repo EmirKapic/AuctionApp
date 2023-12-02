@@ -16,6 +16,7 @@ import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
 import UserProfile from "pages/UserProfile/UserProfile";
 import SellForm from "pages/SellingProcess/SellForm";
+import GuestRoute from "components/Common/GuestRoute";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -46,14 +47,16 @@ function App() {
           <Route path="/shop/terms" element={<TermsAndConditions />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/products/:id" element={<Product />} />
-          <Route
-            path="/account/login"
-            element={<Login handleLogin={handleLogin} />}
-          />
-          <Route
-            path="/account/register"
-            element={<Register handleRegister={handleLogin} />}
-          />
+          <Route element={<GuestRoute />}>
+            <Route
+              path="/account/login"
+              element={<Login handleLogin={handleLogin} />}
+            />
+            <Route
+              path="/account/register"
+              element={<Register handleRegister={handleLogin} />}
+            />
+          </Route>
           <Route path="/account" element={<UserProfile />} />
           <Route path="/account/sell" element={<SellForm />} />
         </Routes>
