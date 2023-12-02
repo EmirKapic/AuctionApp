@@ -21,7 +21,7 @@ public class ProductController {
 
     @GetMapping
     public Page<Product> getAllActive(final Pageable pageable, final ProductParameters parameters) {
-        return productService.getAllActive(pageable, parameters);
+        return productService.getAll(pageable, parameters);
     }
 
     @GetMapping("/search")

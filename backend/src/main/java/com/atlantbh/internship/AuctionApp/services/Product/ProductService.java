@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
-    Page<Product> getAllActive(Pageable pageable, ProductParameters params);
+    Page<Product> getAll(Pageable pageable, ProductParameters params);
 
     ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params);
 

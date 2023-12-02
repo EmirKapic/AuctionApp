@@ -15,14 +15,15 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Page<Product> getAllActive(Pageable pageable, ProductParameters params) {
-        return productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(), params.name());
+    public Page<Product> getAll(Pageable pageable, ProductParameters params) {
+        return productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(), params.name(),
+                params.sellerId(), params.active());
     }
 
     @Override
     public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
-        Page<Product> products = productRepository.getAllActive(pageable, params.categoryId(), params.subcategoryId(),
-                params.name());
+        Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(),
+                params.name(), params.sellerId(), params.active());
         if (!products.isEmpty()) {
             return new ProductDidYouMean(products, null);
         }
