@@ -9,7 +9,6 @@ export default function Bids() {
   const fetchUrl = new UrlBuilder()
     .bids()
     .user()
-    .relationship("bidder")
     .id(userContext?.id || -1).url;
   return (
     <BidTable

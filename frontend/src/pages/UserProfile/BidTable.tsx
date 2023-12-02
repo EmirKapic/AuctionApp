@@ -6,12 +6,9 @@ import Bid from "models/Bid";
 import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DateUtility from "services/DateUtility";
-import NotBidding from "./NotBidding";
-import NotSelling from "./NotSelling";
 
 export interface BidTableProps {
   fetchUrl: string;
-  fetchParams?: URLSearchParams;
   emptyAlternative?: ReactNode;
   activity: "selling" | "buying";
 }
@@ -22,8 +19,6 @@ export default function BidTable(props: BidTableProps) {
     props.fetchUrl,
     page,
     bidsPageSize,
-    undefined,
-    props.fetchParams,
   );
   const navigate = useNavigate();
   function handleScroll() {
