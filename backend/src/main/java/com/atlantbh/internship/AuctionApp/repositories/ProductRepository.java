@@ -8,13 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query(value = "FROM Product ORDER BY RANDOM() LIMIT 1")
+    @Query(value = "FROM Product where dateStart < current date and dateEnd > current date ORDER BY RANDOM() LIMIT 1")
     Product getRandom();
 
     @Query("""
             from Product where (:categoryId is null or :categoryId = subCategory.category.id )
             and (:subcategoryId is null or :subcategoryId = subCategory.id)
             and (:name is null or name ilike concat('%', :name, '%'))
+            and (dateStart < current date and dateEnd > current date)
             """)
     Page<Product> getAllActive(Pageable pageable,
                                @Param("categoryId") Long categoryId,
@@ -25,6 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             from Product where (:categoryId is null or :categoryId = subCategory.category.id )
             and (:subcategoryId is null or :subcategoryId = subCategory.id)
             and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
+            and (dateStart < current date and dateEnd > current date)
             order by levenshtein(upper(name), upper(:name))""")
     Page<Product> getAllActiveApproximate(Pageable pageable,
                                           @Param("categoryId") Long categoryId,
