@@ -8,6 +8,7 @@ export interface ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   className?: string;
   formButtonType?: "submit" | "reset" | "button";
+  disabled?: boolean;
 }
 
 const buttonClassName: Record<ButtonType, string> = {
@@ -25,6 +26,7 @@ export default function Button(props: PropsWithChildren<ButtonProps>) {
       className={className(buttonClassName[props.type], props.className)}
       onClick={props.onClick}
       type={props.formButtonType}
+      disabled={props.disabled}
     >
       {props.children}
     </button>

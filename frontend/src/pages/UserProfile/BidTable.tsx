@@ -11,6 +11,7 @@ export interface BidTableProps {
   fetchUrl: string;
   emptyAlternative?: ReactNode;
   activity: "selling" | "buying";
+  params?: URLSearchParams;
 }
 
 export default function BidTable(props: BidTableProps) {
@@ -19,6 +20,8 @@ export default function BidTable(props: BidTableProps) {
     props.fetchUrl,
     page,
     bidsPageSize,
+    undefined,
+    props.params,
   );
   const navigate = useNavigate();
   function handleScroll() {
