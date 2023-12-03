@@ -14,17 +14,6 @@ export interface InputProps {
   label?: string;
 }
 
-/*
-  We search the errors object for any key that matches the id of our input
-  If found, our input has a mistake, and the appropriate message is shown
-*/
-function isInputInvalid(
-  errors: FieldErrors<FieldValues>,
-  name: string,
-): boolean {
-  return Object.keys(errors).some((key) => key.includes(name));
-}
-
 export default function Input(props: InputProps) {
   const {
     register,
