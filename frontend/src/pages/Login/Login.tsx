@@ -3,13 +3,11 @@ import Button from "components/Common/Button";
 import Checkbox from "components/Common/Checkbox";
 import Form from "components/Common/Form";
 import Input from "components/Common/Input";
-import LoggedIn from "components/Common/LoggedInError";
-import { UserContext } from "contexts/UserContext";
 import LoginResponse from "models/LoginResponse";
 import User from "models/User";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
-import { FetchReturnType, fetchData } from "services/fetching/FetchData";
+import { FetchReturnType } from "services/fetching/FetchData";
 import post from "services/fetching/Post";
 import UrlBuilder from "services/UrlBuilder";
 import {
@@ -27,7 +25,6 @@ export interface LoginProps {
 export default function Login(props: LoginProps) {
   const methods = useForm();
   const [rememberMe, setRememberMe] = useState(false);
-  const userContext = useContext(UserContext);
 
   function resolveFetchData(data: FetchReturnType<LoginResponse>): void {
     if (!data.success) {
@@ -63,13 +60,9 @@ export default function Login(props: LoginProps) {
     }
   }, []);
 
-  if (userContext) {
-    return <LoggedIn />;
-  }
-
   return (
     <div>
-      <Breadcrumb title="login" items={[]} />
+      <Breadcrumb title="login" />
       <FormProvider {...methods}>
         <Form
           title="login"
@@ -89,10 +82,11 @@ export default function Login(props: LoginProps) {
           />
           <Checkbox
             id="rememberMeCheckbox"
-            label="Remember me"
             checked={rememberMe}
             onChange={setRememberMe}
-          />
+          >
+            Remember me
+          </Checkbox>
           <Button
             type="primary-filled"
             className="py-3 shadow-lightgrey uppercase"

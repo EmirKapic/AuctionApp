@@ -7,7 +7,7 @@ export interface BreadcrumbItem {
 
 export interface BreadcrumbProps {
   title: string;
-  items: Array<BreadcrumbItem>;
+  items?: Array<BreadcrumbItem>;
 }
 
 export default function Breadcrumb(props: BreadcrumbProps) {
@@ -18,8 +18,8 @@ export default function Breadcrumb(props: BreadcrumbProps) {
     navigate(to);
   }
 
-  const breadcrumbPath = props.items.map((item, index) => {
-    const lastIndex = index === props.items.length - 1;
+  const breadcrumbPath = props.items?.map((item, index) => {
+    const lastIndex = props.items ? index === props.items.length - 1 : false;
     return (
       <h3
         className={

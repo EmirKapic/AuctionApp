@@ -14,9 +14,11 @@ import { useEffect, useState } from "react";
 import { UserContext } from "contexts/UserContext";
 import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
+import GuestRoute from "components/Common/GuestRoute";
+import get from "services/fetching/Get";
+import UrlBuilder from "services/UrlBuilder";
 import UserProfile from "pages/UserProfile/UserProfile";
 import SellForm from "pages/SellingProcess/SellForm";
-import GuestRoute from "components/Common/GuestRoute";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -29,9 +31,14 @@ function App() {
   }
 
   useEffect(() => {
-    const userStringified = localStorage.getItem("user");
-    if (userStringified) {
-      setCurrentUser(JSON.parse(userStringified));
+    const token = localStorage.getItem("token");
+    if (token) {
+      const url = new UrlBuilder().auth().validate().url;
+      get(`${url}?token=${token}`).then((res) => {
+        if (res.success) {
+          setCurrentUser(JSON.parse(localStorage.getItem("user")!));
+        }
+      });
     }
   }, []);
 

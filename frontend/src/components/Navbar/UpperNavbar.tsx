@@ -25,7 +25,7 @@ export default function UpperNavbar() {
         </nav>
         {userContext ? (
           <div className="text-white">
-            Hi, <span>{userContext?.firstName || "John"}</span>
+            Hi, <span>{userContext?.firstName}</span>
           </div>
         ) : (
           <div className="text-white flex gap-3">

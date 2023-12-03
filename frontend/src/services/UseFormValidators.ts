@@ -1,15 +1,16 @@
 import { FieldValues, RegisterOptions } from "react-hook-form";
 
 export function emailValidationOptions(): RegisterOptions<FieldValues, string> {
+  //Here we couldnt spread requiredFields, no idea why, TS said nope
   return {
     required: {
       value: true,
-      message: "Please enter your email",
+      message: "Please enter your email.",
     },
     pattern: {
       value:
-        /^[\w]{1,}[\w.+-]{0,}@[\w-]{2,}([.][a-zA-Z]{2,}|[.][\w-]{2,}[.][a-zA-Z]{2,})$/,
-      message: "Please enter a valid email",
+        /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/,
+      message: "Please enter a valid email.",
     },
   };
 }
@@ -19,10 +20,10 @@ export function passwordValidationOptions(): RegisterOptions<
   string
 > {
   return {
-    required: { value: true, message: "Please enter your password" },
+    ...requiredFieldsOptions("Please enter your password."),
     minLength: {
       value: 6,
-      message: "Password must be at least 6 characters long",
+      message: "Password must be at least 6 characters long.",
     },
   };
 }

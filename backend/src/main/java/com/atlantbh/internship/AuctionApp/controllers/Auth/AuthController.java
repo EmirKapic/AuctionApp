@@ -1,6 +1,7 @@
 package com.atlantbh.internship.AuctionApp.controllers.Auth;
 
 import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
+import com.atlantbh.internship.AuctionApp.dtos.MessageResponse;
 import com.atlantbh.internship.AuctionApp.dtos.login.LoginRequest;
 import com.atlantbh.internship.AuctionApp.dtos.login.LoginResponse;
 import com.atlantbh.internship.AuctionApp.dtos.register.RegisterRequest;
@@ -8,6 +9,7 @@ import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.services.Auth.JwtService;
 import com.atlantbh.internship.AuctionApp.services.Auth.RegisterService;
 import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -55,6 +54,17 @@ public class AuthController {
         }
         else{
             return ResponseEntity.badRequest().body(new ErrorResponse("Could not create new user account"));
+        }
+    }
+
+    @GetMapping("/validate")
+    ResponseEntity checkTokenValidity(@RequestParam(name = "token")String token){
+        try {
+            jwtService.resolveClaims(token);
+            return ResponseEntity.ok().body(new MessageResponse("Token is valid."));
+        }
+        catch(ExpiredJwtException exception){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse("Token expired or not valid."));
         }
     }
 }

@@ -44,4 +44,8 @@ export default class UrlBuilder {
     this._url += "/user";
     return this;
   }
+  public validate(): UrlBuilder {
+    this._url += "/validate";
+    return this;
+  }
 }

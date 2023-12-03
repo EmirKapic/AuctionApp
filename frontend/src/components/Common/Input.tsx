@@ -1,10 +1,5 @@
 import { HTMLInputTypeAttribute } from "react";
-import {
-  FieldErrors,
-  FieldValues,
-  RegisterOptions,
-  useFormContext,
-} from "react-hook-form";
+import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 
 export interface InputProps {
   id: string;
@@ -16,17 +11,6 @@ export interface InputProps {
   rows?: number;
   cols?: number;
   maxLength?: number;
-}
-
-/*
-  We search the errors object for any key that matches the id of our input
-  If found, our input has a mistake, and the appropriate message is shown
-*/
-function isInputInvalid(
-  errors: FieldErrors<FieldValues>,
-  name: string,
-): boolean {
-  return Object.keys(errors).some((key) => key.includes(name));
 }
 
 export default function Input(props: InputProps) {
@@ -61,7 +45,7 @@ export default function Input(props: InputProps) {
           {...register(props.id, props.validationOptions)}
         />
       )}
-      {isInputInvalid(errors, props.id) && (
+      {errors[props.id] && (
         <div className="text-red-500">
           {errors[props.id]?.message?.toString()}
         </div>
