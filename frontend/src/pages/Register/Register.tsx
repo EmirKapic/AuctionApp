@@ -52,7 +52,7 @@ export default function Register(props: RegisterProps) {
 
   return (
     <div>
-      <Breadcrumb title="Register" items={[]} />
+      <Breadcrumb title="Register" />
       <FormProvider {...methods}>
         <Form
           title="Register"

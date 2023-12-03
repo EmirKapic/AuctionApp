@@ -62,7 +62,7 @@ export default function Login(props: LoginProps) {
 
   return (
     <div>
-      <Breadcrumb title="login" items={[]} />
+      <Breadcrumb title="login" />
       <FormProvider {...methods}>
         <Form
           title="login"
