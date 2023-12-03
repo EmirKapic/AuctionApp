@@ -89,10 +89,11 @@ export default function Login(props: LoginProps) {
           />
           <Checkbox
             id="rememberMeCheckbox"
-            label="Remember me"
             checked={rememberMe}
             onChange={setRememberMe}
-          />
+          >
+            Remember me
+          </Checkbox>
           <Button
             type="primary-filled"
             className="py-3 shadow-lightgrey uppercase"
