@@ -23,10 +23,16 @@ import java.util.Optional;
 public class BidsController {
     private final BidService bidService;
     @GetMapping
-    public ResponseEntity getBids(final Pageable pageable, BidParameters params){
-        Page<Bid> bids =  bidService.getBids(params, pageable);
+    public ResponseEntity getBids(final Pageable pageable, BidParameters params, @RequestParam(name = "unpaged", required = false) Boolean unpaged){
+        Pageable pageableParam = (unpaged != null && unpaged) ? Pageable.unpaged() : pageable;
+        Page<Bid> bids =  bidService.getBids(params, pageableParam);
+
+
 
         if (params.highestOnly() != null && params.highestOnly()){
+            if (bids.isEmpty()){
+                return ResponseEntity.badRequest().build();
+            }
             List<Bid> bidList = bids.getContent();
             return ResponseEntity.ok().body(getHighestBid(bidList));
         }
