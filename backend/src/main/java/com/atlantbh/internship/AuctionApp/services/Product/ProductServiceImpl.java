@@ -14,7 +14,6 @@ import com.atlantbh.internship.AuctionApp.utilities.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -75,9 +74,7 @@ public class ProductServiceImpl implements ProductService {
         Product newProduct = new Product(request.title(), request.description(), request.startPrice(), startDate, endDate,
                 request.address(), request.email(), request.city(), request.zipCode(), request.country(), request.phoneNumber());
 
-
-        String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDetailsService.loadUserByUsername(currentUserEmail);
+        User user = userDetailsService.getCurrentUser();
 
         newProduct.setImages(request.imageUrls().stream().map(url -> new ProductImage(0, url, newProduct)).toList());
         newProduct.setSubCategory(subCategory.get());
