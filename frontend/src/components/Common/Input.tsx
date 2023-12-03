@@ -44,8 +44,8 @@ export default function Input(props: InputProps) {
         type={props.type}
         className="border border-silver border-opacity-50 bg-lightgrey-50 indent-3 py-3"
         {...register(props.id, props.validationOptions)}
-      ></input>
-      {isInputInvalid(errors, props.id) && (
+      />
+      {errors[props.id] && (
         <div className="text-red-500">
           {errors[props.id]?.message?.toString()}
         </div>
