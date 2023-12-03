@@ -29,10 +29,19 @@ public class BidServiceImpl implements BidService{
     public Optional<Bid> makeNewBid(double bid, long productId) {
         User user = userDetailsService.getCurrentUser();
         Optional<Product> product = productRepository.findById(productId);
-        if (product.isEmpty()){
+        if (product.isEmpty() || !validBidAmount(bid, product.get().getHighestBid(), product.get().getStartBid())){
             return Optional.empty();
         }
-        Bid newBid = new Bid(0, bid, Instant.now(), user, product.get());
-        return Optional.of(bidRepository.save(newBid));
+        Product prod = product.get();
+
+        prod.setHighestBid(bid);
+        prod.setNumberOfBids(prod.getNumberOfBids() + 1);
+        Product updatedProduct = productRepository.save(prod);
+
+        return Optional.of(bidRepository.save(new Bid(0, bid, Instant.now(), user ,updatedProduct)));
+    }
+
+    private boolean validBidAmount(double bid, Double highestBid, double startBid){
+        return highestBid != null ? bid > highestBid : bid > startBid;
     }
 }
