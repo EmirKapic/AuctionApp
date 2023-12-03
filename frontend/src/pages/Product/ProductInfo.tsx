@@ -1,8 +1,17 @@
 import Button from "components/Common/Button";
+import Bid from "models/Bid";
 import Product from "models/Product";
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useState } from "react";
 import DateUtility from "services/DateUtility";
+import UrlBuilder from "services/UrlBuilder";
+import { getAuthorizationHeaders } from "services/UserAuth";
+import post from "services/fetching/Post";
 import Icon from "svgs/Icon";
+
+export type BidRequestBody = {
+  bid: number;
+  productId: number;
+};
 
 export interface ProductInfoProps {
   product: Product;
@@ -22,7 +31,30 @@ function renderInfoField(title: string, value: string): ReactNode {
 
 export default function ProductInfo(props: ProductInfoProps) {
   const [bid, setBid] = useState<number>();
+  const [warningText, setWarningText] = useState("");
+
   const auctionFinished = new Date(props.product.dateEnd) < new Date();
+
+  function onPlaceBid(): void {
+    if (!bid) {
+      setWarningText("Please enter a bid.");
+      return;
+    }
+    if (props.product.highestBid && bid <= props.product.highestBid) {
+      setWarningText("Bid must be higher than current highest.");
+    } else if (bid <= props.product.startBid) {
+      setWarningText("Bid must be higher than the start bid.");
+    } else {
+      const url = new UrlBuilder().bids().url;
+      post<Bid, BidRequestBody>(
+        url,
+        { bid: bid, productId: props.product.id },
+        { headers: getAuthorizationHeaders() },
+      )
+        .then(() => window.location.reload())
+        .catch(() => setWarningText("Something went wrong. Please try again."));
+    }
+  }
 
   return (
     <div>
@@ -72,37 +104,41 @@ export default function ProductInfo(props: ProductInfoProps) {
               </div>
             </section>
           ) : (
-            <section className="flex gap-4 h-min mb-8">
-              <input
-                value={bid}
-                onChange={(e) => setBid(parseFloat(e.target.value))}
-                type="number"
-                placeholder={
-                  props.loggedIn
-                    ? `Enter higher than ${
-                        props.product.highestBid
-                          ? props.product.highestBid.toFixed(2)
-                          : props.product.startBid.toFixed(2)
-                      }`
-                    : "Please log in to place bids"
-                }
-                className="outline outline-gray-200 indent-4 py-4 flex-grow"
-                min={
-                  props.product.highestBid
-                    ? props.product.highestBid + 1
-                    : props.product.startBid
-                }
-                disabled={!props.loggedIn}
-              />
-              <Button
-                type="primary"
-                className="px-8 uppercase font-bold"
-                disabled={!props.loggedIn}
-              >
-                <div>Place bid</div>
-                <Icon name="chevronRight" />
-              </Button>
-            </section>
+            <div className=" mb-8">
+              <section className="flex gap-4 h-min">
+                <input
+                  value={bid}
+                  onChange={(e) => setBid(parseFloat(e.target.value))}
+                  type="number"
+                  placeholder={
+                    props.loggedIn
+                      ? `Enter higher than ${
+                          props.product.highestBid
+                            ? props.product.highestBid.toFixed(2)
+                            : props.product.startBid.toFixed(2)
+                        }`
+                      : "Please log in to place bids"
+                  }
+                  className="outline outline-gray-200 indent-4 py-4 flex-grow"
+                  min={
+                    props.product.highestBid
+                      ? props.product.highestBid + 1
+                      : props.product.startBid
+                  }
+                  disabled={!props.loggedIn}
+                />
+                <Button
+                  type="primary"
+                  className="px-8 uppercase font-bold"
+                  disabled={!props.loggedIn}
+                  onClick={() => onPlaceBid()}
+                >
+                  <div>Place bid</div>
+                  <Icon name="chevronRight" />
+                </Button>
+              </section>
+              {<p className="mt-2 text-red-500">{warningText}</p>}
+            </div>
           )}
         </div>
       )}
