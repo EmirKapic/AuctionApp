@@ -1,4 +1,4 @@
-import { Route, Routes, redirect, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
@@ -15,6 +15,8 @@ import { UserContext } from "contexts/UserContext";
 import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
 import GuestRoute from "components/Common/GuestRoute";
+import get from "services/fetching/Get";
+import UrlBuilder from "services/UrlBuilder";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -27,9 +29,14 @@ function App() {
   }
 
   useEffect(() => {
-    const userStringified = localStorage.getItem("user");
-    if (userStringified) {
-      setCurrentUser(JSON.parse(userStringified));
+    const token = localStorage.getItem("token");
+    if (token) {
+      const url = new UrlBuilder().auth().validate().url;
+      get(`${url}?token=${token}`).then((res) => {
+        if (res.success) {
+          setCurrentUser(JSON.parse(localStorage.getItem("user")!));
+        }
+      });
     }
   }, []);
 

@@ -36,4 +36,8 @@ export default class UrlBuilder {
     this._url += "/register";
     return this;
   }
+  public validate(): UrlBuilder {
+    this._url += "/validate";
+    return this;
+  }
 }
