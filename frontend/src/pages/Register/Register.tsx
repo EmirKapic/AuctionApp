@@ -2,14 +2,12 @@ import Breadcrumb from "components/Common/Breadcrumb";
 import Button from "components/Common/Button";
 import Form from "components/Common/Form";
 import Input from "components/Common/Input";
-import LoggedIn from "components/Common/LoggedInError";
-import { UserContext } from "contexts/UserContext";
 import LoginResponse from "models/LoginResponse";
 import User from "models/User";
-import { useContext } from "react";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { FetchReturnType, fetchData } from "services/FetchData";
+import { FetchReturnType } from "services/fetching/FetchData";
+import post from "services/fetching/Post";
 import UrlBuilder from "services/UrlBuilder";
 import {
   emailValidationOptions,
@@ -28,7 +26,6 @@ export interface RegisterProps {
 
 export default function Register(props: RegisterProps) {
   const methods = useForm();
-  const userContext = useContext(UserContext);
   function resolveFetchData(data: FetchReturnType<LoginResponse>): void {
     if (!data.success) {
       methods.setError(EMAIL_ID, {
@@ -43,9 +40,6 @@ export default function Register(props: RegisterProps) {
   async function onSubmit(data: FieldValues): Promise<void> {
     const url = new UrlBuilder().auth().register().url;
 
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
     const requestBody: RegisterRequest = {
       firstName: data[FIRST_NAME_ID],
       lastName: data[LAST_NAME_ID],
@@ -53,19 +47,12 @@ export default function Register(props: RegisterProps) {
       password: data[PASSWORD_ID],
     };
 
-    fetchData<LoginResponse, RegisterRequest>(url, {
-      method: "POST",
-      headers: headers,
-      body: requestBody,
-    }).then(resolveFetchData);
+    post<LoginResponse, LoginRequest>(url, requestBody).then(resolveFetchData);
   }
 
-  if (userContext) {
-    return <LoggedIn />;
-  }
   return (
     <div>
-      <Breadcrumb title="Register" items={[]} />
+      <Breadcrumb title="Register" />
       <FormProvider {...methods}>
         <Form
           title="Register"

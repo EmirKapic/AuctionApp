@@ -14,6 +14,9 @@ import { useEffect, useState } from "react";
 import { UserContext } from "contexts/UserContext";
 import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
+import GuestRoute from "components/Common/GuestRoute";
+import get from "services/fetching/Get";
+import UrlBuilder from "services/UrlBuilder";
 import UserProfile from "pages/UserProfile/UserProfile";
 
 function App() {
@@ -27,9 +30,14 @@ function App() {
   }
 
   useEffect(() => {
-    const userStringified = localStorage.getItem("user");
-    if (userStringified) {
-      setCurrentUser(JSON.parse(userStringified));
+    const token = localStorage.getItem("token");
+    if (token) {
+      const url = new UrlBuilder().auth().validate().url;
+      get(`${url}?token=${token}`).then((res) => {
+        if (res.success) {
+          setCurrentUser(JSON.parse(localStorage.getItem("user")!));
+        }
+      });
     }
   }, []);
 
@@ -45,14 +53,16 @@ function App() {
           <Route path="/shop/terms" element={<TermsAndConditions />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/products/:id" element={<Product />} />
-          <Route
-            path="/account/login"
-            element={<Login handleLogin={handleLogin} />}
-          />
-          <Route
-            path="/account/register"
-            element={<Register handleRegister={handleLogin} />}
-          />
+          <Route element={<GuestRoute />}>
+            <Route
+              path="/account/login"
+              element={<Login handleLogin={handleLogin} />}
+            />
+            <Route
+              path="/account/register"
+              element={<Register handleRegister={handleLogin} />}
+            />
+          </Route>
           <Route path="/account" element={<UserProfile />} />
         </Routes>
         <div className="absolute bottom-0 w-full">

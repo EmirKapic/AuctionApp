@@ -1,23 +1,25 @@
+import { PropsWithChildren } from "react";
+
 export interface CheckboxProps {
-  label: string;
   id: string;
-  onChange: (active: boolean) => void;
+  onChange?: (active: boolean) => void;
   checked?: boolean;
-  labelClassName?: string;
+  disabled?: boolean;
 }
 
-export default function Checkbox(props: CheckboxProps) {
+export default function Checkbox(props: PropsWithChildren<CheckboxProps>) {
   return (
     <div className="flex gap-3">
       <input
         id={props.id}
         type="checkbox"
-        onChange={(e) => props.onChange(e.target.checked)}
+        onChange={(e) =>
+          props.onChange ? props.onChange(e.target.checked) : {}
+        }
         checked={props.checked}
+        disabled={props.disabled}
       />
-      <label htmlFor={props.id} className={props.labelClassName}>
-        {[props.label]}
-      </label>
+      <label htmlFor={props.id}>{props.children}</label>
     </div>
   );
 }
