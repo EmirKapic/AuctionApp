@@ -1,12 +1,15 @@
 import { UserContext } from "contexts/UserContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-export default function GuestRoute() {
+export default function ProtectedRoute() {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
 
-  if (userContext) navigate("/");
-
+  useEffect(() => {
+    if (!userContext) {
+      navigate("/");
+    }
+  }, [userContext]);
   return <Outlet />;
 }
