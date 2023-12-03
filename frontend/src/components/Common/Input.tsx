@@ -1,10 +1,5 @@
 import { HTMLInputTypeAttribute } from "react";
-import {
-  FieldErrors,
-  FieldValues,
-  RegisterOptions,
-  useFormContext,
-} from "react-hook-form";
+import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 
 export interface InputProps {
   id: string;
