@@ -12,12 +12,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         Product getRandom();
 
         @Query("""
-                        from Product where (:categoryId is null or :categoryId = subCategory.category.id )
-                        and (:subcategoryId is null or :subcategoryId = subCategory.id)
-                        and (:name is null or name ilike concat('%', :name, '%'))
-                        and (:sellerId is null or user.id = :sellerId)
-                        and(:active is null or (:active = false and dateEnd < current_date) or (:active = true and dateEnd > current_date))
-                        """)
+            from Product where (:categoryId is null or :categoryId = subCategory.category.id )
+            and (:subcategoryId is null or :subcategoryId = subCategory.id)
+            and (:name is null or name ilike concat('%', :name, '%'))
+            and (:sellerId is null or user.id = :sellerId)
+            and (dateStart < current date and dateEnd > current date)
+            and(:active is null or (:active = false and dateEnd < current_date) or (:active = true and dateEnd > current_date))
+            """)
         Page<Product> getAll(Pageable pageable,
                         @Param("categoryId") Long categoryId,
                         @Param("subcategoryId") Long subcategoryId,
@@ -26,11 +27,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         @Param("active") Boolean active);
 
         @Query("""
-                        from Product where (:categoryId is null or :categoryId = subCategory.category.id )
-                        and (:subcategoryId is null or :subcategoryId = subCategory.id)
-                        and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
-                        and (dateStart < current date and dateEnd > current date)
-                        order by levenshtein(upper(name), upper(:name))""")
+            from Product where (:categoryId is null or :categoryId = subCategory.category.id )
+            and (:subcategoryId is null or :subcategoryId = subCategory.id)
+            and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
+            and (dateStart < current date and dateEnd > current date)
+            order by levenshtein(upper(name), upper(:name))""")
         Page<Product> getAllActiveApproximate(Pageable pageable,
                         @Param("categoryId") Long categoryId,
                         @Param("subcategoryId") Long subcategoryId,
