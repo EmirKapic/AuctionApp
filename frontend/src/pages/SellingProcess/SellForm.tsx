@@ -5,21 +5,17 @@ import Prices from "./Prices";
 import ShippingInfo, { ShippingInfoProps } from "./ShippingInfo";
 import Form from "components/Common/Form";
 import Button from "components/Common/Button";
-import {
-  FieldValue,
-  FieldValues,
-  FormProvider,
-  useForm,
-} from "react-hook-form";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import useFetchAll from "hooks/useFetchAll";
 import UrlBuilder from "services/UrlBuilder";
 import CategoryDto from "models/CategoryDto";
 import { useState } from "react";
 import Subcategory from "models/Subcategory";
-import post from "services/fetching/Post";
+import uploadFile from "firebase/UploadFile";
 import Product from "models/Product";
 import { getAuthorizationHeaders } from "services/UserAuth";
+import post from "services/fetching/Post";
 
 export type NewProductRequest = {
   title: string;
@@ -63,7 +59,7 @@ const titleMap: Record<number, string> = {
 };
 
 export type FormState = {
-  images: ImageFile[];
+  imagePaths: File[];
   selectedCategory?: CategoryDto;
   selectedSubcategory?: Subcategory;
   selectorsWarningMessage?: string;
@@ -74,7 +70,7 @@ export type FormState = {
 };
 
 const INITIAL: FormState = {
-  images: [],
+  imagePaths: [],
   startDate: null,
   endDate: null,
 };
@@ -109,7 +105,7 @@ export default function SellForm() {
       });
       return false;
     }
-    if (formState.images.length < 3) {
+    if (formState.imagePaths.length < 3) {
       setFormState({
         ...formState,
         imagesWarningMessage: "Please upload at least 3 photos",
@@ -147,13 +143,20 @@ export default function SellForm() {
   }
   const methods = useForm();
 
-  function onFormSubmit(data: FieldValues): void {
+  async function onFormSubmit(data: FieldValues): Promise<void> {
+    const uploadPromises = formState.imagePaths.map(
+      async (path) => await uploadFile(path),
+    );
+
+    const givenUrls = await Promise.all(uploadPromises);
+    console.log(givenUrls);
+
     const newProduct: NewProductRequest = {
       title: data[addItemIds.titleId],
       categoryId: formState.selectedCategory!.id,
       subcategoryId: formState.selectedSubcategory!.id,
       description: data[addItemIds.descriptionId],
-      imageUrls: formState.images.map((img) => "ovdjeideS3Url"),
+      imageUrls: givenUrls,
       startPrice: data[pricesIds.startPriceId],
       startDate: formState.startDate!.toISOString(),
       endDate: formState.endDate!.toISOString(),

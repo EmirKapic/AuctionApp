@@ -20,6 +20,8 @@ import UrlBuilder from "services/UrlBuilder";
 import UserProfile from "pages/UserProfile/UserProfile";
 import SellForm from "pages/SellingProcess/SellForm";
 import ProtectedRoute from "components/Common/ProtectedRoute";
+import intializeFirebase from "firebase/Firebase";
+import app from "firebase/Firebase";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
