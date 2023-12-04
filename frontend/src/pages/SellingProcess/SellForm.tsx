@@ -109,7 +109,7 @@ export default function SellForm() {
       });
       return false;
     }
-    if (formState.images.length < 0) {
+    if (formState.images.length < 3) {
       setFormState({
         ...formState,
         imagesWarningMessage: "Please upload at least 3 photos",
