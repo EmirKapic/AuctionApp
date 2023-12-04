@@ -9,7 +9,7 @@ import useFetchAll from "hooks/useFetchAll";
 import CategoryDto from "models/CategoryDto";
 import buildQueryParams from "services/QueryParamsBuilder";
 import Sort from "./Sort/Sort";
-import SortType from "./Sort/SortStrategy/SortType";
+import SortType from "./SortType";
 
 export default function Shop() {
   const [didYouMean, setDidYouMean] = useState<string>();

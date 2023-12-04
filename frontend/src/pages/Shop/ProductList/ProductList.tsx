@@ -7,7 +7,7 @@ import ProductDidYouMean from "models/ProductDidYouMean";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
-import SortType from "../Sort/SortStrategy/SortType";
+import SortType from "../SortType";
 
 type ProductListType = "grid" | "list";
 
