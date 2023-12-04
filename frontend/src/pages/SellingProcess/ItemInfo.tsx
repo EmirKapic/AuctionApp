@@ -14,7 +14,7 @@ export type ItemInfoFields = {
   categories: CategoryDto[];
   selectedCategory?: CategoryDto;
   selectedSubcategory?: Subcategory;
-  images: ImageFile[];
+  imagePaths: File[];
   selectorsWarningMessage?: string;
   imagesWarningMessage?: string;
 };
@@ -24,30 +24,25 @@ export type ItemInfoProps = ItemInfoFields & {
 };
 
 export default function ItemInfo(props: ItemInfoProps) {
-  const fileReader = new FileReader();
-  fileReader.onload = () => {
-    props.updateFields({ images: [...props.images, fileReader.result] });
-  };
-
   function onFileDrop(files: Array<File>): void {
-    fileReader.readAsDataURL(files[0]);
+    props.updateFields({ imagePaths: [...props.imagePaths, files[0]] });
   }
 
-  const images = props.images.map((img, index) => (
+  const images = props.imagePaths.map((img, index) => (
     <div className="border border-silver relative">
       <button
         className="absolute top-1 right-1 border rounded-2xl bg-lightgrey-200 bg-opacity-20 backdrop-blur"
         onClick={(e) => {
           e.stopPropagation();
           props.updateFields({
-            images: props.images.filter((img, indx) => indx !== index),
+            imagePaths: props.imagePaths.filter((img, indx) => indx !== index),
           });
         }}
         type="button"
       >
         <Icon name="plus" />
       </button>
-      <img src={img as string} className="w-20 h-20 object-cover" />
+      <img src={URL.createObjectURL(img)} className="w-20 h-20 object-cover" />
     </div>
   ));
 
