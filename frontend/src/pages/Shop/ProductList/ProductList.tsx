@@ -7,6 +7,7 @@ import ProductDidYouMean from "models/ProductDidYouMean";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
+import SortStrategy from "../Sort/SortStrategy/SortStrategy";
 
 type ProductListType = "grid" | "list";
 
@@ -18,6 +19,7 @@ const productListClassName: Record<ProductListType, string> = {
 export interface ProductListProps {
   type: ProductListType;
   setDidYouMeanQuery: (didYouMean?: string) => void;
+  sortStrategy: SortStrategy;
 }
 
 export default function ProductList(props: ProductListProps) {
@@ -58,7 +60,7 @@ export default function ProductList(props: ProductListProps) {
           <ProductGrid
             itemsClassName={productListClassName[props.type]}
             imageClassName="w-full h-96"
-            items={data.content}
+            items={props.sortStrategy.sort(data.content)}
           />
         </div>
       ) : (

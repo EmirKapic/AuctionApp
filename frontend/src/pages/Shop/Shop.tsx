@@ -8,9 +8,19 @@ import Breadcrumb, { BreadcrumbItem } from "components/Common/Breadcrumb";
 import useFetchAll from "hooks/useFetchAll";
 import CategoryDto from "models/CategoryDto";
 import buildQueryParams from "services/QueryParamsBuilder";
+import Sort from "./Sort/Sort";
+import LowestFirstSortStrategy from "./Sort/SortStrategy/LowestFirstSortStrategy";
+import HighestFirstSortStrategy from "./Sort/SortStrategy/HighestFirstSortStrategy";
+import DefaultSortStrategy from "./Sort/SortStrategy/DefaultSortStrategy";
+import DateCreatedSortStrategy from "./Sort/SortStrategy/DateCreatedSortStrategy";
+import TimeLeftSortStrategy from "./Sort/SortStrategy/TimeLeftSortStrategy";
+import SortStrategy from "./Sort/SortStrategy/SortStrategy";
 
 export default function Shop() {
   const [didYouMean, setDidYouMean] = useState<string>();
+  const [sortStrategy, setSortStrategy] = useState<SortStrategy>(
+    new TimeLeftSortStrategy(),
+  );
   const [queryParams] = useSearchParams();
   const {
     data: categories,
@@ -77,7 +87,14 @@ export default function Shop() {
           />
         </aside>
         <div className="flex-grow">
-          <ProductList type="grid" setDidYouMeanQuery={setDidYouMean} />
+          <Sort />
+          <div className="flex-grow">
+            <ProductList
+              type="grid"
+              setDidYouMeanQuery={setDidYouMean}
+              sortStrategy={sortStrategy}
+            />
+          </div>
         </div>
       </Container>
     </div>
