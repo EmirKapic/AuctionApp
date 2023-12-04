@@ -45,7 +45,7 @@ export function phoneNumberValidationOptions(): RegisterOptions<
 
 export function nonNegativeNumberOptions() {
   return {
-    required: { value: true, message: "Please enter a number" },
+    ...requiredFieldsOptions("Please enter a number."),
     min: { value: 1, message: "Must be greater than zero" },
   };
 }

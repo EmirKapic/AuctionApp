@@ -10,10 +10,10 @@ import org.springframework.data.repository.query.Param;
 public interface BidRepository extends JpaRepository<Bid, Long> {
 
     @Query("""
-        from Bid where (:bidderId is null or bidder.id = :bidderId)
-        and (:productId is null or product.id = :productId)
-        """)
+            from Bid where (:bidderId is null or bidder.id = :bidderId)
+            and (:productId is null or product.id = :productId)
+            """)
     Page<Bid> findAllBids(@Param("bidderId") Long bidderId,
-                          @Param("productId") Long productId,
-                          Pageable pageable);
+            @Param("productId") Long productId,
+            Pageable pageable);
 }
