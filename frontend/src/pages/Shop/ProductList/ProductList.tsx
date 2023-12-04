@@ -1,13 +1,13 @@
 import Button from "components/Common/Button";
 import ProductGrid from "components/Common/ProductGrid";
 import { pageSizeShop } from "defaultConstants";
-import useFetchPage from "hooks/useFetchPage";
+import useFetchPage, { Sort } from "hooks/useFetchPage";
 import Product from "models/Product";
 import ProductDidYouMean from "models/ProductDidYouMean";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
-import SortStrategy from "../Sort/SortStrategy/SortStrategy";
+import SortType from "../Sort/SortStrategy/SortType";
 
 type ProductListType = "grid" | "list";
 
@@ -16,15 +16,24 @@ const productListClassName: Record<ProductListType, string> = {
   list: " ",
 };
 
+const sortQueryParam: Record<SortType, Sort> = {
+  "Default sorting": { name: "name", order: "asc" },
+  "Highest price first": { name: "startBid", order: "desc" },
+  "Lowest price first": { name: "startBid", order: "asc" },
+  "Sort by recent": { name: "dateStart", order: "desc" },
+  "Sort by time left": { name: "dateEnd", order: "asc" },
+};
+
 export interface ProductListProps {
   type: ProductListType;
   setDidYouMeanQuery: (didYouMean?: string) => void;
-  sortStrategy: SortStrategy;
+  sortType: SortType;
 }
 
 export default function ProductList(props: ProductListProps) {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
+  queryParams.append("sort", "");
   const { data, isLoading, isError, rawData } = useFetchPage<
     Product,
     ProductDidYouMean
@@ -32,7 +41,7 @@ export default function ProductList(props: ProductListProps) {
     new UrlBuilder().products().search().url,
     page,
     pageSizeShop,
-    undefined,
+    sortQueryParam[props.sortType],
     queryParams,
     ["products"],
   );
@@ -60,7 +69,7 @@ export default function ProductList(props: ProductListProps) {
           <ProductGrid
             itemsClassName={productListClassName[props.type]}
             imageClassName="w-full h-96"
-            items={props.sortStrategy.sort(data.content)}
+            items={data.content}
           />
         </div>
       ) : (
