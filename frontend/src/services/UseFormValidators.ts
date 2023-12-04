@@ -1,7 +1,6 @@
 import { FieldValues, RegisterOptions } from "react-hook-form";
 
 export function emailValidationOptions(): RegisterOptions<FieldValues, string> {
-  //Here we couldnt spread requiredFields, no idea why, TS said nope
   return {
     required: {
       value: true,
