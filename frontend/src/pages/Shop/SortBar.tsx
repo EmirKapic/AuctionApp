@@ -17,6 +17,13 @@ export default function SortBar(props: SortBarProps) {
         value={{ value: props.sort, label: props.sort }}
         onChange={(selected) => props.onChange(selected!.value)}
         className={props.className}
+        styles={{
+          option: (baseStyles, state) => ({
+            ...baseStyles,
+            backgroundColor: state.isFocused ? "#8367D8" : "",
+            color: state.isFocused ? "white" : "",
+          }),
+        }}
       />
     </div>
   );
