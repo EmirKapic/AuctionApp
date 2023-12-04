@@ -11,15 +11,13 @@ export default function SpecialOffers() {
   const [pageRecent, setPageRecent] = useState(0);
   const [pageExpiring, setPageExpiring] = useState(0);
 
-  const recentSort: Sort = {
-    name: "dateStart",
-    order: "desc",
-  };
+  const recentSort: Sort = useMemo(() => {
+    return { name: "dateStart", order: "desc" };
+  }, []);
 
-  const expiringSort: Sort = {
-    name: "dateEnd",
-    order: "asc",
-  };
+  const expiringSort: Sort = useMemo(() => {
+    return { name: "dateEnd", order: "asc" };
+  }, []);
 
   const activeParams = useMemo(() => {
     const params = new URLSearchParams();

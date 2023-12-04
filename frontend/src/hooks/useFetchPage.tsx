@@ -79,7 +79,7 @@ export default function useFetchPage<T, R = T>(
     };
 
     fetchData();
-  }, [pageNumber, pageSize, url, queryParams]);
+  }, [pageNumber, pageSize, url, queryParams, sort]);
 
   return { data, isLoading, isError, rawData };
 }

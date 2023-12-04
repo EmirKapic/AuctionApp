@@ -8,12 +8,12 @@ import Breadcrumb, { BreadcrumbItem } from "components/Common/Breadcrumb";
 import useFetchAll from "hooks/useFetchAll";
 import CategoryDto from "models/CategoryDto";
 import buildQueryParams from "services/QueryParamsBuilder";
-import Sort from "./Sort/Sort";
 import SortType from "./SortType";
+import SortBar from "./SortBar";
 
 export default function Shop() {
   const [didYouMean, setDidYouMean] = useState<string>();
-  const [sortType, setSortType] = useState<SortType>(SortType.DATE_CREATED);
+  const [sortType, setSortType] = useState<SortType>(SortType.DEFAULT);
   const [queryParams] = useSearchParams();
   const {
     data: categories,
@@ -80,8 +80,12 @@ export default function Shop() {
           />
         </aside>
         <div className="flex-grow">
-          <Sort />
-          <div className="flex-grow">
+          <SortBar
+            sort={sortType}
+            onChange={setSortType}
+            className="w-1/4 pb-2"
+          />
+          <div>
             <ProductList
               type="grid"
               setDidYouMeanQuery={setDidYouMean}
