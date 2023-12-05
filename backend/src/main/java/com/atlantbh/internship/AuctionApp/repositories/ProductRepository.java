@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-        @Query(value = "FROM Product where dateStart < current date and dateEnd > current date ORDER BY RANDOM() LIMIT 1")
-        Product getRandom();
+    @Query(value = "FROM Product where dateStart < current date and dateEnd > current date ORDER BY RANDOM() LIMIT 1")
+    Product getRandom();
 
-        @Query("""
+    @Query("""
             from Product where (:categoryId is null or :categoryId = subCategory.category.id )
             and (:subcategoryId is null or :subcategoryId = subCategory.id)
             and (:name is null or name ilike concat('%', :name, '%'))
@@ -19,21 +19,21 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             and (dateStart < current date and dateEnd > current date)
             and(:active is null or (:active = false and dateEnd < current_date) or (:active = true and dateEnd > current_date))
             """)
-        Page<Product> getAll(Pageable pageable,
-                        @Param("categoryId") Long categoryId,
-                        @Param("subcategoryId") Long subcategoryId,
-                        @Param("name") String name,
-                        @Param("sellerId") Long sellerId,
-                        @Param("active") Boolean active);
+    Page<Product> getAll(Pageable pageable,
+            @Param("categoryId") Long categoryId,
+            @Param("subcategoryId") Long subcategoryId,
+            @Param("name") String name,
+            @Param("sellerId") Long sellerId,
+            @Param("active") Boolean active);
 
-        @Query("""
+    @Query("""
             from Product where (:categoryId is null or :categoryId = subCategory.category.id )
             and (:subcategoryId is null or :subcategoryId = subCategory.id)
             and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
             and (dateStart < current date and dateEnd > current date)
             order by levenshtein(upper(name), upper(:name))""")
-        Page<Product> getAllActiveApproximate(Pageable pageable,
-                        @Param("categoryId") Long categoryId,
-                        @Param("subcategoryId") Long subcategoryId,
-                        @Param("name") String name);
+    Page<Product> getAllActiveApproximate(Pageable pageable,
+            @Param("categoryId") Long categoryId,
+            @Param("subcategoryId") Long subcategoryId,
+            @Param("name") String name);
 }
