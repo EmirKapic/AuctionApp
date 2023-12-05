@@ -60,7 +60,7 @@ public class StripePaymentService implements PaymentService{
                                                         .build()
                                         )
                                         .setCurrency("usd")
-                                        .setUnitAmountDecimal(BigDecimal.valueOf((int)(product.getHighestBid() * 1000)))
+                                        .setUnitAmountDecimal(BigDecimal.valueOf((int)(product.getHighestBid() * 100)))
                                         .build()
 
                         ).build()
