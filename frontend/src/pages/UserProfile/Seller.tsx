@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import useFetchPage from "hooks/useFetchPage";
 import Product from "models/Product";
 import { bidsPageSize } from "defaultConstants";
-import Table, { Header, Row } from "components/Common/Table/Table";
+import Table from "components/Common/Table/Table";
 import DateUtility from "services/DateUtility";
 
 function renderTabButton(
@@ -30,13 +30,7 @@ function renderTabButton(
     </Button>
   );
 }
-/*
-As you might notice, a lot of code here overlaps with "BidTable" component
-The reason is because they both serve almost same content, however
-this component gets the data as a list of products (aka the products were selling)
-and the other component gets the data as a list of bids (aka ON WHICH products were betting), out of which we then extract products
-and i didnt manage some typescript shenanigan to make both types work the same
-*/
+
 export default function Seller() {
   const [activeTab, setActiveTab] = useState<0 | 1>(0);
   const userContext = useContext(UserContext);
@@ -89,36 +83,34 @@ export default function Seller() {
     "No. Bids",
     "Highest Bid",
   ];
-  const headers: Header[] = headerNames.map((headerName, index) => ({
-    name: headerName,
-    className: index == 1 ? "col-span-2" : "",
-  }));
 
-  const tableContent: Row[] = [];
-  data.content.forEach((product) =>
-    tableContent.push({
-      dataCells: [
-        <img src={product.images[0].url} className="w-24 h-16" />,
-        product.name,
-        DateUtility.getDuration(new Date(product.dateEnd), new Date()),
-        `$${product.startBid.toFixed(2)}`,
-        product.numberOfBids,
-        product.highestBid ? (
-          <div>{`$${product.highestBid.toFixed(2)}`}</div>
-        ) : (
-          "None"
-        ),
+  const headers = headerNames.map((headerName, index) => (
+    <th className={index === 1 ? "col-span-2" : ""}>{headerName}</th>
+  ));
+
+  const rows = data.content.map((product) => (
+    <tr className={rowClassName}>
+      <td>
+        <img src={product.images[0].url} className="w-24 h-16" />
+      </td>
+      <td className="col-span-2">{product.name}</td>
+      <td>{DateUtility.getDuration(new Date(product.dateEnd), new Date())}</td>
+      <td>{`$${product.startBid.toFixed(2)}`}</td>
+      <td>{product.numberOfBids}</td>
+      <td>
+        {product.highestBid ? `$${product.highestBid.toFixed(2)}` : "None"}
+      </td>
+      <td>
         <Button
           type="primary"
           className="py-2 px-8"
           onClick={() => navigate(`/shop/products/${product.id}`)}
         >
           View
-        </Button>,
-      ],
-      classNames: [undefined, "col-span-2", undefined, undefined, undefined],
-    }),
-  );
+        </Button>
+      </td>
+    </tr>
+  ));
 
   return (
     <div>
@@ -137,12 +129,16 @@ export default function Seller() {
         </Button>
       </div>
       <div className="flex justify-center border border-silver mb-5">
-        <Table
-          headers={headers}
-          rowClassName={rowClassName}
-          content={tableContent}
-          emptyContentAlternative={<NotSelling />}
-        />
+        {data.content.length ? (
+          <Table>
+            <thead className={rowClassName}>{headers}</thead>
+            <tbody>{rows}</tbody>
+          </Table>
+        ) : (
+          <Table>
+            <NotSelling />
+          </Table>
+        )}
         {isLoading && <div>Loading...</div>}
       </div>
     </div>
