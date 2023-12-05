@@ -1,7 +1,11 @@
 import Container from "components/Common/Container";
 import SocialMediaIcon from "components/Navbar/SocialMediaIcon";
+import { UserContext } from "contexts/UserContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 export default function UpperNavbar() {
+  const userContext = useContext(UserContext);
   return (
     <section className="w-full py-2 bg-grey_">
       <Container className="flex justify-between items-center" type="large">
@@ -19,7 +23,17 @@ export default function UpperNavbar() {
             </a>
           </ul>
         </nav>
-        <p className="text-white hidden">Hi, John Doe</p>
+        {userContext ? (
+          <div className="text-white">
+            Hi, <span>{userContext?.firstName}</span>
+          </div>
+        ) : (
+          <div className="text-white flex gap-3">
+            <Link to={"/account/login"}>Login</Link>
+            <span className="text-lightgrey-200">or</span>
+            <Link to={"/account/register"}>Create an account</Link>
+          </div>
+        )}
       </Container>
     </section>
   );

@@ -24,4 +24,20 @@ export default class UrlBuilder {
     this._url += "/search";
     return this;
   }
+  public auth(): UrlBuilder {
+    this._url += "/auth";
+    return this;
+  }
+  public login(): UrlBuilder {
+    this._url += "/login";
+    return this;
+  }
+  public register(): UrlBuilder {
+    this._url += "/register";
+    return this;
+  }
+  public validate(): UrlBuilder {
+    this._url += "/validate";
+    return this;
+  }
 }
