@@ -10,7 +10,6 @@ import NotBidding from "./NotBidding";
 
 export interface BidTableProps {
   fetchUrl: string;
-  emptyAlternative?: ReactNode;
 }
 
 export default function BidTable(props: BidTableProps) {
@@ -34,6 +33,7 @@ export default function BidTable(props: BidTableProps) {
   }
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
+    return () => document.removeEventListener("scroll", handleScroll);
   });
   if (isError) {
     return <div>Error</div>;

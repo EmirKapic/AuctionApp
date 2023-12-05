@@ -1,6 +1,6 @@
 import { PropsWithChildren, ReactNode } from "react";
 
-interface TaskBarItemProps {
+export interface TaskBarItemProps {
   active?: boolean;
   onClick: () => void;
 }
