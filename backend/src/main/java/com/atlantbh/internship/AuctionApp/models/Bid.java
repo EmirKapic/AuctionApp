@@ -13,6 +13,9 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bid {
+    public Bid(double bid, User user, Product product){
+        this(0, bid, Instant.now(), user , product);
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
