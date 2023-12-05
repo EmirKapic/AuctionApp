@@ -8,7 +8,9 @@ import com.atlantbh.internship.AuctionApp.services.Bid.BidParameters;
 import com.atlantbh.internship.AuctionApp.services.Bid.BidService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,16 +26,20 @@ public class BidsController {
     private final BidService bidService;
     @GetMapping
     public ResponseEntity getBids(final Pageable pageable, BidParameters params){
-        Page<Bid> bids =  bidService.getBids(params, pageable);
-
         if (params.highestOnly() != null && params.highestOnly()){
+            Page<Bid> bids = bidService.getBids(
+                    new BidParameters(params.bidderId(), params.productId(), null), PageRequest.of(
+                    0, 1, Sort.by(Sort.Direction.DESC, "bid")
+            ));
             if (bids.isEmpty()){
                 return ResponseEntity.badRequest().build();
             }
-            List<Bid> bidList = bids.getContent();
-            return ResponseEntity.ok().body(getHighestBid(bidList));
+            return ResponseEntity.ok().body(getHighestBid(bids.getContent()));
         }
-        else return ResponseEntity.ok().body(bids);
+        else {
+            Page<Bid> bids =  bidService.getBids(params, pageable);
+            return ResponseEntity.ok().body(bids);
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
