@@ -9,12 +9,5 @@ export default function Bids() {
 
   const queryParams = new URLSearchParams();
   queryParams.append("bidderId", userContext?.id.toString() || "-1");
-  return (
-    <BidTable
-      fetchUrl={fetchUrl}
-      emptyAlternative={<NotBidding />}
-      activity="buying"
-      params={queryParams}
-    />
-  );
+  return <BidTable fetchUrl={fetchUrl} params={queryParams} />;
 }
