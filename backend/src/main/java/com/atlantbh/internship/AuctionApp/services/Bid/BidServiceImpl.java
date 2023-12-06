@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -38,7 +37,7 @@ public class BidServiceImpl implements BidService{
         prod.setNumberOfBids(prod.getNumberOfBids() + 1);
         Product updatedProduct = productRepository.save(prod);
 
-        return Optional.of(bidRepository.save(new Bid(0, bid, Instant.now(), user ,updatedProduct)));
+        return Optional.of(bidRepository.save(new Bid(bid, user, updatedProduct)));
     }
 
     private boolean validBidAmount(double bid, Double highestBid, double startBid){

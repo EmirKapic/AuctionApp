@@ -4,7 +4,7 @@ import { pageSizeShop } from "defaultConstants";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import Product from "models/Product";
 import ProductDidYouMean from "models/ProductDidYouMean";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 import SortType from "../SortType";
@@ -33,7 +33,13 @@ export interface ProductListProps {
 export default function ProductList(props: ProductListProps) {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
-  queryParams.append("sort", "");
+
+  const extraParams = useMemo(() => {
+    const params = new URLSearchParams(queryParams);
+    params.append("excludeUserOwned", "true");
+    return params;
+  }, [queryParams]);
+
   const { data, isLoading, isError, rawData } = useFetchPage<
     Product,
     ProductDidYouMean

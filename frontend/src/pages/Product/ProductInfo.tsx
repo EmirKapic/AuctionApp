@@ -4,7 +4,6 @@ import Product from "models/Product";
 import { ReactNode, useState } from "react";
 import DateUtility from "services/DateUtility";
 import UrlBuilder from "services/UrlBuilder";
-import { getAuthorizationHeaders } from "services/UserAuth";
 import post from "services/fetching/Post";
 import Icon from "svgs/Icon";
 
@@ -46,13 +45,10 @@ export default function ProductInfo(props: ProductInfoProps) {
       setWarningText("Bid must be higher than the start bid.");
     } else {
       const url = new UrlBuilder().bids().url;
-      post<Bid, BidRequestBody>(
-        url,
-        { bid: bid, productId: props.product.id },
-        { headers: getAuthorizationHeaders() },
-      )
-        .then(() => window.location.reload())
-        .catch(() => setWarningText("Something went wrong. Please try again."));
+      post<Bid, BidRequestBody>(url, {
+        bid: bid,
+        productId: props.product.id,
+      }).then(() => {});
     }
   }
 
