@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-        @Query(value = "FROM Product where user.email <> :userEmail ORDER BY RANDOM() LIMIT 1")
+        @Query(value = "FROM Product where dateStart < current date and dateEnd > current date and user.email <> :userEmail ORDER BY RANDOM() LIMIT 1")
         Product getRandom(String userEmail);
 
         @Query("""
