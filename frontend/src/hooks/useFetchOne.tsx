@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getAuthorizationHeaders } from "services/UserAuth";
 
 export default function useFetchOne<T>(url: string) {
   const [data, setData] = useState<T>();
@@ -8,7 +9,9 @@ export default function useFetchOne<T>(url: string) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(url);
+        const res = await fetch(url, {
+          headers: getAuthorizationHeaders(),
+        });
         if (!res.ok) {
           setIsError(true);
         } else {
