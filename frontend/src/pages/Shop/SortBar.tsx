@@ -1,3 +1,4 @@
+import Colors from "services/Colors";
 import SortType from "./SortType";
 import Select from "react-select";
 
