@@ -29,7 +29,7 @@ export default function useFetchOne<T>(
     };
 
     fetchData();
-  }, [url]);
+  }, [url, queryParams]);
 
   return { data, isLoading, isError };
 }

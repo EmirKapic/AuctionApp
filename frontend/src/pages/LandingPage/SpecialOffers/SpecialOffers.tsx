@@ -24,6 +24,7 @@ export default function SpecialOffers() {
   const activeParams = useMemo(() => {
     const params = new URLSearchParams();
     params.append("active", "true");
+    params.append("excludeUserOwned", "true");
     return params;
   }, []);
 
