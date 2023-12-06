@@ -4,7 +4,7 @@ import { pageSizeShop } from "defaultConstants";
 import useFetchPage from "hooks/useFetchPage";
 import Product from "models/Product";
 import ProductDidYouMean from "models/ProductDidYouMean";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 
@@ -23,6 +23,13 @@ export interface ProductListProps {
 export default function ProductList(props: ProductListProps) {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
+
+  const extraParams = useMemo(() => {
+    const params = new URLSearchParams(queryParams);
+    params.append("excludeUserOwned", "true");
+    return params;
+  }, [queryParams]);
+
   const { data, isLoading, isError, rawData } = useFetchPage<
     Product,
     ProductDidYouMean
@@ -31,7 +38,7 @@ export default function ProductList(props: ProductListProps) {
     page,
     pageSizeShop,
     undefined,
-    queryParams,
+    extraParams,
     ["products"],
   );
 
