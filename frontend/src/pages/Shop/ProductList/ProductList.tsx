@@ -23,12 +23,7 @@ export interface ProductListProps {
 export default function ProductList(props: ProductListProps) {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
-
-  const extraParams = useMemo(() => {
-    const params = new URLSearchParams(queryParams);
-    params.append("excludeUserOwned", "true");
-    return params;
-  }, [queryParams]);
+  queryParams.append("excludeUserOwned", "true");
 
   const { data, isLoading, isError, rawData } = useFetchPage<
     Product,
@@ -38,7 +33,7 @@ export default function ProductList(props: ProductListProps) {
     page,
     pageSizeShop,
     undefined,
-    extraParams,
+    queryParams,
     ["products"],
   );
 
