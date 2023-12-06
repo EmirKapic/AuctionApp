@@ -9,6 +9,7 @@ import ProductInfo from "./ProductInfo";
 import Bid from "models/Bid";
 import { useContext, useMemo } from "react";
 import { UserContext } from "contexts/UserContext";
+import AlertMessage from "components/Common/AlertMessage";
 
 export default function Product() {
   const { id } = useParams();
@@ -42,24 +43,13 @@ export default function Product() {
         title={data.name}
         items={[{ title: "Shop", to: "/shop" }, { title: "Single product" }]}
       />
-      {userBid &&
-        (highestBidder ? (
-          <div className="w-full bg-green-100 py-5">
-            <Container type="large">
-              <p className="font-bold text-green-700">
-                Congratulations! You are the highest bidder!
-              </p>
-            </Container>
-          </div>
-        ) : (
-          <div className="w-full bg-amber-100 bg-opacity-50 py-5">
-            <Container type="large">
-              <p className="font-bold text-amber-600">
-                There are higher bid than yours. Try again?
-              </p>
-            </Container>
-          </div>
-        ))}
+      {userBid && (
+        <AlertMessage type={highestBidder ? "success" : "warning"}>
+          {highestBidder
+            ? "Congratulations! You are the highest bidder."
+            : "There are higher bids than yours. Try again?"}
+        </AlertMessage>
+      )}
 
       <Container type="large">
         <div className="grid grid-rows-1 grid-cols-2">
