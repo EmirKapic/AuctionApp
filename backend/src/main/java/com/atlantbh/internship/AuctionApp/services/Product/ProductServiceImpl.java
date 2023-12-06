@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getRandom() {
-        return productRepository.getRandom();
+        return productRepository.getRandom(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override
