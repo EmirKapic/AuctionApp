@@ -13,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/bids")
@@ -34,16 +31,5 @@ public class BidsController {
                 .map(bid -> ResponseEntity.ok().body(bid))
                 .map(ResponseEntity.class::cast)
                 .orElse(ResponseEntity.badRequest().body(new ErrorResponse("Invalid bid.")));
-    }
-
-
-    private Bid getHighestBid(List<Bid> bids){
-        return Collections.max(bids, (bid1, bid2) -> {
-            if (bid1.getBid() > bid2.getBid())
-                return 1;
-            else if (bid1.getBid() < bid2.getBid())
-                return -1;
-            else return 0;
-        });
     }
 }

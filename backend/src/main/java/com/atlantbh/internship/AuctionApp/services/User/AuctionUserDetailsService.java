@@ -18,8 +18,11 @@ public class AuctionUserDetailsService implements UserDetailsService {
     }
 
     public User getCurrentUser(){
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return loadUserByUsername(userName);
+        return loadUserByUsername(getCurrentUserEmail());
+    }
+
+    public String getCurrentUserEmail(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
 }

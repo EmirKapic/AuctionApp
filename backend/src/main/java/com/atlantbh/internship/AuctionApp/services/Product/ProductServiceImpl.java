@@ -14,7 +14,6 @@ import com.atlantbh.internship.AuctionApp.utilities.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -87,9 +86,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private String excludeOwnedBy(Boolean excludeUserOwned){
-        Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
-        if (excludeUserOwned == null || !excludeUserOwned || !userAuth.isAuthenticated())return null;
-        else return SecurityContextHolder.getContext().getAuthentication().getName();
+        if (excludeUserOwned == null || !excludeUserOwned)return null;
+        else return userDetailsService.getCurrentUserEmail();
     }
 
 }
