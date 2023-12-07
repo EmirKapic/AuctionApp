@@ -7,28 +7,42 @@ import Container from "components/Common/Container";
 import ProductImages from "./ProductImages";
 import ProductInfo from "./ProductInfo";
 import Bid from "models/Bid";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
+import useFetchPage, { Sort } from "hooks/useFetchPage";
 
-function getSearchParams(id: string) {
-  const searchParams = new URLSearchParams();
-  searchParams.append("highestOnly", "true");
-  searchParams.append("productId", id.toString());
-  return searchParams;
-}
+const url = new UrlBuilder().bids().url;
+
+const sort: Sort = {
+  name: "bid",
+  order: "desc",
+};
 
 export default function Product() {
   const { id } = useParams();
   const userContext = useContext(UserContext);
-  const { data, isLoading, isError } = useFetchOne<ProductModel>(
+  const {
+    data,
+    isLoading,
+    isError,
+    refresh: refreshProductData,
+  } = useFetchOne<ProductModel>(
     new UrlBuilder().products().id(parseInt(id!)).url,
   );
 
-  const url = new UrlBuilder().bids().url;
+  const params = useMemo(() => {
+    const searchParams = new URLSearchParams();
+    searchParams.append("productId", id!);
+    return searchParams;
+  }, [userContext]);
 
-  const { data: userBid } = useFetchOne<Bid>(
-    url + `?${getSearchParams(id!).toString()}`,
+  const { data: userBid, refresh: refreshUserBid } = useFetchPage<Bid>(
+    url,
+    0,
+    1,
+    sort,
+    params,
   );
 
   if (isLoading) {
@@ -38,14 +52,14 @@ export default function Product() {
   if (isError || !data) {
     return <div>Error while loading product...</div>;
   }
-  const highestBidder = data.highestBid === userBid?.bid;
+  const highestBidder = data.highestBid === userBid?.content[0]?.bid || false;
   return (
     <div className="w-full">
       <Breadcrumb
         title={data.name}
         items={[{ title: "Shop", to: "/shop" }, { title: "Single product" }]}
       />
-      {userBid && (
+      {userBid.content[0] && (
         <AlertMessage type={highestBidder ? "success" : "warning"}>
           {highestBidder
             ? "Congratulations! You are the highest bidder."
@@ -64,6 +78,10 @@ export default function Product() {
               userWon={highestBidder}
               ownedByUser={data.user.id === userContext?.id}
               loggedIn={!!userContext}
+              refreshData={() => {
+                refreshUserBid();
+                refreshProductData();
+              }}
             />
           </div>
         </div>

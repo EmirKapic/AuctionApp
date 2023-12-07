@@ -34,7 +34,7 @@ export default function BidTable(props: BidTableProps) {
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
     return () => document.removeEventListener("scroll", handleScroll);
-  });
+  }, [data]);
   if (isError) {
     return <div>Error</div>;
   }

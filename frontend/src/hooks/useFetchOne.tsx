@@ -8,6 +8,7 @@ export default function useFetchOne<T>(
   const [data, setData] = useState<T>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     const completeUrl = url + (queryParams ? `?${queryParams.toString()}` : "");
@@ -29,7 +30,7 @@ export default function useFetchOne<T>(
     };
 
     fetchData();
-  }, [url, queryParams]);
+  }, [url, queryParams, key]);
 
-  return { data, isLoading, isError };
+  return { data, isLoading, isError, refresh: () => setKey(key + 1) };
 }

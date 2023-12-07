@@ -41,6 +41,7 @@ export default function useFetchPage<T, R = T>(
   const [rawData, setRawData] = useState<R>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     setIsLoading(true);
@@ -82,7 +83,7 @@ export default function useFetchPage<T, R = T>(
     };
 
     fetchData();
-  }, [pageNumber, pageSize, url, queryParams, sort]);
+  }, [pageNumber, pageSize, url, queryParams, key, sort]);
 
-  return { data, isLoading, isError, rawData };
+  return { data, isLoading, isError, rawData, refresh: () => setKey(key + 1) };
 }

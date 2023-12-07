@@ -17,6 +17,7 @@ export interface ProductInfoProps {
   userWon: boolean;
   ownedByUser: boolean;
   loggedIn: boolean;
+  refreshData: () => void;
 }
 
 function renderInfoField(title: string, value: string): ReactNode {
@@ -48,7 +49,7 @@ export default function ProductInfo(props: ProductInfoProps) {
       post<Bid, BidRequestBody>(url, {
         bid: bid,
         productId: props.product.id,
-      }).then(() => {});
+      }).then(() => props.refreshData());
     }
   }
 

@@ -9,7 +9,6 @@ import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsServic
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,8 +21,7 @@ public class BidServiceImpl implements BidService{
     private final ProductRepository productRepository;
     @Override
     public Page<Bid> getBids(BidParameters params, Pageable pageable) {
-        String bidderEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return bidRepository.findAllBids(bidderEmail, params.productId(), pageable);
+        return bidRepository.findAllBids(userDetailsService.getCurrentUserEmail(), params.productId(), pageable);
     }
 
     @Override
