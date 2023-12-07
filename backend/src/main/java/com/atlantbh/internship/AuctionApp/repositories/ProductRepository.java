@@ -12,17 +12,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         Product getRandom();
 
         @Query("""
-                        from Product where (:categoryId is null or :categoryId = subCategory.category.id )
-                        and (:subcategoryId is null or :subcategoryId = subCategory.id)
-                        and (:name is null or name ilike concat('%', :name, '%'))
-                        and (:sellerId is null or user.id = :sellerId)
-                        and
-                            case
-                                when :active = true then (dateEnd > current date)
-                                when :active = false then (dateEnd < current date)
-                                else true
-                            end
-                        """)
+                from Product where (:categoryId is null or :categoryId = subCategory.category.id )
+                and (:subcategoryId is null or :subcategoryId = subCategory.id)
+                and (:name is null or name ilike concat('%', :name, '%'))
+                and (:sellerId is null or user.id = :sellerId)
+                and
+                    case
+                        when :active = true then (dateEnd > current date)
+                        when :active = false then (dateEnd < current date)
+                        else true
+                    end
+                """)
         Page<Product> getAll(Pageable pageable,
                         @Param("categoryId") Long categoryId,
                         @Param("subcategoryId") Long subcategoryId,
