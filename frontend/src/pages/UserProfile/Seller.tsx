@@ -24,7 +24,7 @@ function renderTabButton(
         (!active &&
           "hover:bg-lightgrey-200 hover:bg-opacity-40 hover:text-black")
       }
-      onClick={(e) => onClick()}
+      onClick={onClick}
     >
       {label}
     </Button>
@@ -46,7 +46,7 @@ export default function Seller() {
     }
     params.append("sellerId", userContext!.id.toString());
     return params;
-  }, [activeTab]);
+  }, [activeTab, userContext]);
 
   const { data, isLoading, isError } = useFetchPage<Product>(
     fetchUrl,
