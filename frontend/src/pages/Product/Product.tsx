@@ -7,9 +7,16 @@ import Container from "components/Common/Container";
 import ProductImages from "./ProductImages";
 import ProductInfo from "./ProductInfo";
 import Bid from "models/Bid";
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
+
+function getSearchParams(id: string) {
+  const searchParams = new URLSearchParams();
+  searchParams.append("highestOnly", "true");
+  searchParams.append("productId", id.toString());
+  return searchParams;
+}
 
 export default function Product() {
   const { id } = useParams();
@@ -19,15 +26,10 @@ export default function Product() {
   );
 
   const url = new UrlBuilder().bids().url;
-  const params = useMemo(() => {
-    const searchParams = new URLSearchParams();
-    searchParams.append("bidderId", userContext?.id.toString() || "-1");
-    searchParams.append("highestOnly", "true");
-    searchParams.append("productId", data?.id.toString() || "-1");
-    return searchParams;
-  }, [data, userContext]);
 
-  const { data: userBid } = useFetchOne<Bid>(url + `?${params.toString()}`);
+  const { data: userBid } = useFetchOne<Bid>(
+    url + `?${getSearchParams(id!).toString()}`,
+  );
 
   if (isLoading) {
     return <div>Loading</div>;
