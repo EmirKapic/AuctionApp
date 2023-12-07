@@ -19,8 +19,8 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
             where b.bid =
                 (select max(b1.bid)
                 from Bid b1
-                where b1.product.id = b.product.id)
-           and(:bidderEmail is null or :bidderEmail = b.bidder.email)
+                where (:bidderEmail is null or b1.bidder.email = :bidderEmail)
+                and (b1.product.id = b.product.id))
            and(:productId is null or b.product.id = :productId)
             """)
     Page<Bid> findAllBids(@Param("bidderEmail") String bidderEmail,
