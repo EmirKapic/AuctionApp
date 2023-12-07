@@ -9,6 +9,11 @@ import org.springframework.data.repository.query.Param;
 
 public interface BidRepository extends JpaRepository<Bid, Long> {
 
+    /*
+        Realistically we should only give the top bid the product has on a product(if he has multiple),
+        others are irrelevant.
+        In case we need the history we can create a different endpoint (although I doubt it).
+     */
     @Query("""
             select b from Bid b
             where b.bid =
