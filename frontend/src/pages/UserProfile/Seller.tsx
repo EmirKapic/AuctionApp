@@ -69,7 +69,7 @@ export default function Seller() {
   }
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
-  });
+  }, [data]);
 
   if (isError) {
     return <div>Error</div>;

@@ -96,7 +96,7 @@ export default function SpecialOffers() {
 
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
-  });
+  }, [newProducts, lastChanceProducts]);
 
   return (
     <Container className="pb-10" type="large">
