@@ -6,27 +6,24 @@ import { defaultPageSize, maxPagesSpecialOffers } from "defaultConstants";
 import Product from "models/Product";
 import Container from "components/Common/Container";
 
+const recentSort: Sort = {
+  name: "dateStart",
+  order: "desc",
+};
+
+const expiringSort: Sort = {
+  name: "dateEnd",
+  order: "asc",
+};
+
+const activeParams = new URLSearchParams();
+activeParams.append("active", "true");
+activeParams.append("excludeUserOwned", "true");
+
 export default function SpecialOffers() {
   const [selectedTab, setSelectedTab] = useState(1);
   const [pageRecent, setPageRecent] = useState(0);
   const [pageExpiring, setPageExpiring] = useState(0);
-
-  const recentSort: Sort = {
-    name: "dateStart",
-    order: "desc",
-  };
-
-  const expiringSort: Sort = {
-    name: "dateEnd",
-    order: "asc",
-  };
-
-  const activeParams = useMemo(() => {
-    const params = new URLSearchParams();
-    params.append("active", "true");
-    params.append("excludeUserOwned", "true");
-    return params;
-  }, []);
 
   const {
     data: newProducts,
