@@ -18,8 +18,8 @@ public class Bid {
     private Instant dateCreated;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private User seller;
+    @JoinColumn(name = "bidder_id")
+    private User bidder;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

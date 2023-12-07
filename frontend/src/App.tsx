@@ -17,6 +17,7 @@ import Register from "pages/Register/Register";
 import GuestRoute from "components/Common/GuestRoute";
 import get from "services/fetching/Get";
 import UrlBuilder from "services/UrlBuilder";
+import UserProfile from "pages/UserProfile/UserProfile";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -62,6 +63,7 @@ function App() {
               element={<Register handleRegister={handleLogin} />}
             />
           </Route>
+          <Route path="/account" element={<UserProfile />} />
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />

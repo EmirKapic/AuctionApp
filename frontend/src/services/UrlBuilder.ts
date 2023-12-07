@@ -36,6 +36,14 @@ export default class UrlBuilder {
     this._url += "/register";
     return this;
   }
+  public bids(): UrlBuilder {
+    this._url += "/bids";
+    return this;
+  }
+  public user(): UrlBuilder {
+    this._url += "/user";
+    return this;
+  }
   public validate(): UrlBuilder {
     this._url += "/validate";
     return this;
