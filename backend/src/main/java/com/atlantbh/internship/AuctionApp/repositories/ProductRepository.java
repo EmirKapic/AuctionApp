@@ -16,13 +16,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             and (:subcategoryId is null or :subcategoryId = subCategory.id)
             and (:name is null or name ilike concat('%', :name, '%'))
             and (:sellerId is null or user.id = :sellerId)
-            and (dateStart < current date and dateEnd > current date)
             and
                 case
-                    when :active is null then true
-                    when :active = true AND dateEnd > current date then true
-                    when :active = false AND dateEnd < current date then true
-                    else false
+                    when :active = true then (dateEnd > current date)
+                    when :active = false then (dateEnd < current date)
+                    else true
                 end
             """)
     Page<Product> getAll(Pageable pageable,
