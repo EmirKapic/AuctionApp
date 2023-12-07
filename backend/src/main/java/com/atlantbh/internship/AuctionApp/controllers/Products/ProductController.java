@@ -29,7 +29,7 @@ public class ProductController {
 
     @GetMapping("/search")
     public ProductDidYouMean getAllActiveApproximate(final Pageable pageable,
-                                                     final ProductParameters parameters) {
+            final ProductParameters parameters) {
         return productService.getAllActiveApproximate(pageable, parameters);
     }
 
@@ -45,9 +45,9 @@ public class ProductController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity makeNewProduct(@RequestBody NewProductRequest request){
+    public ResponseEntity makeNewProduct(@RequestBody NewProductRequest request) {
         Optional<Product> insertedProduct = productService.createNewProduct(request);
-        if (insertedProduct.isEmpty()){
+        if (insertedProduct.isEmpty()) {
             return ResponseEntity.badRequest().body(new ErrorResponse("Could not create your auction."));
         }
         return ResponseEntity.ok().body(insertedProduct.get());
