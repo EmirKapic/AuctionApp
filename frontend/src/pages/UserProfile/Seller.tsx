@@ -94,7 +94,11 @@ export default function Seller() {
         <img src={product.images[0].url} className="w-24 h-16" />
       </td>
       <td className="col-span-2">{product.name}</td>
-      <td>{DateUtility.getDuration(new Date(product.dateEnd), new Date())}</td>
+      <td>
+        {new Date(product.dateEnd) < new Date()
+          ? "Finished"
+          : DateUtility.getDuration(new Date(product.dateEnd), new Date())}
+      </td>
       <td>{`$${product.startBid.toFixed(2)}`}</td>
       <td>{product.numberOfBids}</td>
       <td>
