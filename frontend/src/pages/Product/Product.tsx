@@ -10,13 +10,18 @@ import Bid from "models/Bid";
 import { useContext } from "react";
 import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
+import useFetchPage, { Sort } from "hooks/useFetchPage";
 
 function getSearchParams(id: string) {
   const searchParams = new URLSearchParams();
-  searchParams.append("highestOnly", "true");
   searchParams.append("productId", id.toString());
   return searchParams;
 }
+
+const sort: Sort = {
+  name: "bid",
+  order: "desc",
+};
 
 export default function Product() {
   const { id } = useParams();
@@ -27,8 +32,12 @@ export default function Product() {
 
   const url = new UrlBuilder().bids().url;
 
-  const { data: userBid } = useFetchOne<Bid>(
-    url + `?${getSearchParams(id!).toString()}`,
+  const { data: userBid } = useFetchPage<Bid>(
+    url,
+    0,
+    1,
+    sort,
+    getSearchParams(id!),
   );
 
   if (isLoading) {
@@ -38,14 +47,14 @@ export default function Product() {
   if (isError || !data) {
     return <div>Error while loading product...</div>;
   }
-  const highestBidder = data.highestBid === userBid?.bid;
+  const highestBidder = data.highestBid === userBid?.content[0]?.bid || false;
   return (
     <div className="w-full">
       <Breadcrumb
         title={data.name}
         items={[{ title: "Shop", to: "/shop" }, { title: "Single product" }]}
       />
-      {userBid && (
+      {userBid.content[0] && (
         <AlertMessage type={highestBidder ? "success" : "warning"}>
           {highestBidder
             ? "Congratulations! You are the highest bidder."
