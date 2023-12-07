@@ -1,6 +1,5 @@
 package com.atlantbh.internship.AuctionApp.controllers.Bids;
 
-
 import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.bidding.NewBidRequest;
 import com.atlantbh.internship.AuctionApp.models.Bid;
@@ -18,15 +17,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/bids")
 public class BidsController {
     private final BidService bidService;
+
     @GetMapping
-    public ResponseEntity getBids(final Pageable pageable, BidParameters params){
-        Page<Bid> bids =  bidService.getBids(params, pageable);
+    public ResponseEntity getBids(final Pageable pageable, BidParameters params) {
+        Page<Bid> bids = bidService.getBids(params, pageable);
         return ResponseEntity.ok().body(bids);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity makeNewBid(@RequestBody NewBidRequest request){
+    public ResponseEntity makeNewBid(@RequestBody NewBidRequest request) {
         return bidService.makeNewBid(request.bid(), request.productId())
                 .map(bid -> ResponseEntity.ok().body(bid))
                 .map(ResponseEntity.class::cast)

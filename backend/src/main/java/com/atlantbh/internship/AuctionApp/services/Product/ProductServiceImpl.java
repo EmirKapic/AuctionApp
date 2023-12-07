@@ -60,20 +60,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> createNewProduct(NewProductRequest request) {
 
-        if (!EmailValidator.validate(request.email())){
+        if (!EmailValidator.validate(request.email())) {
             return Optional.empty();
         }
 
         Optional<SubCategory> subCategory = subcategoryRepository.findById(request.subcategoryId());
-        if (subCategory.isEmpty()){
+        if (subCategory.isEmpty()) {
             return Optional.empty();
         }
 
         Instant startDate = Instant.parse(request.startDate());
         Instant endDate = Instant.parse(request.endDate());
 
-        Product newProduct = new Product(request.title(), request.description(), request.startPrice(), startDate, endDate,
-                request.address(), request.email(), request.city(), request.zipCode(), request.country(), request.phoneNumber());
+        Product newProduct = new Product(request.title(), request.description(), request.startPrice(), startDate,
+                endDate,
+                request.address(), request.email(), request.city(), request.zipCode(), request.country(),
+                request.phoneNumber());
 
         User user = userDetailsService.getCurrentUser();
 
@@ -81,13 +83,14 @@ public class ProductServiceImpl implements ProductService {
         newProduct.setSubCategory(subCategory.get());
         newProduct.setUser(user);
 
-
         return Optional.of(productRepository.save(newProduct));
     }
 
-    private String excludeOwnedBy(Boolean excludeUserOwned){
-        if (excludeUserOwned == null || !excludeUserOwned)return null;
-        else return userDetailsService.getCurrentUserEmail();
+    private String excludeOwnedBy(Boolean excludeUserOwned) {
+        if (excludeUserOwned == null || !excludeUserOwned)
+            return null;
+        else
+            return userDetailsService.getCurrentUserEmail();
     }
 
 }
