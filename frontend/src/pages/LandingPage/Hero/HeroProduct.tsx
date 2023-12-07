@@ -5,16 +5,12 @@ import UrlBuilder from "services/UrlBuilder";
 import { useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
 import { fallbackImageUrl } from "defaultConstants";
-import { useMemo } from "react";
+
+const params = new URLSearchParams();
+params.append("excludeUserOwned", "true");
 
 export default function HeroProduct() {
   const navigate = useNavigate();
-
-  const params = useMemo(() => {
-    const queryParams = new URLSearchParams();
-    queryParams.append("excludeUserOwned", "true");
-    return queryParams;
-  }, []);
 
   const { data, isLoading, isError } = useFetchOne<Product>(
     new UrlBuilder().products().random().url,
