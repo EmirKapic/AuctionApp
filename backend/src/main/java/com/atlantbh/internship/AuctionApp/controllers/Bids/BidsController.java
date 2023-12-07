@@ -27,7 +27,7 @@ public class BidsController {
     public ResponseEntity getBids(final Pageable pageable, BidParameters params){
         if (params.highestOnly() != null && params.highestOnly()){
             Page<Bid> bids = bidService.getBids(
-                    new BidParameters(params.bidderId(), params.productId(), null), PageRequest.of(
+                    new BidParameters(params.productId(), null), PageRequest.of(
                     0, 1, Sort.by(Sort.Direction.DESC, "bid")
             ));
             if (bids.isEmpty()){
