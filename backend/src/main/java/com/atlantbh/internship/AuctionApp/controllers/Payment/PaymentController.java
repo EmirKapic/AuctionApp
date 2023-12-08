@@ -7,6 +7,7 @@ import com.atlantbh.internship.AuctionApp.dtos.payment.PayRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.services.Payment.PaymentService;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,6 +37,14 @@ public class PaymentController {
             System.out.println(exception.getMessage());
             return ResponseEntity.internalServerError().body(new ErrorResponse("There was a problem processing your payment."));
         }
+    }
 
+    @PostMapping("/paymentHook")
+    public ResponseEntity paymentConfirmationHook(@RequestBody Event event){
+        if (event.getType().equals("payment_intent.succeeded")){
+            System.out.println("Success");
+        }
+
+        return ResponseEntity.ok().build();
     }
 }
