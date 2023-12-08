@@ -20,8 +20,8 @@ import UrlBuilder from "services/UrlBuilder";
 import UserProfile from "pages/UserProfile/UserProfile";
 import SellForm from "pages/SellingProcess/SellForm";
 import ProtectedRoute from "components/Common/ProtectedRoute";
-import intializeFirebase from "firebase/Firebase";
-import app from "firebase/Firebase";
+import Success from "pages/Payment/Success";
+import Failure from "pages/Payment/Failure";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -74,6 +74,8 @@ function App() {
             <Route path="/account" element={<UserProfile />} />
             <Route path="/account/sell" element={<SellForm />} />
           </Route>
+          <Route path="/payment/success" element={<Success />} />
+          <Route path="/payment/fail" element={<Failure />} />
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />
