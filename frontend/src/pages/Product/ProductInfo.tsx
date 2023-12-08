@@ -7,6 +7,14 @@ import UrlBuilder from "services/UrlBuilder";
 import post from "services/fetching/Post";
 import Icon from "svgs/Icon";
 
+export type PurchaseBody = {
+  productId: number;
+};
+
+export type PurchaseResponse = {
+  message: string;
+};
+
 export type BidRequestBody = {
   bid: number;
   productId: number;
@@ -17,6 +25,7 @@ export interface ProductInfoProps {
   userWon: boolean;
   ownedByUser: boolean;
   loggedIn: boolean;
+  auctionFinished: boolean;
   refreshData: () => void;
 }
 
@@ -32,8 +41,7 @@ function renderInfoField(title: string, value: string): ReactNode {
 export default function ProductInfo(props: ProductInfoProps) {
   const [bid, setBid] = useState<number>();
   const [warningText, setWarningText] = useState("");
-
-  const auctionFinished = new Date(props.product.dateEnd) < new Date();
+  const [isLoading, setIsLoading] = useState(false);
 
   function onPlaceBid(): void {
     if (!bid) {
@@ -51,6 +59,17 @@ export default function ProductInfo(props: ProductInfoProps) {
         productId: props.product.id,
       }).then(() => props.refreshData());
     }
+  }
+
+  function onProductPurchase(): void {
+    const url = new UrlBuilder().pay().url;
+    setIsLoading(true);
+    post<PurchaseResponse, PurchaseBody>(url, {
+      productId: props.product.id,
+    }).then((res) => {
+      setIsLoading(false);
+      window.location.replace(res.data.message);
+    });
   }
 
   return (
@@ -76,7 +95,7 @@ export default function ProductInfo(props: ProductInfoProps) {
         )}
         {renderInfoField(
           "Time left:",
-          auctionFinished
+          props.auctionFinished
             ? "Finished"
             : DateUtility.getDuration(
                 new Date(props.product.dateEnd),
@@ -86,20 +105,28 @@ export default function ProductInfo(props: ProductInfoProps) {
       </section>
       {!props.ownedByUser && (
         <div>
-          {auctionFinished ? (
-            <section className="flex justify-between items-center">
-              <div>Seller: {props.product.user.email}</div>
-              <div>
-                <Button
-                  type="primary"
-                  className="px-8 uppercase font-bold py-3"
-                  disabled={!props.loggedIn}
-                >
-                  <div>Buy now</div>
-                  <Icon name="chevronRight" />
-                </Button>
-              </div>
-            </section>
+          {props.auctionFinished ? (
+            props.userWon && (
+              <section className="flex justify-between items-center">
+                <div>Seller: {props.product.user.email}</div>
+                <div className="flex flex-col items-end">
+                  <Button
+                    type="primary"
+                    className="px-8 uppercase font-bold py-3"
+                    disabled={!props.loggedIn}
+                    onClick={onProductPurchase}
+                  >
+                    <div>Buy now</div>
+                    <Icon name="chevronRight" />
+                  </Button>
+                  {isLoading && (
+                    <p className="text-purple font-bold mt-2">
+                      We're preparing your purchase...
+                    </p>
+                  )}
+                </div>
+              </section>
+            )
           ) : (
             <div className=" mb-8">
               <section className="flex gap-4 h-min">
