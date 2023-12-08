@@ -15,10 +15,11 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class BidServiceImpl implements BidService{
+public class BidServiceImpl implements BidService {
     private final BidRepository bidRepository;
     private final AuctionUserDetailsService userDetailsService;
     private final ProductRepository productRepository;
+
     @Override
     public Page<Bid> getBids(BidParameters params, Pageable pageable) {
         return bidRepository.findAllBids(userDetailsService.getCurrentUserEmail(), params.productId(), pageable);
@@ -28,7 +29,7 @@ public class BidServiceImpl implements BidService{
     public Optional<Bid> makeNewBid(double bid, long productId) {
         User user = userDetailsService.getCurrentUser();
         Optional<Product> product = productRepository.findById(productId);
-        if (product.isEmpty() || !validBidAmount(bid, product.get().getHighestBid(), product.get().getStartBid())){
+        if (product.isEmpty() || !validBidAmount(bid, product.get().getHighestBid(), product.get().getStartBid())) {
             return Optional.empty();
         }
         Product prod = product.get();
@@ -40,7 +41,7 @@ public class BidServiceImpl implements BidService{
         return Optional.of(bidRepository.save(new Bid(bid, user, updatedProduct)));
     }
 
-    private boolean validBidAmount(double bid, Double highestBid, double startBid){
+    private boolean validBidAmount(double bid, Double highestBid, double startBid) {
         return highestBid != null ? bid > highestBid : bid > startBid;
     }
 }
