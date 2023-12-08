@@ -9,24 +9,41 @@ import ProductInfo from "./ProductInfo";
 import Bid from "models/Bid";
 import { useContext, useMemo } from "react";
 import { UserContext } from "contexts/UserContext";
+import AlertMessage from "components/Common/AlertMessage";
+import useFetchPage, { Sort } from "hooks/useFetchPage";
+
+const url = new UrlBuilder().bids().url;
+
+const sort: Sort = {
+  name: "bid",
+  order: "desc",
+};
 
 export default function Product() {
   const { id } = useParams();
   const userContext = useContext(UserContext);
-  const { data, isLoading, isError } = useFetchOne<ProductModel>(
+  const {
+    data,
+    isLoading,
+    isError,
+    refresh: refreshProductData,
+  } = useFetchOne<ProductModel>(
     new UrlBuilder().products().id(parseInt(id!)).url,
   );
 
-  const url = new UrlBuilder().bids().url;
   const params = useMemo(() => {
     const searchParams = new URLSearchParams();
-    searchParams.append("bidderId", userContext?.id.toString() || "-1");
-    searchParams.append("highestOnly", "true");
-    searchParams.append("productId", data?.id.toString() || "-1");
+    searchParams.append("productId", id!);
     return searchParams;
-  }, [data, userContext]);
+  }, [userContext]);
 
-  const { data: userBid } = useFetchOne<Bid>(url + `?${params.toString()}`);
+  const { data: userBid, refresh: refreshUserBid } = useFetchPage<Bid>(
+    url,
+    0,
+    1,
+    sort,
+    params,
+  );
 
   if (isLoading) {
     return <div>Loading</div>;
@@ -35,31 +52,20 @@ export default function Product() {
   if (isError || !data) {
     return <div>Error while loading product...</div>;
   }
-  const highestBidder = data.highestBid === userBid?.bid;
+  const highestBidder = data.highestBid === userBid?.content[0]?.bid || false;
   return (
     <div className="w-full">
       <Breadcrumb
         title={data.name}
         items={[{ title: "Shop", to: "/shop" }, { title: "Single product" }]}
       />
-      {userBid &&
-        (highestBidder ? (
-          <div className="w-full bg-green-100 py-5">
-            <Container type="large">
-              <p className="font-bold text-green-700">
-                Congratulations! You are the highest bidder!
-              </p>
-            </Container>
-          </div>
-        ) : (
-          <div className="w-full bg-amber-100 bg-opacity-50 py-5">
-            <Container type="large">
-              <p className="font-bold text-amber-600">
-                There are higher bid than yours. Try again?
-              </p>
-            </Container>
-          </div>
-        ))}
+      {userBid.content[0] && (
+        <AlertMessage type={highestBidder ? "success" : "warning"}>
+          {highestBidder
+            ? "Congratulations! You are the highest bidder."
+            : "There are higher bids than yours. Try again?"}
+        </AlertMessage>
+      )}
 
       <Container type="large">
         <div className="grid grid-rows-1 grid-cols-2">
@@ -72,6 +78,10 @@ export default function Product() {
               userWon={highestBidder}
               ownedByUser={data.user.id === userContext?.id}
               loggedIn={!!userContext}
+              refreshData={() => {
+                refreshUserBid();
+                refreshProductData();
+              }}
             />
           </div>
         </div>

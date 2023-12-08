@@ -1,3 +1,4 @@
+import Colors from "services/Colors";
 import SortType from "./SortType";
 import Select from "react-select";
 
@@ -20,8 +21,8 @@ export default function SortBar(props: SortBarProps) {
         styles={{
           option: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: state.isFocused ? "#8367D8" : "",
-            color: state.isFocused ? "white" : "",
+            backgroundColor: state.isFocused ? Colors.PURPLE : "",
+            color: state.isFocused ? Colors.WHITE : "",
           }),
         }}
       />

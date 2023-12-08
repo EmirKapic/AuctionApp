@@ -1,5 +1,5 @@
 import CategoryDto from "models/CategoryDto";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Icon from "svgs/Icon";
 
 export interface CategoryListItemProps {

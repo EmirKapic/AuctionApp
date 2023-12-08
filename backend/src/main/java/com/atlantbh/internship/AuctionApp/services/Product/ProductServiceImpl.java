@@ -14,6 +14,7 @@ import com.atlantbh.internship.AuctionApp.utilities.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -29,13 +30,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getAll(Pageable pageable, ProductParameters params) {
         return productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(), params.name(),
-                params.sellerId(), params.active());
+                params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()));
     }
 
     @Override
     public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
         Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(),
-                params.name(), params.sellerId(), params.active());
+                params.name(), params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()));
         if (!products.isEmpty()) {
             return new ProductDidYouMean(products, null);
         }
@@ -47,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getRandom() {
-        return productRepository.getRandom();
+        return productRepository.getRandom(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override
@@ -59,20 +60,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> createNewProduct(NewProductRequest request) {
 
-        if (!EmailValidator.validate(request.email())){
+        if (!EmailValidator.validate(request.email())) {
             return Optional.empty();
         }
 
         Optional<SubCategory> subCategory = subcategoryRepository.findById(request.subcategoryId());
-        if (subCategory.isEmpty()){
+        if (subCategory.isEmpty()) {
             return Optional.empty();
         }
 
         Instant startDate = Instant.parse(request.startDate());
         Instant endDate = Instant.parse(request.endDate());
 
-        Product newProduct = new Product(request.title(), request.description(), request.startPrice(), startDate, endDate,
-                request.address(), request.email(), request.city(), request.zipCode(), request.country(), request.phoneNumber());
+        Product newProduct = new Product(request.title(), request.description(), request.startPrice(), startDate,
+                endDate,
+                request.address(), request.email(), request.city(), request.zipCode(), request.country(),
+                request.phoneNumber());
 
         User user = userDetailsService.getCurrentUser();
 
@@ -80,8 +83,14 @@ public class ProductServiceImpl implements ProductService {
         newProduct.setSubCategory(subCategory.get());
         newProduct.setUser(user);
 
-
         return Optional.of(productRepository.save(newProduct));
+    }
+
+    private String excludeOwnedBy(Boolean excludeUserOwned) {
+        if (excludeUserOwned == null || !excludeUserOwned)
+            return null;
+        else
+            return userDetailsService.getCurrentUserEmail();
     }
 
 }

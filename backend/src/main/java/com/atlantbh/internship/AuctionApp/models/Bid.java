@@ -13,6 +13,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bid {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -26,4 +27,8 @@ public class Bid {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public Bid(double bid, User user, Product product){
+        this(0, bid, Instant.now(), user , product);
+    }
 }

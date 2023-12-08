@@ -13,12 +13,7 @@ export default function NotSelling() {
       <Button
         type="primary"
         className="py-3 uppercase px-20"
-        onClick={
-          () =>
-            navigate(
-              `/account/sell`,
-            ) /* this will go to sell page, once implemented*/
-        }
+        onClick={() => navigate(`/account/sell`)}
       >
         Start selling
       </Button>
