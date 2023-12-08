@@ -1,4 +1,4 @@
-package com.atlantbh.internship.AuctionApp.controllers.payment;
+package com.atlantbh.internship.AuctionApp.controllers.Payment;
 
 
 import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
