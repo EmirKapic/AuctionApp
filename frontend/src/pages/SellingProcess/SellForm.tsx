@@ -143,6 +143,13 @@ export default function SellForm() {
       return true;
     }
   }
+
+  const stepValidations = [validateFirstStep, validateSecondStep];
+
+  function validateStep(stepIndex: number): boolean {
+    return stepValidations[stepIndex]();
+  }
+
   const methods = useForm();
 
   async function onFormSubmit(data: FieldValues): Promise<void> {
@@ -215,8 +222,6 @@ export default function SellForm() {
                     back
                   </Button>
                 )}
-                {/* obviously, this should be done isLast ? onebtn : otherBtn but if i do it like that
-              due to some react shenanigans it submits form when it shouldnt*/}
                 {isLastStep ? (
                   <Button
                     key="finishBtn"
@@ -238,10 +243,7 @@ export default function SellForm() {
                       "hover:bg-opacity-70 duration-300",
                     )}
                     onClick={(e) => {
-                      if (
-                        (stepIndex === 0 && !validateFirstStep()) ||
-                        (stepIndex === 1 && !validateSecondStep())
-                      ) {
+                      if (!validateStep(stepIndex)) {
                         e.stopPropagation();
                         return;
                       }
