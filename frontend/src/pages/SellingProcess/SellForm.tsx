@@ -17,6 +17,7 @@ import { getAuthorizationHeaders } from "services/UserAuth";
 import post from "services/fetching/Post";
 import FileManager from "services/fileManaging/FileManager";
 import FirebaseFileManager from "services/fileManaging/FirebaseFileManager";
+import { className } from "services/ClassName";
 
 export type NewProductRequest = {
   title: string;
@@ -195,10 +196,10 @@ export default function SellForm() {
             <div className="flex justify-between">
               <Button
                 type="secondary"
-                className={
-                  btnClassName +
-                  " hover:bg-lightgrey-200 hover:bg-opacity-40 duration-300"
-                }
+                className={className(
+                  btnClassName,
+                  "hover:bg-lightgrey-200 hover:bg-opacity-40 duration-300",
+                )}
                 onClick={() => navigate("/account")}
               >
                 cancel
@@ -216,23 +217,26 @@ export default function SellForm() {
                 )}
                 {/* obviously, this should be done isLast ? onebtn : otherBtn but if i do it like that
               due to some react shenanigans it submits form when it shouldnt*/}
-                {isLastStep && (
+                {isLastStep ? (
                   <Button
+                    key="finishBtn"
                     type="primary-filled"
-                    className={
-                      btnClassName + " hover:bg-opacity-70 duration-300"
-                    }
+                    className={className(
+                      btnClassName,
+                      "hover:bg-opacity-70 duration-300",
+                    )}
                     formButtonType="submit"
                   >
                     Finish
                   </Button>
-                )}{" "}
-                {!isLastStep && (
+                ) : (
                   <Button
+                    key="nextBtn"
                     type="primary-filled"
-                    className={
-                      btnClassName + " hover:bg-opacity-70 duration-300"
-                    }
+                    className={className(
+                      btnClassName,
+                      "hover:bg-opacity-70 duration-300",
+                    )}
                     onClick={(e) => {
                       if (
                         (stepIndex === 0 && !validateFirstStep()) ||
