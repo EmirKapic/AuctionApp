@@ -7,8 +7,6 @@ import Icon from "svgs/Icon";
 import Select from "react-select";
 import TextArea from "components/Common/TextArea";
 
-export type ImageFile = string | ArrayBuffer | null;
-
 export type ItemInfoFields = {
   titleId: string;
   descriptionId: string;

@@ -1,6 +1,6 @@
 import Breadcrumb from "components/Common/Breadcrumb";
 import useMultistepForm from "hooks/useMultistepForm";
-import ItemInfo, { ImageFile } from "./ItemInfo";
+import ItemInfo from "./ItemInfo";
 import Prices from "./Prices";
 import ShippingInfo, { ShippingInfoProps } from "./ShippingInfo";
 import Form from "components/Common/Form";
