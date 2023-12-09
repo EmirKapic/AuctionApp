@@ -12,10 +12,11 @@ import UrlBuilder from "services/UrlBuilder";
 import CategoryDto from "models/CategoryDto";
 import { useState } from "react";
 import Subcategory from "models/Subcategory";
-import uploadFile from "firebase/UploadFile";
 import Product from "models/Product";
 import { getAuthorizationHeaders } from "services/UserAuth";
 import post from "services/fetching/Post";
+import FileManager from "services/fileManaging/FileManager";
+import FirebaseFileManager from "services/fileManaging/FirebaseFileManager";
 
 export type NewProductRequest = {
   title: string;
@@ -144,12 +145,11 @@ export default function SellForm() {
   const methods = useForm();
 
   async function onFormSubmit(data: FieldValues): Promise<void> {
+    const fileManager: FileManager = new FirebaseFileManager();
     const uploadPromises = formState.imagePaths.map(
-      async (path) => await uploadFile(path),
+      async (path) => await fileManager.uploadFile(path),
     );
-
     const givenUrls = await Promise.all(uploadPromises);
-    console.log(givenUrls);
 
     const newProduct: NewProductRequest = {
       title: data[addItemIds.titleId],
