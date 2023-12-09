@@ -30,7 +30,7 @@ export default function ItemInfo(props: ItemInfoProps) {
   }
 
   const images = props.imagePaths.map((img, index) => (
-    <div className="border border-silver relative">
+    <div className="border border-silver relative" key={index}>
       <button
         className="absolute top-1 right-1 border rounded-2xl bg-lightgrey-200 bg-opacity-20 backdrop-blur"
         onClick={(e) => {
@@ -111,7 +111,7 @@ export default function ItemInfo(props: ItemInfoProps) {
             ...requiredFieldsOptions("Please enter your product's description"),
             maxLength: {
               value: 700,
-              message: "Maximum length is 700characters",
+              message: "Maximum length is 700 characters",
             },
           }}
         />

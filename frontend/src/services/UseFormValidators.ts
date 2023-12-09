@@ -30,7 +30,14 @@ export function passwordValidationOptions(): RegisterOptions<
 export function requiredFieldsOptions(
   message: string,
 ): RegisterOptions<FieldValues, string> {
-  return { required: { value: true, message: message } };
+  return {
+    required: { value: true, message: message },
+    validate: (val) => {
+      if (!val.trim()) {
+        return message;
+      }
+    },
+  };
 }
 
 export function phoneNumberValidationOptions(): RegisterOptions<
