@@ -6,9 +6,13 @@ import com.atlantbh.internship.AuctionApp.dtos.MessageResponse;
 import com.atlantbh.internship.AuctionApp.dtos.payment.PayRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.PaymentException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
+import com.atlantbh.internship.AuctionApp.services.Bid.BidService;
 import com.atlantbh.internship.AuctionApp.services.Payment.PaymentService;
+import com.atlantbh.internship.AuctionApp.services.Product.ProductService;
+import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
+import com.stripe.model.checkout.Session;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final ProductService productService;
+    private final AuctionUserDetailsService userDetailsService;
+    private BidService bidService;
+
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
@@ -35,16 +43,24 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
         }
         catch(StripeException exception){
+            System.out.println(exception.getMessage());
             return ResponseEntity.internalServerError().body(new ErrorResponse("There was a problem processing your payment."));
         }
     }
 
     @PostMapping("/paymentHook")
-    public ResponseEntity paymentConfirmationHook(@RequestBody Event event){
-        if (event.getType().equals("payment_intent.succeeded")){
-            System.out.println("Success");
+    public void paymentConfirmationHook(@RequestBody String event){
+
+        try{
+            Event stripeEvent = Event.GSON.fromJson(event, Event.class);
+            if (stripeEvent.getType().equals("checkout.session.completed")){
+                Session sessionEvent = (Session) stripeEvent.getDataObjectDeserializer().getObject().get();
+                paymentService.finalizePayment(sessionEvent);
+            }
+        }
+        catch(Exception exception){
+            System.out.println("Failed reading");
         }
 
-        return ResponseEntity.ok().build();
     }
 }

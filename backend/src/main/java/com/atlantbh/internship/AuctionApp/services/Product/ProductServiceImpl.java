@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean isPurchasable(Product product) {
-        return product != null && product.getDateEnd().isBefore(Instant.now());
+        return product != null && !product.isPurchased() && product.getDateEnd().isBefore(Instant.now());
     }
 
     @Override
