@@ -15,8 +15,7 @@ const buttonClassName: Record<ButtonType, string> = {
     "border-2 border-purple flex gap-2 items-center justify-center duration-300 hover:bg-purple hover:text-white shadow-purple-md",
   "primary-filled":
     "flex gap-2 items-center justify-center bg-purple text-white",
-  secondary:
-    "border-2 border-silver flex gap-2 items-center justify-center duration-300",
+  secondary: "border-2 border-silver flex gap-2 items-center justify-center",
 };
 
 export default function Button(props: PropsWithChildren<ButtonProps>) {
