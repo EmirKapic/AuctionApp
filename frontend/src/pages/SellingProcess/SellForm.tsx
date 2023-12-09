@@ -37,18 +37,18 @@ export type NewProductRequest = {
 
 const addItemIds = {
   titleId: "ProductTitle",
-  descriptionId: "productDescription",
+  descriptionId: "ProductDescription",
 };
 const pricesIds = {
-  startPriceId: "StartPriceId",
-  startDateId: "startDateId",
-  endDateId: "endDateId",
+  startPriceId: "StartPrice",
+  startDateId: "StartDate",
+  endDateId: "EndDate",
 };
 const shippingIds: ShippingInfoProps = {
-  addressId: "addressInput",
+  addressId: "AddressInput",
   emailId: "Email",
   cityId: "City",
-  zipId: "Zip Code",
+  zipId: "ZipCode",
   countryId: "Country",
   phoneId: "PhoneNumber",
 };
@@ -81,8 +81,8 @@ const btnClassName = "py-2 px-8 uppercase";
 export default function SellForm() {
   const { data } = useFetchAll<CategoryDto>(new UrlBuilder().categories().url);
   const navigate = useNavigate();
-
   const [formState, setFormState] = useState<FormState>(INITIAL);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   function updateFields(fields: Partial<FormState>): void {
     setFormState({ ...formState, ...fields });
   }
@@ -145,6 +145,7 @@ export default function SellForm() {
   const methods = useForm();
 
   async function onFormSubmit(data: FieldValues): Promise<void> {
+    setIsSubmitting(true);
     const fileManager: FileManager = new FirebaseFileManager();
     const uploadPromises = formState.imagePaths.map(
       async (path) => await fileManager.uploadFile(path),
@@ -183,68 +184,75 @@ export default function SellForm() {
       <FormProvider {...methods}>
         <Form
           title={titleMap[stepIndex]}
-          onSubmit={methods.handleSubmit((data, e) => {
-            e?.preventDefault();
+          onSubmit={methods.handleSubmit((data) => {
             onFormSubmit(data);
           })}
         >
           {step}
-          <div className="flex justify-between">
-            <Button
-              type="secondary"
-              className={
-                btnClassName +
-                " hover:bg-lightgrey-200 hover:bg-opacity-40 duration-300"
-              }
-              onClick={() => navigate("/account")}
-            >
-              cancel
-            </Button>
-            <div className="flex gap-2">
-              {!isFirstStep && (
-                <Button
-                  type="primary"
-                  className={btnClassName}
-                  onClick={() => back()}
-                  formButtonType="button"
-                >
-                  back
-                </Button>
-              )}
-              {/* obviously, this should be done isLast ? onebtn : otherBtn but if i do it like that
+          {isSubmitting ? (
+            <p className="text-center text-xl font-bold">Submitting...</p>
+          ) : (
+            <div className="flex justify-between">
+              <Button
+                type="secondary"
+                className={
+                  btnClassName +
+                  " hover:bg-lightgrey-200 hover:bg-opacity-40 duration-300"
+                }
+                onClick={() => navigate("/account")}
+              >
+                cancel
+              </Button>
+              <div className="flex gap-2">
+                {!isFirstStep && (
+                  <Button
+                    type="primary"
+                    className={btnClassName}
+                    onClick={() => back()}
+                    formButtonType="button"
+                  >
+                    back
+                  </Button>
+                )}
+                {/* obviously, this should be done isLast ? onebtn : otherBtn but if i do it like that
               due to some react shenanigans it submits form when it shouldnt*/}
-              {isLastStep && (
-                <Button
-                  type="primary-filled"
-                  className={btnClassName + " hover:bg-opacity-70 duration-300"}
-                  formButtonType="submit"
-                >
-                  Finish
-                </Button>
-              )}{" "}
-              {!isLastStep && (
-                <Button
-                  type="primary-filled"
-                  className={btnClassName + " hover:bg-opacity-70 duration-300"}
-                  onClick={(e) => {
-                    if (
-                      (stepIndex === 0 && !validateFirstStep()) ||
-                      (stepIndex === 1 && !validateSecondStep())
-                    ) {
-                      e.stopPropagation();
-                      return;
+                {isLastStep && (
+                  <Button
+                    type="primary-filled"
+                    className={
+                      btnClassName + " hover:bg-opacity-70 duration-300"
                     }
-                    methods.trigger().then((noErrors) => {
-                      if (noErrors) next();
-                    });
-                  }}
-                  formButtonType="button"
-                >
-                  next
-                </Button>
-              )}
+                    formButtonType="submit"
+                  >
+                    Finish
+                  </Button>
+                )}{" "}
+                {!isLastStep && (
+                  <Button
+                    type="primary-filled"
+                    className={
+                      btnClassName + " hover:bg-opacity-70 duration-300"
+                    }
+                    onClick={(e) => {
+                      if (
+                        (stepIndex === 0 && !validateFirstStep()) ||
+                        (stepIndex === 1 && !validateSecondStep())
+                      ) {
+                        e.stopPropagation();
+                        return;
+                      }
+                      methods.trigger().then((noErrors) => {
+                        if (noErrors) next();
+                      });
+                    }}
+                    formButtonType="button"
+                  >
+                    next
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </Form>
       </FormProvider>
     </div>
