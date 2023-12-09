@@ -1,5 +1,6 @@
 package com.atlantbh.internship.AuctionApp.services.Payment;
 
+import com.atlantbh.internship.AuctionApp.exceptions.PaymentException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.models.User;
@@ -35,9 +36,17 @@ public class StripePaymentService implements PaymentService{
 
 
     @Override
-    public String hostedCheckout(long productId) throws ProductNotFoundException, StripeException {
+    public String hostedCheckout(long productId) throws ProductNotFoundException, StripeException, PaymentException {
         User user = userDetailsService.getCurrentUser();
         Product product = productService.getById(productId);
+
+        if (!productService.isPurchasable(product)){
+            throw new PaymentException("Product is not available for purchase.");
+        }
+        if (productService.getWinner(product).getId() != user.getId()){
+            throw new PaymentException("You are not the winner of the auction.");
+        }
+
 
         Stripe.apiKey = STRIPE_SECRET_KEY;
 

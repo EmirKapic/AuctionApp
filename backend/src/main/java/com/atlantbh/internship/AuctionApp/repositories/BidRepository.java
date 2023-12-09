@@ -26,4 +26,6 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     Page<Bid> findAllBids(@Param("bidderEmail") String bidderEmail,
             @Param("productId") Long productId,
             Pageable pageable);
+
+    Bid findFirstByProduct_IdOrderByBidDesc(long productId);
 }

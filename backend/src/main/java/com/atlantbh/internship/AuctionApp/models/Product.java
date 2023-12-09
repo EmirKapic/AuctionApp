@@ -14,11 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-    public Product(String name, String description, double startBid, Instant dateStart, Instant dateEnd,
-                   String address, String email, String city, String zipCode, String country, String phoneNumber){
-        this(0, name, description, startBid, null, 0, dateStart, dateEnd, Instant.now(), address,
-                email, city, zipCode, country, phoneNumber, null, null, null);
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -36,6 +31,7 @@ public class Product {
     private String zipCode;
     private String country;
     private String phoneNumber;
+    private boolean purchased;
 
     @ManyToOne
     @JoinColumn(name = "subcategory_id")
@@ -47,4 +43,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user;
+
+    public Product(String name, String description, double startBid, Instant dateStart, Instant dateEnd,
+                   String address, String email, String city, String zipCode, String country, String phoneNumber){
+        this(0, name, description, startBid, null, 0, dateStart, dateEnd, Instant.now(), address,
+                email, city, zipCode, country, phoneNumber, false, null, null, null);
+    }
 }

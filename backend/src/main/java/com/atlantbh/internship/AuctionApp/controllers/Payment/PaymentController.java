@@ -4,6 +4,7 @@ package com.atlantbh.internship.AuctionApp.controllers.Payment;
 import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.MessageResponse;
 import com.atlantbh.internship.AuctionApp.dtos.payment.PayRequest;
+import com.atlantbh.internship.AuctionApp.exceptions.PaymentException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.services.Payment.PaymentService;
 import com.stripe.exception.StripeException;
@@ -30,11 +31,10 @@ public class PaymentController {
             String hostedUrl = paymentService.hostedCheckout(request.productId());
             return ResponseEntity.ok().body(new MessageResponse(hostedUrl));
         }
-        catch(ProductNotFoundException exception){
-            return ResponseEntity.badRequest().body(new ErrorResponse("Invalid user or product information. Could not continue with payment."));
+        catch(ProductNotFoundException | PaymentException exception){
+            return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
         }
         catch(StripeException exception){
-            System.out.println(exception.getMessage());
             return ResponseEntity.internalServerError().body(new ErrorResponse("There was a problem processing your payment."));
         }
     }
