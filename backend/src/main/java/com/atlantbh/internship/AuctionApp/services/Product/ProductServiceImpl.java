@@ -72,17 +72,13 @@ public class ProductServiceImpl implements ProductService {
         Instant startDate = Instant.parse(request.startDate());
         Instant endDate = Instant.parse(request.endDate());
 
-        Product newProduct = new Product(request.title(), request.description(), request.startPrice(), startDate, endDate,
-                request.address(), request.email(), request.city(), request.zipCode(), request.country(), request.phoneNumber());
-
-
         String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.loadUserByUsername(currentUserEmail);
 
-        newProduct.setImages(request.imageUrls().stream().map(url -> new ProductImage(0, url, newProduct)).toList());
-        newProduct.setSubCategory(subCategory.get());
-        newProduct.setUser(user);
-
+        Product newProduct = new Product(request.title(), request.description(), request.startPrice(), startDate, endDate,
+                request.address(), request.email(), request.city(), request.zipCode(), request.country(), request.phoneNumber(),
+                subCategory.get(), user);
+        newProduct.setImages(request.imageUrls().stream().map(url -> new ProductImage(url, newProduct)).toList());
 
         return Optional.of(productRepository.save(newProduct));
     }

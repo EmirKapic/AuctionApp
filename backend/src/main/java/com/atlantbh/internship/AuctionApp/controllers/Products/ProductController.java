@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping(value = "/api/products")
 @AllArgsConstructor
@@ -46,11 +44,10 @@ public class ProductController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity makeNewProduct(@RequestBody NewProductRequest request) {
-        Optional<Product> insertedProduct = productService.createNewProduct(request);
-        if (insertedProduct.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ErrorResponse("Could not create your auction."));
-        }
-        return ResponseEntity.ok().body(insertedProduct.get());
+        return productService.createNewProduct(request)
+                .map(product -> ResponseEntity.ok().body(product))
+                .map(ResponseEntity.class::cast)
+                .orElse(ResponseEntity.badRequest().body(new ErrorResponse("Could not create new product.")));
     }
 
 }
