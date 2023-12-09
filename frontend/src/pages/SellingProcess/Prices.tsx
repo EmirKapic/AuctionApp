@@ -41,6 +41,7 @@ export default function Prices(props: PricesProps) {
               placeholderText="12/12/2024"
               className="border border-silver py-2 px-5 cursor-pointer"
               minDate={new Date()}
+              maxDate={props.endDate}
             />
           </label>
         </div>
