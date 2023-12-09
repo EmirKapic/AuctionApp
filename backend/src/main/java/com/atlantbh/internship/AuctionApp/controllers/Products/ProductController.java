@@ -7,6 +7,7 @@ import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductParameters;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductService;
+import com.atlantbh.internship.AuctionApp.utilities.ProductValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,10 +45,12 @@ public class ProductController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity makeNewProduct(@RequestBody NewProductRequest request) {
+        if (!ProductValidator.validate(request)){
+            return ResponseEntity.badRequest().body(new ErrorResponse("Invalid product data."));
+        }
         return productService.createNewProduct(request)
                 .map(product -> ResponseEntity.ok().body(product))
                 .map(ResponseEntity.class::cast)
                 .orElse(ResponseEntity.badRequest().body(new ErrorResponse("Could not create new product.")));
     }
-
 }
