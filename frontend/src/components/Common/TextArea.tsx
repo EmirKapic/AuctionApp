@@ -1,32 +1,33 @@
-import { HTMLInputTypeAttribute } from "react";
 import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 
-export interface InputProps {
+export interface TextAreaProps {
   id: string;
   validationOptions?: RegisterOptions<FieldValues, string>;
   placeholder?: string;
-  type?: HTMLInputTypeAttribute;
   label?: string;
+  rows?: number;
+  cols?: number;
+  maxLength?: number;
 }
 
-export default function Input(props: InputProps) {
+export default function TextArea(props: TextAreaProps) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
+
   return (
     <div className="flex flex-col gap-2 text-grey_ tracking-wide">
-      {/* maybe without the conditional render?*/}
-      {props.label && (
-        <label className="text-lg" htmlFor={props.id}>
-          {props.label}
-        </label>
-      )}
-      <input
+      <label className="text-lg" htmlFor={props.id}>
+        {props.label}
+      </label>
+      <textarea
         id={props.id}
         placeholder={props.placeholder}
-        type={props.type}
-        className="border border-silver border-opacity-50 bg-lightgrey-50 indent-3 py-3"
+        className="border border-silver py-1 px-3"
+        maxLength={props.maxLength}
+        rows={props.rows}
+        cols={props.cols}
         {...register(props.id, props.validationOptions)}
       />
       {errors[props.id] && (

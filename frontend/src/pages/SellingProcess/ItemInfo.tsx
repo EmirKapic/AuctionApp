@@ -5,6 +5,7 @@ import Subcategory from "models/Subcategory";
 import { requiredFieldsOptions } from "services/UseFormValidators";
 import Icon from "svgs/Icon";
 import Select from "react-select";
+import TextArea from "components/Common/TextArea";
 
 export type ImageFile = string | ArrayBuffer | null;
 
@@ -101,10 +102,9 @@ export default function ItemInfo(props: ItemInfoProps) {
       </div>
       <div className="text-red-500">{props.selectorsWarningMessage}</div>
       <div>
-        <Input
+        <TextArea
           id={props.descriptionId}
           label="Description"
-          multiline
           rows={7}
           maxLength={700}
           validationOptions={{
