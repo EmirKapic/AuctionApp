@@ -60,7 +60,7 @@ export default function Product() {
         title={data.name}
         items={[{ title: "Shop", to: "/shop" }, { title: "Single product" }]}
       />
-      {userBid.content[0] && !auctionFinished && (
+      {userBid.content[0] && !auctionFinished && !data.purchased && (
         <AlertMessage type={highestBidder ? "success" : "warning"}>
           {highestBidder
             ? "Congratulations! You are the highest bidder."

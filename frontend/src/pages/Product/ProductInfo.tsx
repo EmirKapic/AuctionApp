@@ -103,7 +103,7 @@ export default function ProductInfo(props: ProductInfoProps) {
               ),
         )}
       </section>
-      {!props.ownedByUser && (
+      {!props.ownedByUser && !props.product.purchased && (
         <div>
           {props.auctionFinished ? (
             props.userWon && (
