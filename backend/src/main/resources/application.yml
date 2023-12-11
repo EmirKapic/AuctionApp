@@ -3,7 +3,7 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}

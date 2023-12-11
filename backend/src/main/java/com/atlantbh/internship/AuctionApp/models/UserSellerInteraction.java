@@ -24,4 +24,8 @@ public class UserSellerInteraction {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User seller;
+
+    public UserSellerInteraction(User seller, User user){
+        this(0, 1, Instant.now(), 1, user, seller);
+    }
 }

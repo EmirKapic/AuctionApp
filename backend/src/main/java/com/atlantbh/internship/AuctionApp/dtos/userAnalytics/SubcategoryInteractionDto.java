@@ -1,4 +1,4 @@
 package com.atlantbh.internship.AuctionApp.dtos.userAnalytics;
 
-public record InteractionDto(long id) {
+public record SubcategoryInteractionDto(long id) {
 }
