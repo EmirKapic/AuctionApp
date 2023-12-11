@@ -12,14 +12,7 @@ import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import post from "services/fetching/Post";
-
-type UserSubcategoryInteractionBody = {
-  id?: number;
-};
-
-type UserSellerInteractionBody = {
-  email?: string;
-};
+import UserInteractionService from "services/UserInteractionService";
 
 const url = new UrlBuilder().bids().url;
 
@@ -55,15 +48,7 @@ export default function Product() {
   );
 
   useEffect(() => {
-    //any because we don't care about the response
-    post<any, UserSubcategoryInteractionBody>(
-      new UrlBuilder().userInteraction().subcategory().url,
-      { id: data?.subCategory.id },
-    );
-    post<any, UserSellerInteractionBody>(
-      new UrlBuilder().userInteraction().seller().url,
-      { email: data?.user.email },
-    );
+    UserInteractionService.updateInteractions(data);
   }, [data]);
 
   if (isLoading) {
