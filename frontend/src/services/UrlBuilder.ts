@@ -48,4 +48,12 @@ export default class UrlBuilder {
     this._url += "/validate";
     return this;
   }
+  public userInteraction(): UrlBuilder {
+    this._url += "/userInteraction";
+    return this;
+  }
+  public subcategory(): UrlBuilder {
+    this._url += "/subcategory";
+    return this;
+  }
 }

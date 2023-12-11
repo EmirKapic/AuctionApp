@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +21,7 @@ public class InteractionsController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/subcategory")
-    public ResponseEntity createSubcategoryInteraction(InteractionDto interaction){
+    public ResponseEntity createSubcategoryInteraction(@RequestBody InteractionDto interaction){
         try{
             subcategoryInteractionService.createOrAdd(interaction.id());
             return ResponseEntity.ok().body(new MessageResponse("Added a new interaction"));

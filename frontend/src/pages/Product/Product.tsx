@@ -7,10 +7,15 @@ import Container from "components/Common/Container";
 import ProductImages from "./ProductImages";
 import ProductInfo from "./ProductInfo";
 import Bid from "models/Bid";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
+import post from "services/fetching/Post";
+
+export type UserInteractionBody = {
+  id?: number;
+};
 
 const url = new UrlBuilder().bids().url;
 
@@ -44,6 +49,14 @@ export default function Product() {
     sort,
     params,
   );
+
+  useEffect(() => {
+    //any because we don't care about the response
+    post<any, UserInteractionBody>(
+      new UrlBuilder().userInteraction().subcategory().url,
+      { id: data?.subCategory.id },
+    );
+  }, [data]);
 
   if (isLoading) {
     return <div>Loading</div>;
