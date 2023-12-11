@@ -37,7 +37,7 @@ public class InteractionsController {
     @PostMapping("/seller")
     public ResponseEntity createSellerInteraction(@RequestBody SellerInteractionDto interaction){
         try{
-            sellerInteractionService.createOrAdd(interaction.sellerEmail());
+            sellerInteractionService.createOrAdd(interaction.email());
             return ResponseEntity.ok().body(new MessageResponse("Added a new interaction"));
         }
         catch(Exception exception){

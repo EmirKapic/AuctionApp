@@ -56,4 +56,8 @@ export default class UrlBuilder {
     this._url += "/subcategory";
     return this;
   }
+  public seller(): UrlBuilder {
+    this._url += "/seller";
+    return this;
+  }
 }
