@@ -20,8 +20,6 @@ import UrlBuilder from "services/UrlBuilder";
 import UserProfile from "pages/UserProfile/UserProfile";
 import SellForm from "pages/SellingProcess/SellForm";
 import ProtectedRoute from "components/Common/ProtectedRoute";
-import intializeFirebase from "firebase/Firebase";
-import app from "firebase/Firebase";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -31,6 +29,12 @@ function App() {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
     navigate("/");
+  }
+
+  function handleLogout() {
+    setCurrentUser(undefined);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
   }
 
   useEffect(() => {
@@ -51,7 +55,7 @@ function App() {
   return (
     <main className="relative min-h-screen pb-72">
       <UserContext.Provider value={currentUser}>
-        <Navbar />
+        <Navbar onLogout={handleLogout} />
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LandingPage />} />
