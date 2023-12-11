@@ -25,4 +25,8 @@ public class UserSubcategoryInteraction {
     @ManyToOne
     @JoinColumn(name = "subcategory_id")
     private SubCategory subCategory;
+
+    public UserSubcategoryInteraction(User user, SubCategory subCategory){
+        this(0, 1, Instant.now(), 1, user, subCategory);
+    }
 }
