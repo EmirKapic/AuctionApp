@@ -1,6 +1,6 @@
 import Breadcrumb from "components/Common/Breadcrumb";
 import useMultistepForm from "hooks/useMultistepForm";
-import ItemInfo, { ImageFile } from "./ItemInfo";
+import ItemInfo from "./ItemInfo";
 import Prices from "./Prices";
 import ShippingInfo, { ShippingInfoProps } from "./ShippingInfo";
 import Form from "components/Common/Form";
@@ -14,8 +14,8 @@ import { useState } from "react";
 import Subcategory from "models/Subcategory";
 import uploadFile from "firebase/UploadFile";
 import Product from "models/Product";
-import { getAuthorizationHeaders } from "services/UserAuth";
 import post from "services/fetching/Post";
+import UserInteractionService from "services/UserInteractionService";
 
 export type NewProductRequest = {
   title: string;
@@ -168,7 +168,12 @@ export default function SellForm() {
       phoneNumber: data[shippingIds.phoneId],
     };
     const url = new UrlBuilder().products().url;
-    post<Product, NewProductRequest>(url, newProduct).then(() => navigate("/"));
+    post<Product, NewProductRequest>(url, newProduct).then((product) => {
+      UserInteractionService.updateSubcategoryInteraction(
+        product.data.subCategory.id,
+      );
+      navigate("/");
+    });
   }
 
   return (

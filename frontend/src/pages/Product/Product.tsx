@@ -11,7 +11,6 @@ import { useContext, useEffect, useMemo } from "react";
 import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
-import post from "services/fetching/Post";
 import UserInteractionService from "services/UserInteractionService";
 
 const url = new UrlBuilder().bids().url;
