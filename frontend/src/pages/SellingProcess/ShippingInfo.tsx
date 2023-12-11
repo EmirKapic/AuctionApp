@@ -1,6 +1,5 @@
 import Input from "components/Common/Input";
 import {
-  emailValidationOptions,
   phoneNumberValidationOptions,
   requiredFieldsOptions,
 } from "services/UseFormValidators";
