@@ -1,5 +1,6 @@
 package com.atlantbh.internship.AuctionApp.controllers.UserAnalytics;
 
+import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.MessageResponse;
 import com.atlantbh.internship.AuctionApp.dtos.userAnalytics.InteractionDto;
 import com.atlantbh.internship.AuctionApp.services.UserAnalytics.UserSubcategoryInteractionService;
@@ -20,7 +21,12 @@ public class InteractionsController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/subcategory")
     public ResponseEntity createSubcategoryInteraction(InteractionDto interaction){
-        subcategoryInteractionService.createOrAdd(interaction.id());
-        return ResponseEntity.ok().body(new MessageResponse("Added a new interaction"));
+        try{
+            subcategoryInteractionService.createOrAdd(interaction.id());
+            return ResponseEntity.ok().body(new MessageResponse("Added a new interaction"));
+        }
+        catch(Exception exception){
+            return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
+        }
     }
 }
