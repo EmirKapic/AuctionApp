@@ -7,7 +7,6 @@ import {
 
 export interface ShippingInfoProps {
   addressId: string;
-  emailId: string;
   cityId: string;
   zipId: string;
   countryId: string;
@@ -22,12 +21,6 @@ export default function ShippingInfo(props: ShippingInfoProps) {
         label="Adress"
         type="text"
         validationOptions={requiredFieldsOptions("Please enter your adress")}
-      />
-      <Input
-        id={props.emailId}
-        label="Enter Email"
-        type="email"
-        validationOptions={emailValidationOptions()}
       />
       <div className="flex gap-5">
         <div className="flex-grow">

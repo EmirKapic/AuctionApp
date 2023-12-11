@@ -29,7 +29,6 @@ export type NewProductRequest = {
   startDate: string;
   endDate: string;
   address: string;
-  email: string;
   city: string;
   zipCode: string;
   country: string;
@@ -47,7 +46,6 @@ const pricesIds = {
 };
 const shippingIds: ShippingInfoProps = {
   addressId: "AddressInput",
-  emailId: "Email",
   cityId: "City",
   zipId: "ZipCode",
   countryId: "Country",
@@ -170,7 +168,6 @@ export default function SellForm() {
       startDate: formState.startDate!.toISOString(),
       endDate: formState.endDate!.toISOString(),
       address: data[shippingIds.addressId],
-      email: data[shippingIds.emailId],
       zipCode: data[shippingIds.zipId],
       city: data[shippingIds.cityId],
       country: data[shippingIds.countryId],
