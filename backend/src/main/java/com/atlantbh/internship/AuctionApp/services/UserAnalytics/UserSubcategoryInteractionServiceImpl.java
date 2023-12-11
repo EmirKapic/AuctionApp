@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,11 +28,15 @@ public class UserSubcategoryInteractionServiceImpl implements UserSubcategoryInt
             throw new SubcategoryNotFoundException("Subcategory with id: " + subcategoryId + "doesn't exist.");
         }
 
-        Optional<UserSubcategoryInteraction> userInteraction =
-                interactionRepository.findBySubCategory_IdAndUser_Id(subcategoryId, user.getId());
+        List<UserSubcategoryInteraction> userInteractions =
+                interactionRepository.findAllBySubCategory_IdAndUser_Id(subcategoryId, user.getId());
 
-        return userInteraction.map(this::addInteraction)
-                .orElseGet(() -> interactionRepository.save(new UserSubcategoryInteraction(user, subCategory.get())));
+        if (userInteractions.isEmpty()){
+            return interactionRepository.save(new UserSubcategoryInteraction(user, subCategory.get()));
+        }
+        else{
+            return addInteraction(userInteractions.get(0));
+        }
     }
 
     private UserSubcategoryInteraction addInteraction(UserSubcategoryInteraction interaction){
