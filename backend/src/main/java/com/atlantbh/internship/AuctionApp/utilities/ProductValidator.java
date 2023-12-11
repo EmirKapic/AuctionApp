@@ -13,7 +13,6 @@ public class ProductValidator {
         }
         return request.endDate().isAfter(request.startDate())
                 && request.startDate().isAfter(Instant.now())
-                && EmailValidator.validate(request.email())
                 && PhoneValidator.validate(request.phoneNumber())
                 && request.startPrice() > 0;
     }

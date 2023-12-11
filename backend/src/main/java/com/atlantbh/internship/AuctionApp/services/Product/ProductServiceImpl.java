@@ -10,14 +10,12 @@ import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryRepository;
 import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
-import com.atlantbh.internship.AuctionApp.utilities.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -59,11 +57,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Optional<Product> createNewProduct(NewProductRequest request) {
-
-        if (!EmailValidator.validate(request.email())){
-            return Optional.empty();
-        }
-
         Optional<SubCategory> subCategory = subcategoryRepository.findById(request.subcategoryId());
         if (subCategory.isEmpty()){
             return Optional.empty();
@@ -73,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
         User user = userDetailsService.loadUserByUsername(currentUserEmail);
 
         Product newProduct = new Product(request.title(), request.description(), request.startPrice(), request.startDate(),
-                request.endDate(), request.address(), request.email(), request.city(), request.zipCode(), request.country(),
+                request.endDate(), request.address(), request.city(), request.zipCode(), request.country(),
                 request.phoneNumber(), subCategory.get(), user);
         newProduct.setImages(request.imageUrls().stream().map(url -> new ProductImage(url, newProduct)).toList());
 
