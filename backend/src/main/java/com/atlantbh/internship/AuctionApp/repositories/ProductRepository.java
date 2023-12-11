@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ProductRepository extends JpaRepository<Product, Long> {
         @Query(value = "FROM Product where dateStart < current date and dateEnd > current date and user.email <> :userEmail ORDER BY RANDOM() LIMIT 1")
         Product getRandom(String userEmail);
@@ -42,4 +44,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         @Param("categoryId") Long categoryId,
                         @Param("subcategoryId") Long subcategoryId,
                         @Param("name") String name);
+
+
+        @Query(value = """
+               select * from
+                       (select product.*
+                        from Product as product
+                        join user_subcategory_interaction as subInteraction on subInteraction.subcategory_id=product.subcategory_id
+                        join user_seller_interaction as sellerInteraction on sellerInteraction.seller_id = product.seller_id
+                        where subInteraction.user_id = :userId
+                        order by (subInteraction.views + sellerInteraction.views) desc
+                        limit 15) as temp
+                order by RANDOM()
+                limit 3
+                """, nativeQuery = true)
+        List<Product> getRecommendedProducts(@Param("userId")long userId);
 }

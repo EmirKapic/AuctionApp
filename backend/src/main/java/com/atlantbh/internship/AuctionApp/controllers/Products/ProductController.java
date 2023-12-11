@@ -7,6 +7,7 @@ import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductParameters;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductService;
+import com.atlantbh.internship.AuctionApp.services.UserAnalytics.ProductRecommendationService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
-
+    private ProductRecommendationService productRecommendationService;
     @GetMapping
     public Page<Product> getAll(final Pageable pageable, final ProductParameters parameters) {
         return productService.getAll(pageable, parameters);
@@ -51,6 +52,11 @@ public class ProductController {
             return ResponseEntity.badRequest().body(new ErrorResponse("Could not create your auction."));
         }
         return ResponseEntity.ok().body(insertedProduct.get());
+    }
+
+    @GetMapping("/recommended")
+    public ResponseEntity getRecommendedProducts(){
+        return ResponseEntity.ok().body(productRecommendationService.recommendedProducts());
     }
 
 }
