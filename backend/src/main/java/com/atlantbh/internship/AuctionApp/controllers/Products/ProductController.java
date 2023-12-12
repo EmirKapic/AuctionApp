@@ -15,11 +15,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 @RestController
 @RequestMapping(value = "/api/products")
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
+
+    @GetMapping("/test")
+    public void test(){
+        System.out.println(Instant.now().truncatedTo(ChronoUnit.DAYS));
+    }
 
     @GetMapping
     public Page<Product> getAll(final Pageable pageable, final ProductParameters parameters) {
