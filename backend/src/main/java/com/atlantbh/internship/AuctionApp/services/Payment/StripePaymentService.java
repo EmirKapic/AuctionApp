@@ -14,7 +14,10 @@ import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsServic
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
+import com.stripe.model.CustomerSearchResult;
 import com.stripe.model.checkout.Session;
+import com.stripe.param.CustomerCreateParams;
+import com.stripe.param.CustomerSearchParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.param.checkout.SessionRetrieveParams;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +41,6 @@ public class StripePaymentService implements PaymentService{
 
     private final AuctionUserDetailsService userDetailsService;
     private final ProductService productService;
-    private final CustomerService customerService;
     private final BidRepository bidRepository;
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
@@ -59,7 +61,7 @@ public class StripePaymentService implements PaymentService{
 
         Stripe.apiKey = STRIPE_SECRET_KEY;
 
-        Customer customer = customerService.findOrCreateCustomer(user.getEmail(), user.getFirstName() + " " + user.getLastName());
+        Customer customer = findOrCreateCustomer(user.getEmail(), user.getFirstName() + " " + user.getLastName());
 
         SessionCreateParams.Builder paramsBuilder =
                 SessionCreateParams.builder()
@@ -106,5 +108,24 @@ public class StripePaymentService implements PaymentService{
         Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(productId);
         Payment thisPayment = new Payment(bid, session.getId());
         return paymentRepository.save(thisPayment);
+    }
+
+    private Customer findOrCreateCustomer(String email, String name) throws StripeException {
+        CustomerSearchParams params =
+                CustomerSearchParams
+                        .builder()
+                        .setQuery("email:'" + email + "'")
+                        .build();Customer.search(params);
+        CustomerSearchResult result = Customer.search(params);
+        if (result.getData().isEmpty()){
+            CustomerCreateParams customerCreateParams = new CustomerCreateParams.Builder()
+                    .setName(name)
+                    .setEmail(email)
+                    .build();
+            return Customer.create(customerCreateParams);
+        }
+        else{
+            return Customer.search(params).getData().get(0);
+        }
     }
 }

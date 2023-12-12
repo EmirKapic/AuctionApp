@@ -6,10 +6,7 @@ import com.atlantbh.internship.AuctionApp.dtos.MessageResponse;
 import com.atlantbh.internship.AuctionApp.dtos.payment.PayRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.PaymentException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
-import com.atlantbh.internship.AuctionApp.services.Bid.BidService;
 import com.atlantbh.internship.AuctionApp.services.Payment.PaymentService;
-import com.atlantbh.internship.AuctionApp.services.Product.ProductService;
-import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
@@ -27,10 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
     private final PaymentService paymentService;
-    private final ProductService productService;
-    private final AuctionUserDetailsService userDetailsService;
-    private BidService bidService;
-
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
@@ -43,12 +36,11 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
         }
         catch(StripeException exception){
-            System.out.println(exception.getMessage());
             return ResponseEntity.internalServerError().body(new ErrorResponse("There was a problem processing your payment."));
         }
     }
 
-    @PostMapping("/paymentHook")
+    @PostMapping("/payment-hook")
     public void paymentConfirmationHook(@RequestBody String event){
 
         try{
