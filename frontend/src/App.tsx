@@ -33,6 +33,12 @@ function App() {
     navigate("/");
   }
 
+  function handleLogout() {
+    setCurrentUser(undefined);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -51,7 +57,7 @@ function App() {
   return (
     <main className="relative min-h-screen pb-72">
       <UserContext.Provider value={currentUser}>
-        <Navbar />
+        <Navbar onLogout={handleLogout} />
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LandingPage />} />
