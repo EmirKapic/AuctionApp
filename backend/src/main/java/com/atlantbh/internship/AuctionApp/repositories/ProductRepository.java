@@ -10,7 +10,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-        @Query(value = "FROM Product where dateStart < current date and dateEnd > current date and user.email <> :userEmail ORDER BY RANDOM() LIMIT 1")
+        @Query("""
+                from Product
+                where dateStart < current date
+                        and dateEnd > current date
+                        and user.email <> :userEmail
+                        and purchased=false
+                order by RANDOM() LIMIT 1
+                """)
         Product getRandom(String userEmail);
 
         @Query("""
@@ -39,6 +46,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         and (:subcategoryId is null or :subcategoryId = subCategory.id)
                         and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
                         and (dateStart < current date and dateEnd > current date)
+                        and purchased=false
                         order by levenshtein(upper(name), upper(:name))""")
         Page<Product> getAllActiveApproximate(Pageable pageable,
                         @Param("categoryId") Long categoryId,
@@ -64,6 +72,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         List<Product> getRecommendedProducts(@Param("userId")long userId);
 
 
-        @Query("from Product where dateStart < current date and dateEnd > current date order by RANDOM() limit 3")
+        @Query("from Product where dateStart < current date and dateEnd > current date and purchased=false order by RANDOM() limit 3")
         List<Product> findTop3ByRandom();
 }
