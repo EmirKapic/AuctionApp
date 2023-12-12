@@ -16,6 +16,18 @@ export type PricesProps = PricesFields & {
   updateFields: (fields: Partial<PricesFields>) => void;
 };
 
+function adjustDate(date: Date | null): Date | null {
+  const currentDate = new Date();
+  date?.setHours(currentDate.getHours());
+  return date;
+}
+
+function addOneDay(date: Date | null): Date {
+  const nextDay = new Date(date?.getTime() || 0);
+  nextDay.setDate(nextDay.getDate() + 1);
+  return nextDay;
+}
+
 export default function Prices(props: PricesProps) {
   return (
     <div className="flex flex-col gap-5">
@@ -37,7 +49,9 @@ export default function Prices(props: PricesProps) {
             <DatePicker
               id={props.startDateId}
               selected={props.startDate}
-              onChange={(date) => props.updateFields({ startDate: date })}
+              onChange={(date) =>
+                props.updateFields({ startDate: adjustDate(date) })
+              }
               placeholderText="23/12/2024"
               className="border border-silver py-2 px-5 cursor-pointer"
               minDate={new Date()}
@@ -54,10 +68,12 @@ export default function Prices(props: PricesProps) {
             <DatePicker
               id={props.endDateId}
               selected={props.endDate}
-              onChange={(date) => props.updateFields({ endDate: date })}
+              onChange={(date) =>
+                props.updateFields({ endDate: adjustDate(date) })
+              }
               placeholderText="23/12/2024"
               className="border border-silver py-2 px-5 cursor-pointer"
-              minDate={props.startDate}
+              minDate={addOneDay(props.startDate)}
             />
           </label>
         </div>
