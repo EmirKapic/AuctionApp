@@ -58,13 +58,14 @@ export default function Product() {
     return <div>Error while loading product...</div>;
   }
   const highestBidder = data.highestBid === userBid?.content[0]?.bid || false;
+  const auctionFinished = new Date(data.dateEnd) < new Date();
   return (
     <div className="w-full">
       <Breadcrumb
         title={data.name}
         items={[{ title: "Shop", to: "/shop" }, { title: "Single product" }]}
       />
-      {userBid.content[0] && (
+      {userBid.content[0] && !auctionFinished && !data.purchased && (
         <AlertMessage type={highestBidder ? "success" : "warning"}>
           {highestBidder
             ? "Congratulations! You are the highest bidder."
@@ -83,6 +84,7 @@ export default function Product() {
               userWon={highestBidder}
               ownedByUser={data.user.id === userContext?.id}
               loggedIn={!!userContext}
+              auctionFinished={auctionFinished}
               refreshData={() => {
                 refreshUserBid();
                 refreshProductData();

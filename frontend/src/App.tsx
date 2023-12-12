@@ -20,6 +20,8 @@ import UrlBuilder from "services/UrlBuilder";
 import UserProfile from "pages/UserProfile/UserProfile";
 import SellForm from "pages/SellingProcess/SellForm";
 import ProtectedRoute from "components/Common/ProtectedRoute";
+import PaymentSuccess from "pages/Payment/PaymentSuccess";
+import PaymentFailure from "pages/Payment/PaymentFailure";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -78,6 +80,8 @@ function App() {
             <Route path="/account" element={<UserProfile />} />
             <Route path="/account/sell" element={<SellForm />} />
           </Route>
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/fail" element={<PaymentFailure />} />
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />

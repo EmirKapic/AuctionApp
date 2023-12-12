@@ -12,4 +12,5 @@ spring:
 config:
   secret-key: ${JWT_KEY}
   token-validity-time: PT30M
-
+  stripe-secret-key: ${STRIPE_SECRET_KEY}
+  client-host-url: ${CLIENT_HOST_URL}
