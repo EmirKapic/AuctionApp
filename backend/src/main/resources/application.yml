@@ -13,5 +13,4 @@ config:
   secret-key: ${JWT_KEY}
   token-validity-time: PT30M
   stripe-secret-key: ${STRIPE_SECRET_KEY}
-  stripe-publishable-key: pk_test_51OJiuVEfP6399Oje8fDMxfcJMQNyUKGidLPaPzmfXg1fJpCsjsqz4Gs5DlTDpvI9psyhPI25DKnVMoJkyncwUvLP00snZUpRqo
-  client-host-url: http://localhost:5173
+  client-host-url: ${CLIENT_HOST_URL}

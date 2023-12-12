@@ -33,9 +33,6 @@ public class StripePaymentService implements PaymentService{
     @Value("${config.stripe-secret-key}")
     private String STRIPE_SECRET_KEY;
 
-    @Value("${config.stripe-publishable-key}")
-    private String STRIPE_PUBLISHABLE_KEY;
-
     @Value("${config.client-host-url}")
     private String CLIENT_HOST_URL;
 
