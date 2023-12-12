@@ -25,4 +25,8 @@ public class AuctionUserDetailsService implements UserDetailsService {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
+    public boolean isAuthenticated(){
+        return !getCurrentUserEmail().equals("anonymousUser");
+    }
+
 }

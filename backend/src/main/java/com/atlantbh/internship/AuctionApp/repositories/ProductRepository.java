@@ -53,10 +53,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         join user_subcategory_interaction as subInteraction on subInteraction.subcategory_id=product.subcategory_id
                         join user_seller_interaction as sellerInteraction on sellerInteraction.seller_id = product.seller_id
                         where subInteraction.user_id = :userId
+                                and product.purchased = false
+                                and product.date_start < current_date
+                                and product.date_end > current_date
                         order by (subInteraction.views + sellerInteraction.views) desc
                         limit 15) as temp
                 order by RANDOM()
                 limit 3
                 """, nativeQuery = true)
         List<Product> getRecommendedProducts(@Param("userId")long userId);
+
+
+        @Query("from Product where dateStart < current date and dateEnd > current date order by RANDOM() limit 3")
+        List<Product> findTop3ByRandom();
 }
