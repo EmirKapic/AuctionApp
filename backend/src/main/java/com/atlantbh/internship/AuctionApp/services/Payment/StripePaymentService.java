@@ -44,6 +44,7 @@ public class StripePaymentService implements PaymentService{
     private final BidRepository bidRepository;
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
+    private final StripeCustomerService customerService;
 
 
     @Override
@@ -62,7 +63,8 @@ public class StripePaymentService implements PaymentService{
 
             Stripe.apiKey = STRIPE_SECRET_KEY;
 
-            Customer customer = findOrCreateCustomer(user.getEmail(), user.getFirstName() + " " + user.getLastName());
+            Customer customer = customerService.find(user.getEmail())
+                    .orElseGet(() -> customerService.create(user.getEmail(), user.getFirstName() + " " + user.getLastName()));
 
             SessionCreateParams.Builder paramsBuilder =
                     SessionCreateParams.builder()
