@@ -64,4 +64,8 @@ export default class UrlBuilder {
     this._url += "/seller";
     return this;
   }
+  public recommended(): UrlBuilder {
+    this._url += "/recommended";
+    return this;
+  }
 }
