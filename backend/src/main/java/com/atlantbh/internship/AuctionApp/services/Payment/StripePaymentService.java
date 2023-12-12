@@ -47,67 +47,78 @@ public class StripePaymentService implements PaymentService{
 
 
     @Override
-    public String hostedCheckout(long productId) throws ProductNotFoundException, StripeException, PaymentException {
-        User user = userDetailsService.getCurrentUser();
-        Product product = productService.getById(productId);
+    public String hostedCheckout(long productId) throws ProductNotFoundException, PaymentException {
+        try{
+            User user = userDetailsService.getCurrentUser();
+            Product product = productService.getById(productId);
 
-        if (!productService.isPurchasable(product)){
-            throw new PaymentException("Product is not available for purchase.");
+            if (!productService.isPurchasable(product)){
+                throw new PaymentException("Product is not available for purchase.");
+            }
+            if (productService.getWinner(product).getId() != user.getId()){
+                throw new PaymentException("You are not the winner of the auction.");
+            }
+
+
+            Stripe.apiKey = STRIPE_SECRET_KEY;
+
+            Customer customer = findOrCreateCustomer(user.getEmail(), user.getFirstName() + " " + user.getLastName());
+
+            SessionCreateParams.Builder paramsBuilder =
+                    SessionCreateParams.builder()
+                            .setMode(SessionCreateParams.Mode.PAYMENT)
+                            .setCustomer(customer.getId())
+                            .setSuccessUrl(CLIENT_HOST_URL + "/payment/success")
+                            .setCancelUrl(CLIENT_HOST_URL);
+            paramsBuilder.addLineItem(
+                    SessionCreateParams.LineItem.builder()
+                            .setQuantity(1L)
+                            .setPriceData(
+                                    SessionCreateParams.LineItem.PriceData.builder()
+                                            .setProductData(
+                                                    SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                            .setName(product.getName())
+                                                            .build()
+                                            )
+                                            .setCurrency("usd")
+                                            .setUnitAmountDecimal(BigDecimal.valueOf((int)(product.getHighestBid() * 100)))
+                                            .build()
+
+                            )
+                            .build()
+            );
+            paramsBuilder.putMetadata("product_id", Long.toString(product.getId()));
+            Session session = Session.create(paramsBuilder.build());
+            return session.getUrl();
         }
-        if (productService.getWinner(product).getId() != user.getId()){
-            throw new PaymentException("You are not the winner of the auction.");
+        catch(StripeException exception){
+            throw new PaymentException(exception.getMessage());
         }
 
-
-        Stripe.apiKey = STRIPE_SECRET_KEY;
-
-        Customer customer = findOrCreateCustomer(user.getEmail(), user.getFirstName() + " " + user.getLastName());
-
-        SessionCreateParams.Builder paramsBuilder =
-                SessionCreateParams.builder()
-                        .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .setCustomer(customer.getId())
-                        .setSuccessUrl(CLIENT_HOST_URL + "/payment/success")
-                        .setCancelUrl(CLIENT_HOST_URL);
-        paramsBuilder.addLineItem(
-                SessionCreateParams.LineItem.builder()
-                        .setQuantity(1L)
-                        .setPriceData(
-                                SessionCreateParams.LineItem.PriceData.builder()
-                                        .setProductData(
-                                                SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                        .setName(product.getName())
-                                                        .build()
-                                        )
-                                        .setCurrency("usd")
-                                        .setUnitAmountDecimal(BigDecimal.valueOf((int)(product.getHighestBid() * 100)))
-                                        .build()
-
-                        )
-                        .build()
-        );
-        paramsBuilder.putMetadata("product_id", Long.toString(product.getId()));
-        Session session = Session.create(paramsBuilder.build());
-        return session.getUrl();
     }
 
     @Override
-    public Payment finalizePayment(Session sessionEvent) throws StripeException, ProductNotFoundException {
-        SessionRetrieveParams params =
-                SessionRetrieveParams.builder()
-                        .addExpand("line_items")
-                        .build();
+    public void finalizePayment(String sessionId) throws PaymentException, ProductNotFoundException {
+        try{
+            SessionRetrieveParams params =
+                    SessionRetrieveParams.builder()
+                            .addExpand("line_items")
+                            .build();
 
-        Session session = Session.retrieve(sessionEvent.getId(), params, null);
-        long productId =  Long.parseLong(session.getMetadata().get("product_id"));
+            Session session = Session.retrieve(sessionId, params, null);
+            long productId =  Long.parseLong(session.getMetadata().get("product_id"));
 
-        Product product = productService.getById(productId);
-        product.setPurchased(true);
-        productRepository.save(product);
+            Product product = productService.getById(productId);
+            product.setPurchased(true);
+            productRepository.save(product);
 
-        Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(productId);
-        Payment thisPayment = new Payment(bid, session.getId());
-        return paymentRepository.save(thisPayment);
+            Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(productId);
+            Payment thisPayment = new Payment(bid, session.getId());
+            paymentRepository.save(thisPayment);
+        }
+        catch(StripeException exception){
+            throw new PaymentException(exception.getMessage());
+        }
     }
 
     private Customer findOrCreateCustomer(String email, String name) throws StripeException {

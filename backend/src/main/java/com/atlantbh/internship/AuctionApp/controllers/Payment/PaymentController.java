@@ -4,10 +4,7 @@ package com.atlantbh.internship.AuctionApp.controllers.Payment;
 import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.MessageResponse;
 import com.atlantbh.internship.AuctionApp.dtos.payment.PayRequest;
-import com.atlantbh.internship.AuctionApp.exceptions.PaymentException;
-import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.services.Payment.PaymentService;
-import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
 import lombok.RequiredArgsConstructor;
@@ -32,11 +29,8 @@ public class PaymentController {
             String hostedUrl = paymentService.hostedCheckout(request.productId());
             return ResponseEntity.ok().body(new MessageResponse(hostedUrl));
         }
-        catch(ProductNotFoundException | PaymentException exception){
+        catch(Exception exception){
             return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
-        }
-        catch(StripeException exception){
-            return ResponseEntity.internalServerError().body(new ErrorResponse("There was a problem processing your payment."));
         }
     }
 
@@ -47,7 +41,7 @@ public class PaymentController {
             Event stripeEvent = Event.GSON.fromJson(event, Event.class);
             if (stripeEvent.getType().equals("checkout.session.completed")){
                 Session sessionEvent = (Session) stripeEvent.getDataObjectDeserializer().getObject().get();
-                paymentService.finalizePayment(sessionEvent);
+                paymentService.finalizePayment(sessionEvent.getId());
             }
         }
         catch(Exception exception){
