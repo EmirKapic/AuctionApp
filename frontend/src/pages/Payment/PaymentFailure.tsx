@@ -1,6 +1,6 @@
 import Button from "components/Common/Button";
 
-export default function Failure() {
+export default function PaymentFailure() {
   return (
     <div className="w-full flex flex-col gap-5 items-center mt-10">
       <h1 className="text-4xl text-pink-700">Ooops... Something went wrong.</h1>

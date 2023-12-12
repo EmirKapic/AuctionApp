@@ -2,7 +2,7 @@ import Button from "components/Common/Button";
 import { useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
 
-export default function Success() {
+export default function PaymentSuccess() {
   const navigate = useNavigate();
   return (
     <div className="w-full flex flex-col gap-5 items-center justify-center mt-10">
