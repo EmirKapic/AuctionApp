@@ -21,13 +21,6 @@ const UserInteractionService = {
       { email: product?.user.email },
     );
   },
-
-  updateSubcategoryInteraction: function (subcategoryId?: number) {
-    post<any, UserSubcategoryInteractionBody>(
-      new UrlBuilder().userInteraction().subcategory().url,
-      { id: subcategoryId },
-    );
-  },
 };
 
 export default UserInteractionService;

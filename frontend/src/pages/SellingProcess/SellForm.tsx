@@ -168,12 +168,7 @@ export default function SellForm() {
       phoneNumber: data[shippingIds.phoneId],
     };
     const url = new UrlBuilder().products().url;
-    post<Product, NewProductRequest>(url, newProduct).then((product) => {
-      UserInteractionService.updateSubcategoryInteraction(
-        product.data.subCategory.id,
-      );
-      navigate("/");
-    });
+    post<Product, NewProductRequest>(url, newProduct).then(() => navigate("/"));
   }
 
   return (
