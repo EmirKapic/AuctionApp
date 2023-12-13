@@ -107,12 +107,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> recommendedProducts() {
         if (userDetailsService.isAuthenticated()){
-            return productRepository.getRecommendedProducts(userDetailsService.getCurrentUser().getId());
+            List<Product> recommendedProducts =
+                    productRepository.getRecommendedProducts(userDetailsService.getCurrentUser().getId());
+            return recommendedProducts.size() == 3 ? recommendedProducts : productRepository.findTop3ByRandom();
         }
-        else{
+        else
             return productRepository.findTop3ByRandom();
-        }
-
     }
 
 }

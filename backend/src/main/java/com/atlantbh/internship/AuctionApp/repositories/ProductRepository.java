@@ -64,6 +64,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                 and product.purchased = false
                                 and product.date_start < current_date
                                 and product.date_end > current_date
+                                and product.seller_id <> :userId
                         order by (subInteraction.views + sellerInteraction.views) desc
                         limit 15) as temp
                 order by RANDOM()
