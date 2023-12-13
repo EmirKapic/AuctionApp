@@ -45,8 +45,7 @@ public class PaymentController {
             }
         }
         catch(Exception exception){
-            System.out.println("Failed reading");
+            //https://i.kym-cdn.com/photos/images/original/001/881/867/6f6.jpg
         }
-
     }
 }

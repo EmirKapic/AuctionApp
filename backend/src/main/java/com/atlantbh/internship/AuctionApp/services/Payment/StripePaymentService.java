@@ -14,10 +14,7 @@ import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsServic
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
-import com.stripe.model.CustomerSearchResult;
 import com.stripe.model.checkout.Session;
-import com.stripe.param.CustomerCreateParams;
-import com.stripe.param.CustomerSearchParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.param.checkout.SessionRetrieveParams;
 import lombok.RequiredArgsConstructor;
@@ -117,25 +114,6 @@ public class StripePaymentService implements PaymentService{
         }
         catch(StripeException exception){
             throw new PaymentException(exception.getMessage());
-        }
-    }
-
-    private Customer findOrCreateCustomer(String email, String name) throws StripeException {
-        CustomerSearchParams params =
-                CustomerSearchParams
-                        .builder()
-                        .setQuery("email:'" + email + "'")
-                        .build();Customer.search(params);
-        CustomerSearchResult result = Customer.search(params);
-        if (result.getData().isEmpty()){
-            CustomerCreateParams customerCreateParams = new CustomerCreateParams.Builder()
-                    .setName(name)
-                    .setEmail(email)
-                    .build();
-            return Customer.create(customerCreateParams);
-        }
-        else{
-            return Customer.search(params).getData().get(0);
         }
     }
 }
