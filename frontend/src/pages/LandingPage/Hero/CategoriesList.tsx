@@ -27,18 +27,9 @@ export default function CategoriesList() {
   }
 
   return (
-    <aside className="bg-white shadow-lightgrey">
+    <aside className="bg-white shadow-lightgrey h-fit">
       <h1 className="text-purple p-4 pr-36">CATEGORIES</h1>
-      <ul>
-        {categoriesList}
-
-        <li
-          key={"all-categories"}
-          className="p-3 pl-4 w-full border-b border-silver"
-        >
-          <button>All categories</button>
-        </li>
-      </ul>
+      <ul>{categoriesList}</ul>
     </aside>
   );
 }

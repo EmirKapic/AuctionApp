@@ -16,7 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryDtoConverter categoryDtoConverter;
     @Override
     public Iterable<CategoryDto> getAll() {
-        List<Category> categories =  categoryRepository.findAll();
+        List<Category> categories =  categoryRepository.findAllByOrderById();
         return categories.stream().map(categoryDtoConverter::convertToDto).toList();
     }
 }
