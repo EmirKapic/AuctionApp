@@ -26,7 +26,11 @@ export default function RecommendedTab() {
       <div className="font-bold text-2xl tracking-wide border-b border-b-silver pb-4">
         Recommended Products
       </div>
-      <ProductGrid items={data} itemsClassName="grid grid-cols-3 gap-8" />
+      <ProductGrid
+        items={data}
+        itemsClassName="grid grid-cols-3 gap-5"
+        imageClassName="w-92 h-92"
+      />
     </Container>
   );
 }

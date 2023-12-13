@@ -29,7 +29,9 @@ export default function UpperNavbar(props: UpperNavbarProps) {
         </nav>
         {userContext ? (
           <div className="text-white flex gap-10">
-            Hi, <span>{userContext?.firstName}</span>
+            <div>
+              Hi, <span>{userContext?.firstName}</span>
+            </div>
             <button
               onClick={props.onLogout}
               className="underline hover:text-lightgrey-200 duration-300"
