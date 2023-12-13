@@ -53,7 +53,7 @@ export default class UrlBuilder {
     return this;
   }
   public userInteraction(): UrlBuilder {
-    this._url += "/userInteraction";
+    this._url += "/user-interaction";
     return this;
   }
   public subcategory(): UrlBuilder {
