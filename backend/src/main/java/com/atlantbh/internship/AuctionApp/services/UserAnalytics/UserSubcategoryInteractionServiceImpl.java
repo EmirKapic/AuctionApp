@@ -1,6 +1,6 @@
 package com.atlantbh.internship.AuctionApp.services.UserAnalytics;
 
-import com.atlantbh.internship.AuctionApp.exceptions.SubcategoryNotFoundException;
+import com.atlantbh.internship.AuctionApp.exceptions.EntityNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.SubCategory;
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.models.UserSubcategoryInteraction;
@@ -21,11 +21,11 @@ public class UserSubcategoryInteractionServiceImpl implements UserSubcategoryInt
     private final AuctionUserDetailsService userDetailsService;
     private final SubcategoryRepository subcategoryRepository;
     @Override
-    public UserSubcategoryInteraction createOrAdd(long subcategoryId) throws SubcategoryNotFoundException {
+    public UserSubcategoryInteraction createOrAdd(long subcategoryId) throws EntityNotFoundException {
         User user = userDetailsService.getCurrentUser();
         Optional<SubCategory> subCategory = subcategoryRepository.findById(subcategoryId);
         if (subCategory.isEmpty()){
-            throw new SubcategoryNotFoundException("Subcategory with id: " + subcategoryId + "doesn't exist.");
+            throw new EntityNotFoundException("Subcategory with id: " + subcategoryId + "doesn't exist.");
         }
 
         List<UserSubcategoryInteraction> userInteractions =

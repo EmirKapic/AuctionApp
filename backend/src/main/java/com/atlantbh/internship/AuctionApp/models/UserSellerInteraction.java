@@ -25,7 +25,7 @@ public class UserSellerInteraction {
     @JoinColumn(name = "seller_id")
     private User seller;
 
-    public UserSellerInteraction(User seller, User user){
+    public UserSellerInteraction(User user, User seller){
         this(0, 1, Instant.now(), 1, user, seller);
     }
 }

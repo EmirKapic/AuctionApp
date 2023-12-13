@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/userInteraction")
+@RequestMapping("/api/user-interaction")
 @RequiredArgsConstructor
 public class InteractionsController {
     private final UserSubcategoryInteractionService subcategoryInteractionService;

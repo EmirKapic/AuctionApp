@@ -24,7 +24,7 @@ public class UserSellerInteractionServiceImpl implements UserSellerInteractionSe
                 interactionRepository.findAllBySeller_IdAndUser_Id(seller.getId(), user.getId());
 
         if (userInteractions.isEmpty()){
-            return interactionRepository.save(new UserSellerInteraction(seller, user));
+            return interactionRepository.save(new UserSellerInteraction(user, seller));
         }
         else{
             return addInteraction(userInteractions.get(0));
