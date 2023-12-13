@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -101,6 +102,17 @@ public class ProductServiceImpl implements ProductService {
             return null;
         else
             return userDetailsService.getCurrentUserEmail();
+    }
+
+    @Override
+    public List<Product> recommendedProducts() {
+        if (userDetailsService.isAuthenticated()){
+            return productRepository.getRecommendedProducts(userDetailsService.getCurrentUser().getId());
+        }
+        else{
+            return productRepository.findTop3ByRandom();
+        }
+
     }
 
 }

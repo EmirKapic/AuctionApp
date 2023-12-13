@@ -8,6 +8,7 @@ import com.atlantbh.internship.AuctionApp.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
@@ -24,4 +25,6 @@ public interface ProductService {
     boolean isPurchasable(Product product);
 
     User getWinner(Product product);
+
+    List<Product> recommendedProducts();
 }
