@@ -15,7 +15,6 @@ import Subcategory from "models/Subcategory";
 import uploadFile from "firebase/UploadFile";
 import Product from "models/Product";
 import post from "services/fetching/Post";
-import UserInteractionService from "services/UserInteractionService";
 
 export type NewProductRequest = {
   title: string;

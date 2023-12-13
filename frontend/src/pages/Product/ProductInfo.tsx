@@ -55,7 +55,7 @@ export default function ProductInfo(props: ProductInfoProps) {
       setWarningText("Bid must be higher than the start bid.");
     } else {
       const url = new UrlBuilder().bids().url;
-      UserInteractionService.updateInteractions();
+      UserInteractionService.updateInteractions(props.product);
       post<Bid, BidRequestBody>(url, {
         bid: bid,
         productId: props.product.id,
