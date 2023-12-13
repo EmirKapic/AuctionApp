@@ -47,8 +47,10 @@ export default function Product() {
   );
 
   useEffect(() => {
-    UserInteractionService.updateInteractions(data);
-  }, [data]);
+    if (userContext && data && userContext.id !== data.user.id) {
+      UserInteractionService.updateInteractions(data);
+    }
+  }, [data, userContext]);
 
   if (isLoading) {
     return <div>Loading</div>;
