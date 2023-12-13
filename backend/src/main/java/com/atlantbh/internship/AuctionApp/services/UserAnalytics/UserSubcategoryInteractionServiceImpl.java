@@ -7,11 +7,11 @@ import com.atlantbh.internship.AuctionApp.models.UserSubcategoryInteraction;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryInteractionRepository;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryRepository;
 import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +21,7 @@ public class UserSubcategoryInteractionServiceImpl implements UserSubcategoryInt
     private final AuctionUserDetailsService userDetailsService;
     private final SubcategoryRepository subcategoryRepository;
     @Override
+    @Transactional
     public UserSubcategoryInteraction createOrAdd(long subcategoryId) throws EntityNotFoundException {
         User user = userDetailsService.getCurrentUser();
         Optional<SubCategory> subCategory = subcategoryRepository.findById(subcategoryId);
@@ -28,15 +29,11 @@ public class UserSubcategoryInteractionServiceImpl implements UserSubcategoryInt
             throw new EntityNotFoundException("Subcategory with id: " + subcategoryId + "doesn't exist.");
         }
 
-        List<UserSubcategoryInteraction> userInteractions =
-                interactionRepository.findAllBySubCategory_IdAndUser_Id(subcategoryId, user.getId());
+        Optional<UserSubcategoryInteraction> userInteractions =
+                interactionRepository.findBySubCategory_IdAndUser_Id(subcategoryId, user.getId());
 
-        if (userInteractions.isEmpty()){
-            return interactionRepository.save(new UserSubcategoryInteraction(user, subCategory.get()));
-        }
-        else{
-            return addInteraction(userInteractions.get(0));
-        }
+        return userInteractions.map(this::addInteraction)
+                .orElseGet(() -> interactionRepository.save(new UserSubcategoryInteraction(user, subCategory.get())));
     }
 
     private UserSubcategoryInteraction addInteraction(UserSubcategoryInteraction interaction){
