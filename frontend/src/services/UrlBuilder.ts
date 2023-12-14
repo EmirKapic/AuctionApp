@@ -52,4 +52,20 @@ export default class UrlBuilder {
     this._url += "/pay";
     return this;
   }
+  public userInteraction(): UrlBuilder {
+    this._url += "/user-interaction";
+    return this;
+  }
+  public subcategory(): UrlBuilder {
+    this._url += "/subcategory";
+    return this;
+  }
+  public seller(): UrlBuilder {
+    this._url += "/seller";
+    return this;
+  }
+  public recommended(): UrlBuilder {
+    this._url += "/recommended";
+    return this;
+  }
 }

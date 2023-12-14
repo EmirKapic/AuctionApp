@@ -7,8 +7,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ProductRepository extends JpaRepository<Product, Long> {
-        @Query(value = "FROM Product where dateStart < current date and dateEnd > current date and user.email <> :userEmail ORDER BY RANDOM() LIMIT 1")
+        @Query("""
+                        from Product
+                        where dateStart < current date
+                                and dateEnd > current date
+                                and user.email <> :userEmail
+                                and purchased=false
+                        order by RANDOM() LIMIT 1
+                        """)
         Product getRandom(String userEmail);
 
         @Query("""
@@ -37,9 +46,40 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         and (:subcategoryId is null or :subcategoryId = subCategory.id)
                         and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
                         and (dateStart < current date and dateEnd > current date)
+                        and purchased=false
                         order by levenshtein(upper(name), upper(:name))""")
         Page<Product> getAllActiveApproximate(Pageable pageable,
                         @Param("categoryId") Long categoryId,
                         @Param("subcategoryId") Long subcategoryId,
                         @Param("name") String name);
+
+        @Query(value = """
+                        select * from
+                                (select product.*
+                                 from Product as product
+                                 join user_subcategory_interaction as subInteraction on subInteraction.subcategory_id=product.subcategory_id
+                                 join user_seller_interaction as sellerInteraction on sellerInteraction.seller_id = product.seller_id
+                                 where subInteraction.user_id = :userId and sellerInteraction.user_id = :userId
+                                         and product.purchased = false
+                                         and product.date_start < current_date
+                                         and product.date_end > current_date
+                                         and product.seller_id <> :userId
+                                 order by ((subInteraction.views * case
+                                                                         when subInteraction.last_interacted_with < current_date - interval '2 months' then 1
+                                                                         else (abs(cast(subInteraction.last_interacted_with as date) -
+                                                                                 cast(current_date as date))*(-1./30)) + 3
+                                                                      end)
+                                         + (sellerInteraction.views * case
+                                                                         when sellerInteraction.last_interacted_with < current_date - interval '2 months' then 1
+                                                                         else (abs(cast(sellerInteraction.last_interacted_with as date) -
+                                                                                 cast(current_date as date))*(-1./30)) + 3
+                                                                      end)) desc
+                                 limit 15) as temp
+                         order by RANDOM()
+                         limit 3
+                         """, nativeQuery = true)
+        List<Product> getRecommendedProducts(@Param("userId") long userId);
+
+        @Query("from Product where dateStart < current date and dateEnd > current date and purchased=false order by RANDOM() limit 3")
+        List<Product> findTop3ByRandom();
 }

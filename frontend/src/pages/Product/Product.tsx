@@ -7,10 +7,11 @@ import Container from "components/Common/Container";
 import ProductImages from "./ProductImages";
 import ProductInfo from "./ProductInfo";
 import Bid from "models/Bid";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
+import UserInteractionService from "services/UserInteractionService";
 
 const url = new UrlBuilder().bids().url;
 
@@ -44,6 +45,12 @@ export default function Product() {
     sort,
     params,
   );
+
+  useEffect(() => {
+    if (userContext && data && userContext.id !== data.user.id) {
+      UserInteractionService.updateInteractions(data);
+    }
+  }, [data, userContext]);
 
   if (isLoading) {
     return <div>Loading</div>;

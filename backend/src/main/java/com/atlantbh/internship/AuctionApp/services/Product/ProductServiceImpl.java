@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -90,6 +91,16 @@ public class ProductServiceImpl implements ProductService {
     public User getWinner(Product product) {
         Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(product.getId());
         return bid.getBidder();
+    }
+
+    @Override
+    public List<Product> recommendedProducts() {
+        if (userDetailsService.isAuthenticated()) {
+            List<Product> recommendedProducts = productRepository
+                    .getRecommendedProducts(userDetailsService.getCurrentUser().getId());
+            return recommendedProducts.size() == 3 ? recommendedProducts : productRepository.findTop3ByRandom();
+        } else
+            return productRepository.findTop3ByRandom();
     }
 
 }

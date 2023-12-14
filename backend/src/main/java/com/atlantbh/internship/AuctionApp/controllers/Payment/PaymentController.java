@@ -1,6 +1,5 @@
 package com.atlantbh.internship.AuctionApp.controllers.Payment;
 
-
 import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.MessageResponse;
 import com.atlantbh.internship.AuctionApp.dtos.payment.PayRequest;
@@ -24,28 +23,26 @@ public class PaymentController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity hostedCheckout(@RequestBody PayRequest request){
-        try{
+    public ResponseEntity hostedCheckout(@RequestBody PayRequest request) {
+        try {
             String hostedUrl = paymentService.hostedCheckout(request.productId());
             return ResponseEntity.ok().body(new MessageResponse(hostedUrl));
-        }
-        catch(Exception exception){
+        } catch (Exception exception) {
             return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
         }
     }
 
     @PostMapping("/payment-hook")
-    public void paymentConfirmationHook(@RequestBody String event){
+    public void paymentConfirmationHook(@RequestBody String event) {
 
-        try{
+        try {
             Event stripeEvent = Event.GSON.fromJson(event, Event.class);
-            if (stripeEvent.getType().equals("checkout.session.completed")){
+            if (stripeEvent.getType().equals("checkout.session.completed")) {
                 Session sessionEvent = (Session) stripeEvent.getDataObjectDeserializer().getObject().get();
                 paymentService.finalizePayment(sessionEvent.getId());
             }
-        }
-        catch(Exception exception){
-            //https://i.kym-cdn.com/photos/images/original/001/881/867/6f6.jpg
+        } catch (Exception exception) {
+            // https://i.kym-cdn.com/photos/images/original/001/881/867/6f6.jpg
         }
     }
 }

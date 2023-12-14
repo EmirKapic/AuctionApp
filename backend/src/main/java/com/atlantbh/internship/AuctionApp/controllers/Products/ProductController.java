@@ -53,4 +53,9 @@ public class ProductController {
                 .map(ResponseEntity.class::cast)
                 .orElse(ResponseEntity.badRequest().body(new ErrorResponse("Could not create new product.")));
     }
+
+    @GetMapping("/recommended")
+    public ResponseEntity getRecommendedProducts() {
+        return ResponseEntity.ok().body(productService.recommendedProducts());
+    }
 }

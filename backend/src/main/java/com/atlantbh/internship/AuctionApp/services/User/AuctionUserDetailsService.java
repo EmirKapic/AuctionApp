@@ -12,17 +12,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuctionUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
+
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmailEquals(email);
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         return loadUserByUsername(getCurrentUserEmail());
     }
 
-    public String getCurrentUserEmail(){
+    public String getCurrentUserEmail() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    public boolean isAuthenticated() {
+        return !getCurrentUserEmail().equals("anonymousUser");
     }
 
 }
