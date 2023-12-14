@@ -26,12 +26,10 @@ public class Product {
     private Instant dateEnd;
     private Instant dateCreated;
     private String address;
-    private String email;
     private String city;
     private String zipCode;
     private String country;
     private String phoneNumber;
-    private boolean purchased;
 
     @ManyToOne
     @JoinColumn(name = "subcategory_id")
@@ -45,8 +43,9 @@ public class Product {
     private User user;
 
     public Product(String name, String description, double startBid, Instant dateStart, Instant dateEnd,
-                   String address, String email, String city, String zipCode, String country, String phoneNumber){
+            String address, String city, String zipCode, String country, String phoneNumber,
+            SubCategory subCategory, User user) {
         this(0, name, description, startBid, null, 0, dateStart, dateEnd, Instant.now(), address,
-                email, city, zipCode, country, phoneNumber, false, null, null, null);
+                city, zipCode, country, phoneNumber, subCategory, null, user);
     }
 }

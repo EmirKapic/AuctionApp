@@ -3,12 +3,13 @@ package com.atlantbh.internship.AuctionApp.services.Product;
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
-import com.atlantbh.internship.AuctionApp.models.*;
-import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
+import com.atlantbh.internship.AuctionApp.models.Product;
+import com.atlantbh.internship.AuctionApp.models.ProductImage;
+import com.atlantbh.internship.AuctionApp.models.SubCategory;
+import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryRepository;
 import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
-import com.atlantbh.internship.AuctionApp.utilities.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,42 +59,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Optional<Product> createNewProduct(NewProductRequest request) {
-
-        if (!EmailValidator.validate(request.email())) {
-            return Optional.empty();
-        }
-
         Optional<SubCategory> subCategory = subcategoryRepository.findById(request.subcategoryId());
         if (subCategory.isEmpty()) {
             return Optional.empty();
         }
 
-        Instant startDate = Instant.parse(request.startDate());
-        Instant endDate = Instant.parse(request.endDate());
+        String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailsService.loadUserByUsername(currentUserEmail);
 
-        Product newProduct = new Product(request.title(), request.description(), request.startPrice(), startDate,
-                endDate,
-                request.address(), request.email(), request.city(), request.zipCode(), request.country(),
-                request.phoneNumber());
-
-        User user = userDetailsService.getCurrentUser();
-
-        newProduct.setImages(request.imageUrls().stream().map(url -> new ProductImage(0, url, newProduct)).toList());
-        newProduct.setSubCategory(subCategory.get());
-        newProduct.setUser(user);
+        Product newProduct = new Product(request.title(), request.description(), request.startPrice(),
+                request.startDate(),
+                request.endDate(), request.address(), request.city(), request.zipCode(), request.country(),
+                request.phoneNumber(), subCategory.get(), user);
+        newProduct.setImages(request.imageUrls().stream().map(url -> new ProductImage(url, newProduct)).toList());
 
         return Optional.of(productRepository.save(newProduct));
-    }
-
-    @Override
-    public boolean isPurchasable(Product product) {
-        return product != null && !product.isPurchased() && product.getDateEnd().isBefore(Instant.now());
-    }
-
-    @Override
-    public User getWinner(Product product) {
-        Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(product.getId());
-        return bid.getBidder();
     }
 
     private String excludeOwnedBy(Boolean excludeUserOwned) {
