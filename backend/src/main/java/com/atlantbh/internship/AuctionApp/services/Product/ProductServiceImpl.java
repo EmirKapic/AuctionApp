@@ -3,10 +3,8 @@ package com.atlantbh.internship.AuctionApp.services.Product;
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
-import com.atlantbh.internship.AuctionApp.models.Product;
-import com.atlantbh.internship.AuctionApp.models.ProductImage;
-import com.atlantbh.internship.AuctionApp.models.SubCategory;
-import com.atlantbh.internship.AuctionApp.models.User;
+import com.atlantbh.internship.AuctionApp.models.*;
+import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryRepository;
 import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
@@ -25,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     private SubcategoryRepository subcategoryRepository;
     private AuctionUserDetailsService userDetailsService;
+    private final BidRepository bidRepository;
 
     @Override
     public Page<Product> getAll(Pageable pageable, ProductParameters params) {
@@ -80,6 +79,17 @@ public class ProductServiceImpl implements ProductService {
             return null;
         else
             return userDetailsService.getCurrentUserEmail();
+    }
+
+    @Override
+    public boolean isPurchasable(Product product) {
+        return product != null && !product.isPurchased() && product.getDateEnd().isBefore(Instant.now());
+    }
+
+    @Override
+    public User getWinner(Product product) {
+        Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(product.getId());
+        return bid.getBidder();
     }
 
 }

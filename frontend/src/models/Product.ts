@@ -15,5 +15,6 @@ type Product = {
   subCategory: Subcategory;
   images: Array<ProductImage>;
   user: User;
+  purchased: boolean;
 };
 export default Product;

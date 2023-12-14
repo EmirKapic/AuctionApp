@@ -4,6 +4,7 @@ import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
+import com.atlantbh.internship.AuctionApp.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,4 +20,8 @@ public interface ProductService {
     Product getById(Long id) throws ProductNotFoundException;
 
     Optional<Product> createNewProduct(NewProductRequest request);
+
+    boolean isPurchasable(Product product);
+
+    User getWinner(Product product);
 }

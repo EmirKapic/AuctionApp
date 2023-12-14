@@ -48,4 +48,8 @@ export default class UrlBuilder {
     this._url += "/validate";
     return this;
   }
+  public pay(): UrlBuilder {
+    this._url += "/pay";
+    return this;
+  }
 }
