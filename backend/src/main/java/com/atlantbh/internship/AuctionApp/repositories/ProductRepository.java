@@ -60,12 +60,21 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         from Product as product
                         join user_subcategory_interaction as subInteraction on subInteraction.subcategory_id=product.subcategory_id
                         join user_seller_interaction as sellerInteraction on sellerInteraction.seller_id = product.seller_id
-                        where subInteraction.user_id = :userId
+                        where subInteraction.user_id = :userId and sellerInteraction.user_id = :userId
                                 and product.purchased = false
                                 and product.date_start < current_date
                                 and product.date_end > current_date
                                 and product.seller_id <> :userId
-                        order by (subInteraction.views + sellerInteraction.views) desc
+                        order by ((subInteraction.views * case
+                                                                when subInteraction.last_interacted_with < current_date - interval '2 months' then 1
+                                                                else (abs(cast(subInteraction.last_interacted_with as date) -
+                                                                        cast(current_date as date))*(-1./30)) + 3
+                                                             end)
+                                + (sellerInteraction.views * case
+                                                                when sellerInteraction.last_interacted_with < current_date - interval '2 months' then 1
+                                                                else (abs(cast(sellerInteraction.last_interacted_with as date) -
+                                                                        cast(current_date as date))*(-1./30)) + 3
+                                                             end)) desc
                         limit 15) as temp
                 order by RANDOM()
                 limit 3
