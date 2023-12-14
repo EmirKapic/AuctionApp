@@ -33,8 +33,7 @@ export interface ProductListProps {
 export default function ProductList(props: ProductListProps) {
   const [page, setPage] = useState(0);
   const [queryParams] = useSearchParams();
-  queryParams.append("excludeUserOwned", "true");
-
+  queryParams.set("excludeUserOwned", "true");
   const { data, isLoading, isError, rawData } = useFetchPage<
     Product,
     ProductDidYouMean
