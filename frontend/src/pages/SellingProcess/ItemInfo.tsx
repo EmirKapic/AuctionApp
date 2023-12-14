@@ -5,8 +5,7 @@ import Subcategory from "models/Subcategory";
 import { requiredFieldsOptions } from "services/UseFormValidators";
 import Icon from "svgs/Icon";
 import Select from "react-select";
-
-export type ImageFile = string | ArrayBuffer | null;
+import TextArea from "components/Common/TextArea";
 
 export type ItemInfoFields = {
   titleId: string;
@@ -29,7 +28,7 @@ export default function ItemInfo(props: ItemInfoProps) {
   }
 
   const images = props.imagePaths.map((img, index) => (
-    <div className="border border-silver relative">
+    <div className="border border-silver relative" key={index}>
       <button
         className="absolute top-1 right-1 border rounded-2xl bg-lightgrey-200 bg-opacity-20 backdrop-blur"
         onClick={(e) => {
@@ -101,17 +100,16 @@ export default function ItemInfo(props: ItemInfoProps) {
       </div>
       <div className="text-red-500">{props.selectorsWarningMessage}</div>
       <div>
-        <Input
+        <TextArea
           id={props.descriptionId}
           label="Description"
-          multiline
           rows={7}
           maxLength={700}
           validationOptions={{
             ...requiredFieldsOptions("Please enter your product's description"),
             maxLength: {
               value: 700,
-              message: "Maximum length is 700characters",
+              message: "Maximum length is 700 characters",
             },
           }}
         />

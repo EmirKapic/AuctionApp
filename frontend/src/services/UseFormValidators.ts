@@ -30,7 +30,31 @@ export function passwordValidationOptions(): RegisterOptions<
 export function requiredFieldsOptions(
   message: string,
 ): RegisterOptions<FieldValues, string> {
-  return { required: { value: true, message: message } };
+  return {
+    required: { value: true, message: message },
+    validate: (val) => {
+      if (!val.trim()) {
+        return message;
+      }
+    },
+  };
+}
+
+export function nonNegativeNumberOptions() {
+  return {
+    ...requiredFieldsOptions("Please enter a number."),
+    min: { value: 1, message: "Must be greater than zero" },
+  };
+}
+
+export function phoneNumberValidationOptions(): RegisterOptions<
+  FieldValues,
+  string
+> {
+  return {
+    required: { value: true, message: "Please enter a phone number" },
+    pattern: { value: /^\+\d+$/, message: "Please enter a valid phone number" },
+  };
 }
 
 export function phoneNumberValidationOptions(): RegisterOptions<

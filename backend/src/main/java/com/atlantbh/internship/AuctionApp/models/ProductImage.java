@@ -21,4 +21,8 @@ public class ProductImage {
     @JoinColumn(name = "product_id")
     @JsonBackReference
     private Product product;
+
+    public ProductImage(String url, Product product){
+        this(0, url, product);
+    }
 }
