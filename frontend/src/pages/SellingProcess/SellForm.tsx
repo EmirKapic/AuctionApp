@@ -174,9 +174,7 @@ export default function SellForm() {
       phoneNumber: data[shippingIds.phoneId],
     };
     const url = new UrlBuilder().products().url;
-    post<Product, NewProductRequest>(url, newProduct, {
-      headers: getAuthorizationHeaders(),
-    }).then(() => navigate("/"));
+    post<Product, NewProductRequest>(url, newProduct).then(() => navigate("/"));
     //Ovo promjeniti da bude neki interesantniji screen kao new auction sucessful
   }
 

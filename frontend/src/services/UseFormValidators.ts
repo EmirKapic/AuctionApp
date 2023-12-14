@@ -40,16 +40,6 @@ export function requiredFieldsOptions(
   };
 }
 
-export function phoneNumberValidationOptions(): RegisterOptions<
-  FieldValues,
-  string
-> {
-  return {
-    required: { value: true, message: "Please enter a phone number" },
-    pattern: { value: /^\+\d+$/, message: "Please enter a valid phone number" },
-  };
-}
-
 export function nonNegativeNumberOptions() {
   return {
     ...requiredFieldsOptions("Please enter a number."),
@@ -64,12 +54,5 @@ export function phoneNumberValidationOptions(): RegisterOptions<
   return {
     required: { value: true, message: "Please enter a phone number" },
     pattern: { value: /^\+\d+$/, message: "Please enter a valid phone number" },
-  };
-}
-
-export function nonNegativeNumberOptions() {
-  return {
-    ...requiredFieldsOptions("Please enter a number."),
-    min: { value: 1, message: "Must be greater than zero" },
   };
 }
