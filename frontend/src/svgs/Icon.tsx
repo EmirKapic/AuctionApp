@@ -12,7 +12,9 @@ export type IconType =
   | "gift"
   | "euro"
   | "largeCart"
-  | "largeHammer";
+  | "largeHammer"
+  | "chevronDown"
+  | "calendar";
 
 export interface IconProps {
   name: IconType;
@@ -221,6 +223,40 @@ export default function Icon(props: IconProps) {
           <path d="M577.024 384c-5.12 0-10.24-1.024-14.848-4.096L315.904 237.568c-13.824-8.192-18.944-26.112-10.752-39.936 8.192-13.824 26.112-18.944 39.936-10.752l246.784 142.336c13.824 8.192 18.944 26.112 10.752 39.936C596.992 378.88 587.264 384 577.024 384z" />
           <path d="M407.04 590.336c-5.12 0-10.24-1.024-14.848-4.096L221.696 487.936c-13.824-8.192-18.944-26.112-10.752-39.936 8.192-13.824 26.112-18.944 39.936-10.752l170.496 98.816c13.824 8.192 18.944 26.112 10.752 39.936C427.008 585.216 417.28 590.336 407.04 590.336z" />
           <path d="M401.408 688.64c-5.12 0-10.24-1.024-14.848-4.096l-246.784-142.336c-13.824-8.192-18.944-26.112-10.752-39.936 8.192-13.824 26.112-18.944 39.936-10.752l246.784 142.336c13.824 8.192 18.944 26.112 10.752 39.936C421.376 683.52 411.648 688.64 401.408 688.64z" />
+        </svg>
+      );
+    case "chevronDown":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+          />
+        </svg>
+      );
+    case "calendar":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+          />
         </svg>
       );
   }

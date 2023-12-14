@@ -18,6 +18,10 @@ import GuestRoute from "components/Common/GuestRoute";
 import get from "services/fetching/Get";
 import UrlBuilder from "services/UrlBuilder";
 import UserProfile from "pages/UserProfile/UserProfile";
+import SellForm from "pages/SellingProcess/SellForm";
+import ProtectedRoute from "components/Common/ProtectedRoute";
+import intializeFirebase from "firebase/Firebase";
+import app from "firebase/Firebase";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -36,6 +40,9 @@ function App() {
       get(`${url}?token=${token}`).then((res) => {
         if (res.success) {
           setCurrentUser(JSON.parse(localStorage.getItem("user")!));
+        } else {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
         }
       });
     }
@@ -63,7 +70,10 @@ function App() {
               element={<Register handleRegister={handleLogin} />}
             />
           </Route>
-          <Route path="/account" element={<UserProfile />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/account" element={<UserProfile />} />
+            <Route path="/account/sell" element={<SellForm />} />
+          </Route>
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />

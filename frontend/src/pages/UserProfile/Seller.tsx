@@ -24,7 +24,7 @@ function renderTabButton(
         (!active &&
           "hover:bg-lightgrey-200 hover:bg-opacity-40 hover:text-black")
       }
-      onClick={(e) => onClick()}
+      onClick={onClick}
     >
       {label}
     </Button>
@@ -46,7 +46,7 @@ export default function Seller() {
     }
     params.append("sellerId", userContext!.id.toString());
     return params;
-  }, [activeTab]);
+  }, [activeTab, userContext]);
 
   const { data, isLoading, isError } = useFetchPage<Product>(
     fetchUrl,
@@ -69,7 +69,7 @@ export default function Seller() {
   }
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
-  });
+  }, [data]);
 
   if (isError) {
     return <div>Error</div>;
@@ -122,7 +122,7 @@ export default function Seller() {
         <Button
           type="primary"
           className="py-2 px-16 mb-3"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/account/sell")}
         >
           <Icon name="plus" />
           Add item

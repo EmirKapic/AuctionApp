@@ -5,6 +5,9 @@ import UrlBuilder from "services/UrlBuilder";
 
 export default function Bids() {
   const userContext = useContext(UserContext);
-  const fetchUrl = new UrlBuilder().bids().user().id(userContext!.id).url;
+  const fetchUrl = new UrlBuilder()
+    .bids()
+    .user()
+    .id(userContext?.id || -1).url;
   return <BidTable fetchUrl={fetchUrl} />;
 }
