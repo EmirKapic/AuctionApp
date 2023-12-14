@@ -59,7 +59,9 @@ export default function BidTable(props: BidTableProps) {
       </td>
       <td className="col-span-2">{bid.product.name}</td>
       <td>
-        {DateUtility.getDuration(new Date(bid.product.dateEnd), new Date())}
+        {new Date(bid.product.dateEnd) < new Date()
+          ? "Finished"
+          : DateUtility.getDuration(new Date(bid.product.dateEnd), new Date())}
       </td>
       <td>{`$${bid.bid.toFixed(2)}`}</td>
       <td>{bid.product.numberOfBids}</td>

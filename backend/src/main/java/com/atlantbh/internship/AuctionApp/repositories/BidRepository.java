@@ -9,10 +9,22 @@ import org.springframework.data.repository.query.Param;
 
 public interface BidRepository extends JpaRepository<Bid, Long> {
 
+    /*
+     * Realistically we should only give the top bid the bidder has on a product(if
+     * he has multiple),
+     * others are irrelevant.
+     * In case we need the history we can create a different endpoint (although I
+     * doubt it).
+     */
     @Query("""
-            from Bid where (:bidderEmail is null or bidder.email = :bidderEmail)
-            and (:productId is null or product.id = :productId)
-            """)
+             select b from Bid b
+             where b.bid =
+                 (select max(b1.bid)
+                 from Bid b1
+                 where (:bidderEmail is null or b1.bidder.email = :bidderEmail)
+                 and (b1.product.id = b.product.id))
+            and(:productId is null or b.product.id = :productId)
+             """)
     Page<Bid> findAllBids(@Param("bidderEmail") String bidderEmail,
             @Param("productId") Long productId,
             Pageable pageable);

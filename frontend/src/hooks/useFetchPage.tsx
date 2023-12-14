@@ -83,7 +83,7 @@ export default function useFetchPage<T, R = T>(
     };
 
     fetchData();
-  }, [pageNumber, pageSize, url, queryParams, key]);
+  }, [pageNumber, pageSize, url, queryParams, key, sort]);
 
   return { data, isLoading, isError, rawData, refresh: () => setKey(key + 1) };
 }
