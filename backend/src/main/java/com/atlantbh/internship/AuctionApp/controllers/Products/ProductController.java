@@ -7,6 +7,7 @@ import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductParameters;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductService;
+import com.atlantbh.internship.AuctionApp.utilities.ProductValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,13 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping(value = "/api/products")
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
+
     @GetMapping
     public Page<Product> getAll(final Pageable pageable, final ProductParameters parameters) {
         return productService.getAll(pageable, parameters);
@@ -45,16 +45,17 @@ public class ProductController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity makeNewProduct(@RequestBody NewProductRequest request) {
-        Optional<Product> insertedProduct = productService.createNewProduct(request);
-        if (insertedProduct.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ErrorResponse("Could not create your auction."));
+        if (!ProductValidator.validate(request)) {
+            return ResponseEntity.badRequest().body(new ErrorResponse("Invalid product data."));
         }
-        return ResponseEntity.ok().body(insertedProduct.get());
+        return productService.createNewProduct(request)
+                .map(product -> ResponseEntity.ok().body(product))
+                .map(ResponseEntity.class::cast)
+                .orElse(ResponseEntity.badRequest().body(new ErrorResponse("Could not create new product.")));
     }
 
     @GetMapping("/recommended")
-    public ResponseEntity getRecommendedProducts(){
+    public ResponseEntity getRecommendedProducts() {
         return ResponseEntity.ok().body(productService.recommendedProducts());
     }
-
 }

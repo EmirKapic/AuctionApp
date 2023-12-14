@@ -14,10 +14,7 @@ import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsServic
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
-import com.stripe.model.CustomerSearchResult;
 import com.stripe.model.checkout.Session;
-import com.stripe.param.CustomerCreateParams;
-import com.stripe.param.CustomerSearchParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.param.checkout.SessionRetrieveParams;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +25,7 @@ import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
-public class StripePaymentService implements PaymentService{
+public class StripePaymentService implements PaymentService {
 
     @Value("${config.stripe-secret-key}")
     private String STRIPE_SECRET_KEY;
@@ -43,32 +40,30 @@ public class StripePaymentService implements PaymentService{
     private final ProductRepository productRepository;
     private final StripeCustomerService customerService;
 
-
     @Override
     public String hostedCheckout(long productId) throws ProductNotFoundException, PaymentException {
-        try{
+        try {
             User user = userDetailsService.getCurrentUser();
             Product product = productService.getById(productId);
 
-            if (!productService.isPurchasable(product)){
+            if (!productService.isPurchasable(product)) {
                 throw new PaymentException("Product is not available for purchase.");
             }
-            if (productService.getWinner(product).getId() != user.getId()){
+            if (productService.getWinner(product).getId() != user.getId()) {
                 throw new PaymentException("You are not the winner of the auction.");
             }
-
 
             Stripe.apiKey = STRIPE_SECRET_KEY;
 
             Customer customer = customerService.find(user.getEmail())
-                    .orElseGet(() -> customerService.create(user.getEmail(), user.getFirstName() + " " + user.getLastName()));
+                    .orElseGet(() -> customerService.create(user.getEmail(),
+                            user.getFirstName() + " " + user.getLastName()));
 
-            SessionCreateParams.Builder paramsBuilder =
-                    SessionCreateParams.builder()
-                            .setMode(SessionCreateParams.Mode.PAYMENT)
-                            .setCustomer(customer.getId())
-                            .setSuccessUrl(CLIENT_HOST_URL + "/payment/success")
-                            .setCancelUrl(CLIENT_HOST_URL);
+            SessionCreateParams.Builder paramsBuilder = SessionCreateParams.builder()
+                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                    .setCustomer(customer.getId())
+                    .setSuccessUrl(CLIENT_HOST_URL + "/payment/success")
+                    .setCancelUrl(CLIENT_HOST_URL);
             paramsBuilder.addLineItem(
                     SessionCreateParams.LineItem.builder()
                             .setQuantity(1L)
@@ -77,20 +72,18 @@ public class StripePaymentService implements PaymentService{
                                             .setProductData(
                                                     SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                             .setName(product.getName())
-                                                            .build()
-                                            )
+                                                            .build())
                                             .setCurrency("usd")
-                                            .setUnitAmountDecimal(BigDecimal.valueOf((int)(product.getHighestBid() * 100)))
+                                            .setUnitAmountDecimal(
+                                                    BigDecimal.valueOf((int) (product.getHighestBid() * 100)))
                                             .build()
 
                             )
-                            .build()
-            );
+                            .build());
             paramsBuilder.putMetadata("product_id", Long.toString(product.getId()));
             Session session = Session.create(paramsBuilder.build());
             return session.getUrl();
-        }
-        catch(StripeException exception){
+        } catch (StripeException exception) {
             throw new PaymentException(exception.getMessage());
         }
 
@@ -98,14 +91,13 @@ public class StripePaymentService implements PaymentService{
 
     @Override
     public void finalizePayment(String sessionId) throws PaymentException, ProductNotFoundException {
-        try{
-            SessionRetrieveParams params =
-                    SessionRetrieveParams.builder()
-                            .addExpand("line_items")
-                            .build();
+        try {
+            SessionRetrieveParams params = SessionRetrieveParams.builder()
+                    .addExpand("line_items")
+                    .build();
 
             Session session = Session.retrieve(sessionId, params, null);
-            long productId =  Long.parseLong(session.getMetadata().get("product_id"));
+            long productId = Long.parseLong(session.getMetadata().get("product_id"));
 
             Product product = productService.getById(productId);
             product.setPurchased(true);
@@ -114,28 +106,8 @@ public class StripePaymentService implements PaymentService{
             Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(productId);
             Payment thisPayment = new Payment(bid, session.getId());
             paymentRepository.save(thisPayment);
-        }
-        catch(StripeException exception){
+        } catch (StripeException exception) {
             throw new PaymentException(exception.getMessage());
-        }
-    }
-
-    private Customer findOrCreateCustomer(String email, String name) throws StripeException {
-        CustomerSearchParams params =
-                CustomerSearchParams
-                        .builder()
-                        .setQuery("email:'" + email + "'")
-                        .build();Customer.search(params);
-        CustomerSearchResult result = Customer.search(params);
-        if (result.getData().isEmpty()){
-            CustomerCreateParams customerCreateParams = new CustomerCreateParams.Builder()
-                    .setName(name)
-                    .setEmail(email)
-                    .build();
-            return Customer.create(customerCreateParams);
-        }
-        else{
-            return Customer.search(params).getData().get(0);
         }
     }
 }
