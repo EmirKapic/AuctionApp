@@ -45,7 +45,7 @@ public class ProductController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity makeNewProduct(@RequestBody NewProductRequest request) {
-        if (!ProductValidator.validate(request)){
+        if (!ProductValidator.validate(request)) {
             return ResponseEntity.badRequest().body(new ErrorResponse("Invalid product data."));
         }
         return productService.createNewProduct(request)

@@ -6,10 +6,15 @@ import { useNavigate } from "react-router-dom";
 import Icon from "svgs/Icon";
 import { fallbackImageUrl } from "defaultConstants";
 
+const params = new URLSearchParams();
+params.append("excludeUserOwned", "true");
+
 export default function HeroProduct() {
   const navigate = useNavigate();
+
   const { data, isLoading, isError } = useFetchOne<Product>(
     new UrlBuilder().products().random().url,
+    params,
   );
 
   if (isLoading) {

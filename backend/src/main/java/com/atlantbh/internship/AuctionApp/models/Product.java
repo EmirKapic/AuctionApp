@@ -43,8 +43,8 @@ public class Product {
     private User user;
 
     public Product(String name, String description, double startBid, Instant dateStart, Instant dateEnd,
-                   String address, String city, String zipCode, String country, String phoneNumber,
-                   SubCategory subCategory, User user){
+            String address, String city, String zipCode, String country, String phoneNumber,
+            SubCategory subCategory, User user) {
         this(0, name, description, startBid, null, 0, dateStart, dateEnd, Instant.now(), address,
                 city, zipCode, country, phoneNumber, subCategory, null, user);
     }

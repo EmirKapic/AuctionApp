@@ -3,7 +3,7 @@ import Table from "components/Common/Table/Table";
 import { bidsPageSize } from "defaultConstants";
 import useFetchPage from "hooks/useFetchPage";
 import Bid from "models/Bid";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DateUtility from "services/DateUtility";
 import NotBidding from "./NotBidding";

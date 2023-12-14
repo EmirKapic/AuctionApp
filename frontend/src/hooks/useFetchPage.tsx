@@ -1,6 +1,7 @@
 import Page from "models/Page";
 import { useEffect, useState } from "react";
 import buildQueryParams, { QueryParameter } from "services/QueryParamsBuilder";
+import { getAuthorizationHeaders } from "services/UserAuth";
 
 function buildFullUrl(
   base: string,
@@ -40,6 +41,7 @@ export default function useFetchPage<T, R = T>(
   const [rawData, setRawData] = useState<R>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     setIsLoading(true);
@@ -52,7 +54,9 @@ export default function useFetchPage<T, R = T>(
     );
     const fetchData = async () => {
       try {
-        const res = await fetch(completeUrl);
+        const res = await fetch(completeUrl, {
+          headers: getAuthorizationHeaders(),
+        });
         let newDataJson = await res.json();
         setRawData(newDataJson);
 
@@ -79,7 +83,7 @@ export default function useFetchPage<T, R = T>(
     };
 
     fetchData();
-  }, [pageNumber, pageSize, url, queryParams]);
+  }, [pageNumber, pageSize, url, queryParams, key]);
 
-  return { data, isLoading, isError, rawData };
+  return { data, isLoading, isError, rawData, refresh: () => setKey(key + 1) };
 }

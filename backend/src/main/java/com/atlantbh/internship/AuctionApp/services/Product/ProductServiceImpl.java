@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -28,13 +29,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getAll(Pageable pageable, ProductParameters params) {
         return productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(), params.name(),
-                params.sellerId(), params.active());
+                params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()));
     }
 
     @Override
     public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
         Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(),
-                params.name(), params.sellerId(), params.active());
+                params.name(), params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()));
         if (!products.isEmpty()) {
             return new ProductDidYouMean(products, null);
         }
@@ -46,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getRandom() {
-        return productRepository.getRandom();
+        return productRepository.getRandom(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override
@@ -58,19 +59,27 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> createNewProduct(NewProductRequest request) {
         Optional<SubCategory> subCategory = subcategoryRepository.findById(request.subcategoryId());
-        if (subCategory.isEmpty()){
+        if (subCategory.isEmpty()) {
             return Optional.empty();
         }
 
         String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.loadUserByUsername(currentUserEmail);
 
-        Product newProduct = new Product(request.title(), request.description(), request.startPrice(), request.startDate(),
+        Product newProduct = new Product(request.title(), request.description(), request.startPrice(),
+                request.startDate(),
                 request.endDate(), request.address(), request.city(), request.zipCode(), request.country(),
                 request.phoneNumber(), subCategory.get(), user);
         newProduct.setImages(request.imageUrls().stream().map(url -> new ProductImage(url, newProduct)).toList());
 
         return Optional.of(productRepository.save(newProduct));
+    }
+
+    private String excludeOwnedBy(Boolean excludeUserOwned) {
+        if (excludeUserOwned == null || !excludeUserOwned)
+            return null;
+        else
+            return userDetailsService.getCurrentUserEmail();
     }
 
 }
