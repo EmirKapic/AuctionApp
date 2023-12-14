@@ -2,15 +2,13 @@ package com.atlantbh.internship.AuctionApp.dtos.sell;
 
 import lombok.NonNull;
 
+import java.time.Instant;
 import java.util.List;
 
-public record NewProductRequest(@NonNull String title, @NonNull  Long categoryId,
-                                @NonNull Long subcategoryId,
-                                @NonNull String description, @NonNull List<String> imageUrls,
-                                @NonNull Double startPrice,
-
-                                @NonNull String startDate,
-                                @NonNull String endDate,
-                                @NonNull String address, @NonNull String email, @NonNull String city, @NonNull String zipCode,
-                                @NonNull String country, @NonNull String phoneNumber) {
+public record NewProductRequest(@NonNull String title, long subcategoryId,
+        @NonNull String description, @NonNull List<String> imageUrls,
+        double startPrice, Instant startDate,
+        Instant endDate, @NonNull String address,
+        @NonNull String city, @NonNull String zipCode,
+        @NonNull String country, @NonNull String phoneNumber) {
 }
