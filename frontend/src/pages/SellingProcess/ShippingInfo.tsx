@@ -17,7 +17,7 @@ export default function ShippingInfo(props: ShippingInfoProps) {
     <div className="flex flex-col gap-10">
       <Input
         id={props.addressId}
-        label="Adress"
+        label="Address"
         type="text"
         validationOptions={requiredFieldsOptions("Please enter your adress")}
       />

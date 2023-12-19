@@ -52,7 +52,7 @@ export default function LowerNavbar() {
             <input
               type="text"
               role="search"
-              placeholder="Try enter: Shoes"
+              placeholder="Search auctions"
               className="outline outline-gray-200 w-full py-4 indent-4 shadow-lightgrey"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
