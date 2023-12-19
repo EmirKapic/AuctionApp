@@ -80,12 +80,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         List<Product> getRecommendedProducts(@Param("userId") long userId);
 
         @Query("""
-                from Product
-                where dateStart < current_timestamp
-                        and dateEnd > current_timestamp
-                        and purchased=false
-                        and :sellerEmail <> user.email
-                order by RANDOM()
-                limit 3""")
+                        from Product
+                        where dateStart < current_timestamp
+                                and dateEnd > current_timestamp
+                                and purchased=false
+                                and :sellerEmail <> user.email
+                        order by RANDOM()
+                        limit 3""")
         List<Product> findTop3ByRandom(String sellerEmail);
 }

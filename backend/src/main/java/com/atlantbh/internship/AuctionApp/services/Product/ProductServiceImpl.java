@@ -98,9 +98,8 @@ public class ProductServiceImpl implements ProductService {
         if (userDetailsService.isAuthenticated()) {
             List<Product> recommendedProducts = productRepository
                     .getRecommendedProducts(userDetailsService.getCurrentUser().getId());
-            return recommendedProducts.size() == 3 ?
-                    recommendedProducts :
-                    productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
+            return recommendedProducts.size() == 3 ? recommendedProducts
+                    : productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
         } else
             return productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
     }
