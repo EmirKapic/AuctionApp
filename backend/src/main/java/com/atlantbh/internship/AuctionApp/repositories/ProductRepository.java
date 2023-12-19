@@ -12,8 +12,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
         @Query("""
                         from Product
-                        where dateStart < current date
-                                and dateEnd > current date
+                        where (cast(dateStart as date) <= current_date) and dateEnd > current date
                                 and user.email <> :userEmail
                                 and purchased=false
                         order by RANDOM() LIMIT 1
@@ -28,7 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         and (:excludedSeller is null or user.email <> :excludedSeller)
                         and
                             case
-                                when :active = true then (dateEnd > current date)
+                                when :active = true then ((cast(dateStart as date) <= current_date) and dateEnd > current date and purchased=false)
                                 when :active = false then (dateEnd < current date)
                                 else true
                             end
@@ -45,7 +44,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         from Product where (:categoryId is null or :categoryId = subCategory.category.id )
                         and (:subcategoryId is null or :subcategoryId = subCategory.id)
                         and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
-                        and (dateStart < current date and dateEnd > current date)
+                        and ((cast(dateStart as date) <= current_date) and dateEnd > current date)
                         and purchased=false
                         order by levenshtein(upper(name), upper(:name))""")
         Page<Product> getAllActiveApproximate(Pageable pageable,
@@ -61,7 +60,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                  join user_seller_interaction as sellerInteraction on sellerInteraction.seller_id = product.seller_id
                                  where subInteraction.user_id = :userId and sellerInteraction.user_id = :userId
                                          and product.purchased = false
-                                         and product.date_start < current_date
+                                         and (cast(product.date_start as date) <= current_date)
                                          and product.date_end > current_date
                                          and product.seller_id <> :userId
                                  order by ((subInteraction.views * case
@@ -80,6 +79,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                          """, nativeQuery = true)
         List<Product> getRecommendedProducts(@Param("userId") long userId);
 
-        @Query("from Product where dateStart < current date and dateEnd > current date and purchased=false order by RANDOM() limit 3")
-        List<Product> findTop3ByRandom();
+        @Query("from Product where dateEnd > current date and purchased=false and :sellerEmail <> user.email order by RANDOM() limit 3")
+        List<Product> findTop3ByRandom(String sellerEmail);
 }

@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
         Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(),
-                params.name(), params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()));
+                params.name(), params.sellerId(), true, excludeOwnedBy(params.excludeUserOwned()));
         if (!products.isEmpty()) {
             return new ProductDidYouMean(products, null);
         }
@@ -98,9 +98,11 @@ public class ProductServiceImpl implements ProductService {
         if (userDetailsService.isAuthenticated()) {
             List<Product> recommendedProducts = productRepository
                     .getRecommendedProducts(userDetailsService.getCurrentUser().getId());
-            return recommendedProducts.size() == 3 ? recommendedProducts : productRepository.findTop3ByRandom();
+            return recommendedProducts.size() == 3 ?
+                    recommendedProducts :
+                    productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
         } else
-            return productRepository.findTop3ByRandom();
+            return productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
     }
 
 }
