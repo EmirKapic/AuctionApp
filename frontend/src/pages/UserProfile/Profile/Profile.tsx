@@ -46,7 +46,6 @@ export interface ProfileProps {
 
 export default function Profile(props: ProfileProps) {
   const userContext = useContext(UserContext);
-  console.log(userContext);
   const dateOfBirth = getBirthDate(userContext?.dateOfBirth);
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -90,7 +89,6 @@ export default function Profile(props: ProfileProps) {
       });
       return;
     }
-    console.log(data);
     const birthDate = new Date(
       data.dateOfBirthYear,
       data.dateOfBirthMonth.value,
