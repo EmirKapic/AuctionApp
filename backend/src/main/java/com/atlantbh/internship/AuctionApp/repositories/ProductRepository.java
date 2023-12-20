@@ -60,7 +60,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                  join user_seller_interaction as sellerInteraction on sellerInteraction.seller_id = product.seller_id
                                  where subInteraction.user_id = :userId and sellerInteraction.user_id = :userId
                                          and product.purchased = false
-                                         and (product.date_start <= current_timestamp)
+                                         and product.date_start <= current_timestamp
                                          and product.date_end > current_timestamp
                                          and product.seller_id <> :userId
                                  order by ((subInteraction.views * case
