@@ -1,8 +1,10 @@
 import Button from "components/Common/Button";
 import { FormProvider, useForm } from "react-hook-form";
 
-import PersonalInformation from "./PersonalInforrmation";
+import PersonalInformation from "./PersonalInformation";
 import DateUtility from "services/DateUtility";
+import CardInformation from "./CardInformation";
+import { useState } from "react";
 
 export type SelectionOption<Value, Label> = {
   value: Value;
@@ -17,6 +19,7 @@ type FormValues = {
   dateOfBirthMonth: SelectionOption<number, string>;
   dateOfBirthYear: number;
   phoneNumber: string;
+  creditCart: string;
 };
 
 export default function Profile() {
@@ -25,6 +28,7 @@ export default function Profile() {
       email: "testmail@mail.ba",
     },
   });
+  const [isCardInfoOpen, setIsCardInfoOpen] = useState(false);
 
   function validateDateOfBirth(
     day: number,
@@ -63,9 +67,16 @@ export default function Profile() {
           onSubmit={methods.handleSubmit((data, e) =>
             handleFormSubmit(data, e),
           )}
-          className="border border-silver"
+          className="flex flex-col gap-10"
         >
           <PersonalInformation />
+          <CardInformation
+            active={isCardInfoOpen}
+            setActive={() => setIsCardInfoOpen(!isCardInfoOpen)}
+          />
+          <Button type="primary" formButtonType="submit">
+            Submit
+          </Button>
         </form>
       </FormProvider>
     </div>

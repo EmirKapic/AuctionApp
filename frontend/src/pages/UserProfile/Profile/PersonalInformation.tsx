@@ -5,7 +5,6 @@ import Select from "react-select";
 import sectionHeader from "./sectionHeader";
 import Input from "components/Common/Input";
 import { minMaxNumberValidation } from "services/UseFormValidators";
-import DateUtility from "services/DateUtility";
 const months = [
   "January",
   "February",
@@ -31,7 +30,7 @@ const monthOptions = months.map((month, index) => {
 export default function PersonalInformation() {
   const methods = useFormContext();
   return (
-    <div>
+    <div className="border border-silver pb-5">
       {sectionHeader("Personal information")}
       <div className="flex">
         <div className="flex-shrink-0">
@@ -76,9 +75,6 @@ export default function PersonalInformation() {
               )}
             />
           </div>
-          <Button type="primary" formButtonType="submit">
-            Submit
-          </Button>
         </div>
       </div>
     </div>
