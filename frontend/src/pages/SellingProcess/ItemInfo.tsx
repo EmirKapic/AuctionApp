@@ -39,7 +39,7 @@ export default function ItemInfo(props: ItemInfoProps) {
         }}
         type="button"
       >
-        <Icon name="plus" />
+        <Icon name="cancel" />
       </button>
       <img src={URL.createObjectURL(img)} className="w-20 h-20 object-cover" />
     </div>

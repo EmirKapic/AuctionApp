@@ -13,7 +13,6 @@ import CategoryDto from "models/CategoryDto";
 import { useState } from "react";
 import Subcategory from "models/Subcategory";
 import Product from "models/Product";
-import { getAuthorizationHeaders } from "services/UserAuth";
 import post from "services/fetching/Post";
 import FileManager from "services/fileManaging/FileManager";
 import FirebaseFileManager from "services/fileManaging/FirebaseFileManager";
@@ -174,8 +173,9 @@ export default function SellForm() {
       phoneNumber: data[shippingIds.phoneId],
     };
     const url = new UrlBuilder().products().url;
-    post<Product, NewProductRequest>(url, newProduct).then(() => navigate("/"));
-    //Ovo promjeniti da bude neki interesantniji screen kao new auction sucessful
+    post<Product, NewProductRequest>(url, newProduct).then((p) =>
+      navigate(`/shop/products/${p.data.id}`),
+    );
   }
 
   return (

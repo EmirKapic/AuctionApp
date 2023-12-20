@@ -29,7 +29,7 @@ export default function RecommendedTab() {
       <ProductGrid
         items={data}
         itemsClassName="grid grid-cols-3 gap-5"
-        imageClassName="w-92 h-92"
+        imageClassName="w-92 h-80"
       />
     </Container>
   );

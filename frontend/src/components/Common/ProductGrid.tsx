@@ -17,7 +17,7 @@ export default function ProductGrid(props: GridProps) {
       onClick={() => navigate(`/shop/products/${item.id}`)}
     >
       <div className={props.imageClassName}>
-        <img className="object-cover h-full" src={item.images[0].url} />
+        <img className="object-cover w-full h-full" src={item.images[0].url} />
       </div>
 
       <h3 className="text-2xl py-1 font-bold cursor-pointer">{item.name}</h3>
