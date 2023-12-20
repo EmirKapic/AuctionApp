@@ -22,13 +22,18 @@ const months = [
 
 const monthOptions = months.map((month, index) => {
   return {
-    value: index + 1,
+    value: index,
     label: month,
   };
 });
 
-export default function PersonalInformation() {
+export interface PersonalInformationProps {
+  monthOfBirth?: number;
+}
+
+export default function PersonalInformation(props: PersonalInformationProps) {
   const methods = useFormContext();
+  console.log(props.monthOfBirth);
   return (
     <div className="border border-silver pb-5">
       {sectionHeader("Personal information")}
@@ -55,8 +60,13 @@ export default function PersonalInformation() {
               placeholder="MM"
               onChange={(val) => methods.setValue("dateOfBirthMonth", val)}
               options={monthOptions}
+              defaultValue={
+                props.monthOfBirth !== undefined
+                  ? monthOptions[props.monthOfBirth]
+                  : undefined
+              }
               styles={{
-                control: (baseStyles, state) => ({
+                control: (baseStyles) => ({
                   ...baseStyles,
                   height: "50px",
                 }),

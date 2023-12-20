@@ -4,8 +4,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import PersonalInformation from "./PersonalInformation";
 import DateUtility from "services/DateUtility";
 import CardInformation from "./CardInformation";
-import { useState } from "react";
 import ShippingAddress from "./ShippingAddress";
+import { useContext } from "react";
+import { UserContext } from "contexts/UserContext";
 
 export type SelectionOption<Value, Label> = {
   value: Value;
@@ -20,20 +21,37 @@ type FormValues = {
   dateOfBirthMonth: SelectionOption<number, string>;
   dateOfBirthYear: number;
   phoneNumber: string;
-  creditCart: string;
+  creditCard: string;
   address: string;
   city: string;
   zip: string;
   country: string;
 };
 
+function getBirthDate(date?: string): Date | undefined {
+  if (!date) return;
+  return new Date(date);
+}
+
 export default function Profile() {
+  const userContext = useContext(UserContext);
+  const dateOfBirth = getBirthDate(userContext?.dateOfBirth);
   const methods = useForm<FormValues>({
     defaultValues: {
-      email: "testmail@mail.ba",
+      firstName: userContext?.firstName,
+      lastName: userContext?.lastName,
+      email: userContext?.email,
+      dateOfBirthDay: dateOfBirth?.getDate(),
+      dateOfBirthMonth: { value: dateOfBirth?.getMonth() },
+      dateOfBirthYear: dateOfBirth?.getFullYear(),
+      creditCard: userContext?.creditCard,
+      address: userContext?.address,
+      phoneNumber: userContext?.phoneNumber,
+      city: userContext?.city,
+      zip: userContext?.zipCode,
+      country: userContext?.country,
     },
   });
-
   function validateDateOfBirth(
     day: number,
     month: number,
@@ -46,6 +64,7 @@ export default function Profile() {
     data: FormValues,
     e?: React.BaseSyntheticEvent,
   ): void {
+    console.log(data.dateOfBirthMonth);
     if (
       !validateDateOfBirth(
         data.dateOfBirthDay,
@@ -73,7 +92,7 @@ export default function Profile() {
           )}
           className="flex flex-col gap-10"
         >
-          <PersonalInformation />
+          <PersonalInformation monthOfBirth={dateOfBirth?.getMonth()} />
           <CardInformation />
           <ShippingAddress />
           <Button type="primary" formButtonType="submit">

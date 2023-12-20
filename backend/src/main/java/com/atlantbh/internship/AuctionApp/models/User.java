@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,12 +47,18 @@ public class User implements UserDetails {
     private String phoneNumber;
 
     private String role;
+    private String address;
+    private String city;
+    private String zipCode;
+    private String country;
+    private String creditCardNumber;
+    private Instant dateOfBirth;
 
     public User(String email){
         this(email, null, null, null);
     }
     public User(String email, String password, String firstName, String lastName){
-        this(0, firstName, lastName, email, password,null, null, null);
+        this(0, firstName, lastName, email, password,null,null, null, null, null, null, null, null, null);
     }
 
     @Override
