@@ -1,21 +1,21 @@
 import Input from "components/Common/Input";
 import sectionHeader from "./sectionHeader";
 import Icon from "svgs/Icon";
+import { useState } from "react";
 
-export interface CardInformationProps {
-  active?: boolean;
-  setActive: () => void;
-}
-
-export default function CardInformation(props: CardInformationProps) {
+export default function CardInformation() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="border border-silver">
       {sectionHeader(
-        <div className="flex gap-5 cursor-pointer" onClick={props.setActive}>
+        <div
+          className="flex gap-5 cursor-pointer"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <Icon name="chevronDown" /> Card information (Optional)
         </div>,
       )}
-      {props.active && (
+      {isOpen && (
         <div className="py-5 px-8">
           <Input
             type="text"
