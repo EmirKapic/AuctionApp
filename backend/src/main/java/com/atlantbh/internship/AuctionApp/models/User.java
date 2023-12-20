@@ -52,13 +52,14 @@ public class User implements UserDetails {
     private String zipCode;
     private String country;
     private String creditCard;
+    private String photoUrl;
     private Instant dateOfBirth;
 
     public User(String email){
         this(email, null, null, null);
     }
     public User(String email, String password, String firstName, String lastName){
-        this(0, firstName, lastName, email, password,null,null, null, null, null, null, null, null, null);
+        this(0, firstName, lastName, email, password,null, null,null, null, null, null, null, null, null, null);
     }
 
     @Override

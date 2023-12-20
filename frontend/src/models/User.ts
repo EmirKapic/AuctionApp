@@ -11,6 +11,7 @@ type User = {
   country?: string;
   dateOfBirth?: string;
   creditCard?: string;
+  photoUrl?: string;
 };
 
 export default User;

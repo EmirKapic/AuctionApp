@@ -5,6 +5,8 @@ import Select from "react-select";
 import sectionHeader from "./sectionHeader";
 import Input from "components/Common/Input";
 import { minMaxNumberValidation } from "services/UseFormValidators";
+import { ChangeEvent } from "react";
+import DragAndDrop from "components/Common/DragAndDrop";
 const months = [
   "January",
   "February",
@@ -29,19 +31,35 @@ const monthOptions = months.map((month, index) => {
 
 export interface PersonalInformationProps {
   monthOfBirth?: number;
+  profileImage?: File;
+  setProfileImage: (file: File) => void;
 }
 
 export default function PersonalInformation(props: PersonalInformationProps) {
   const methods = useFormContext();
+  console.log(props.profileImage);
+  function handleImageUpload(files: Array<File>) {
+    props.setProfileImage(files[0]);
+  }
+
   return (
     <div className="border border-silver pb-5">
       {sectionHeader("Personal information")}
       <div className="flex">
         <div className="flex-shrink-0">
-          <img src={fallbackImageUrl} className="w-92 h-92" />
-          <Button type="primary" className="py-2 px-10 mx-auto">
-            Change photo
-          </Button>
+          <img
+            src={
+              props.profileImage
+                ? URL.createObjectURL(props.profileImage)
+                : fallbackImageUrl
+            }
+            className="w-[32rem] h-[32rem] object-cover rounded-[100%] m-5"
+          />
+          <DragAndDrop onDrop={handleImageUpload} className="w-fit mx-auto">
+            <Button type="primary" className="py-2 px-10 mt-5">
+              Change photo
+            </Button>
+          </DragAndDrop>
         </div>
         <div className="flex-grow px-20 mt-8 flex flex-col gap-5">
           <Input type="text" id="firstName" label="First Name" />

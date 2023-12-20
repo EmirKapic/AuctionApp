@@ -5,7 +5,7 @@ import PersonalInformation from "./PersonalInformation";
 import DateUtility from "services/DateUtility";
 import CardInformation from "./CardInformation";
 import ShippingAddress from "./ShippingAddress";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "contexts/UserContext";
 import post from "services/fetching/Post";
 import User from "models/User";
@@ -33,6 +33,7 @@ type FormValues = {
 
 type UpdateRequest = FormValues & {
   dateOfBirth: string;
+  photoUrl: string;
 };
 
 function getBirthDate(date?: string): Date | undefined {
@@ -46,6 +47,7 @@ export interface ProfileProps {
 
 export default function Profile(props: ProfileProps) {
   const userContext = useContext(UserContext);
+  const [profileImage, setProfileImage] = useState<File>();
   const dateOfBirth = getBirthDate(userContext?.dateOfBirth);
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -98,6 +100,7 @@ export default function Profile(props: ProfileProps) {
     post<User, UpdateRequest>(new UrlBuilder().user().url, {
       ...data,
       dateOfBirth: birthDate.toISOString(),
+      photoUrl: "",
     }).then((user) => props.updateUserContext(user.data));
   }
 
@@ -110,7 +113,11 @@ export default function Profile(props: ProfileProps) {
           )}
           className="flex flex-col gap-10"
         >
-          <PersonalInformation monthOfBirth={dateOfBirth?.getMonth()} />
+          <PersonalInformation
+            monthOfBirth={dateOfBirth?.getMonth()}
+            profileImage={profileImage}
+            setProfileImage={setProfileImage}
+          />
           <CardInformation />
           <ShippingAddress />
           <Button
