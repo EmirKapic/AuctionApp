@@ -7,6 +7,9 @@ import CardInformation from "./CardInformation";
 import ShippingAddress from "./ShippingAddress";
 import { useContext } from "react";
 import { UserContext } from "contexts/UserContext";
+import post from "services/fetching/Post";
+import User from "models/User";
+import UrlBuilder from "services/UrlBuilder";
 
 export type SelectionOption<Value, Label> = {
   value: Value;
@@ -28,13 +31,22 @@ type FormValues = {
   country: string;
 };
 
+type UpdateRequest = FormValues & {
+  dateOfBirth: string;
+};
+
 function getBirthDate(date?: string): Date | undefined {
   if (!date) return;
   return new Date(date);
 }
 
-export default function Profile() {
+export interface ProfileProps {
+  updateUserContext: (updatedUser: User) => void;
+}
+
+export default function Profile(props: ProfileProps) {
   const userContext = useContext(UserContext);
+  console.log(userContext);
   const dateOfBirth = getBirthDate(userContext?.dateOfBirth);
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -64,7 +76,6 @@ export default function Profile() {
     data: FormValues,
     e?: React.BaseSyntheticEvent,
   ): void {
-    console.log(data.dateOfBirthMonth);
     if (
       !validateDateOfBirth(
         data.dateOfBirthDay,
@@ -78,9 +89,18 @@ export default function Profile() {
         message: "Invalid day",
       });
       return;
-    } else {
-      console.log(data);
     }
+    console.log(data);
+    const birthDate = new Date(
+      data.dateOfBirthYear,
+      data.dateOfBirthMonth.value,
+      data.dateOfBirthDay,
+      new Date().getUTCHours(),
+    );
+    post<User, UpdateRequest>(new UrlBuilder().user().url, {
+      ...data,
+      dateOfBirth: birthDate.toISOString(),
+    }).then((user) => props.updateUserContext(user.data));
   }
 
   return (
@@ -95,8 +115,12 @@ export default function Profile() {
           <PersonalInformation monthOfBirth={dateOfBirth?.getMonth()} />
           <CardInformation />
           <ShippingAddress />
-          <Button type="primary" formButtonType="submit">
-            Submit
+          <Button
+            type="primary"
+            formButtonType="submit"
+            className="w-fit ml-auto py-2 px-10 uppercase font-bold"
+          >
+            Save changes
           </Button>
         </form>
       </FormProvider>

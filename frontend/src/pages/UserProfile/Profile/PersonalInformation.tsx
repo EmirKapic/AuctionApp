@@ -33,7 +33,6 @@ export interface PersonalInformationProps {
 
 export default function PersonalInformation(props: PersonalInformationProps) {
   const methods = useFormContext();
-  console.log(props.monthOfBirth);
   return (
     <div className="border border-silver pb-5">
       {sectionHeader("Personal information")}
@@ -85,6 +84,17 @@ export default function PersonalInformation(props: PersonalInformationProps) {
               )}
             />
           </div>
+          <Input
+            type="string"
+            id="phoneNumber"
+            label="Phone Number"
+            validationOptions={{
+              pattern: {
+                value: /^\+\d+$/,
+                message: "Please enter a valid phone number",
+              },
+            }}
+          />
         </div>
       </div>
     </div>

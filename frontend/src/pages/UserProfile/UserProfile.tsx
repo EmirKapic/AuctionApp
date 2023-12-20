@@ -8,6 +8,11 @@ import Seller from "./Seller";
 import Bids from "./Bids";
 import Settings from "./Settings/Settings";
 import Profile from "./Profile/Profile";
+import User from "models/User";
+
+export interface UserProfileProps {
+  updateUserContext: (updatedUser: User) => void;
+}
 
 const pageName: Record<0 | 1 | 2 | 3, string> = {
   0: "Profile",
@@ -16,7 +21,7 @@ const pageName: Record<0 | 1 | 2 | 3, string> = {
   3: "Settings",
 };
 
-export default function UserProfile() {
+export default function UserProfile(props: UserProfileProps) {
   const [activeTab, setActiveTab] = useState<0 | 1 | 2 | 3>(0);
   return (
     <div>
@@ -30,7 +35,12 @@ export default function UserProfile() {
       <Container type="large" className="mt-10">
         <TaskBar
           activeIndex={activeTab}
-          elements={[<Profile />, <Seller />, <Bids />, <Settings />]}
+          elements={[
+            <Profile updateUserContext={props.updateUserContext} />,
+            <Seller />,
+            <Bids />,
+            <Settings />,
+          ]}
           elementsClassName="mt-16"
           barClassName="flex gap-3"
         >

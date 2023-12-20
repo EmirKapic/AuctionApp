@@ -51,7 +51,7 @@ public class User implements UserDetails {
     private String city;
     private String zipCode;
     private String country;
-    private String creditCardNumber;
+    private String creditCard;
     private Instant dateOfBirth;
 
     public User(String email){

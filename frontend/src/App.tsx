@@ -77,7 +77,10 @@ function App() {
             />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path="/account" element={<UserProfile />} />
+            <Route
+              path="/account"
+              element={<UserProfile updateUserContext={setCurrentUser} />}
+            />
             <Route path="/account/sell" element={<SellForm />} />
           </Route>
           <Route path="/payment/success" element={<PaymentSuccess />} />

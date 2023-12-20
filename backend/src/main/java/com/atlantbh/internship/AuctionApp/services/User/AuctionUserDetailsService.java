@@ -1,5 +1,6 @@
 package com.atlantbh.internship.AuctionApp.services.User;
 
+import com.atlantbh.internship.AuctionApp.dtos.user.UserUpdateRequest;
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -30,4 +31,16 @@ public class AuctionUserDetailsService implements UserDetailsService {
         return !getCurrentUserEmail().equals("anonymousUser");
     }
 
+    public User updateUser(UserUpdateRequest request, User user){
+        user.setFirstName(request.firstName());
+        user.setLastName(request.lastName());
+        user.setAddress(request.address());
+        user.setCity(request.city());
+        user.setZipCode(request.zip());
+        user.setCountry(request.country());
+        user.setDateOfBirth(request.dateOfBirth());
+        user.setCreditCard(request.creditCard());
+        user.setPhoneNumber(request.phoneNumber());
+        return userRepository.save(user);
+    }
 }
