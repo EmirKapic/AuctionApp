@@ -79,7 +79,14 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route
               path="/account"
-              element={<UserProfile updateUserContext={setCurrentUser} />}
+              element={
+                <UserProfile
+                  updateUserContext={(user) => {
+                    setCurrentUser(user);
+                    localStorage.setItem("user", JSON.stringify(user));
+                  }}
+                />
+              }
             />
             <Route path="/account/sell" element={<SellForm />} />
           </Route>

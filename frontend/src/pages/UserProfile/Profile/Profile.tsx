@@ -10,6 +10,8 @@ import { UserContext } from "contexts/UserContext";
 import post from "services/fetching/Post";
 import User from "models/User";
 import UrlBuilder from "services/UrlBuilder";
+import FileManager from "services/fileManaging/FileManager";
+import FirebaseFileManager from "services/fileManaging/FirebaseFileManager";
 
 export type SelectionOption<Value, Label> = {
   value: Value;
@@ -73,10 +75,10 @@ export default function Profile(props: ProfileProps) {
     return day <= DateUtility.getMaxDayForMonth(month, year)! && day > 0;
   }
 
-  function handleFormSubmit(
+  async function handleFormSubmit(
     data: FormValues,
     e?: React.BaseSyntheticEvent,
-  ): void {
+  ): Promise<void> {
     if (
       !validateDateOfBirth(
         data.dateOfBirthDay,
@@ -97,10 +99,16 @@ export default function Profile(props: ProfileProps) {
       data.dateOfBirthDay,
       new Date().getUTCHours(),
     );
+    let photoUrl: string;
+    if (profileImage) {
+      const fileManager: FileManager = new FirebaseFileManager();
+      const uploadedUrl = await fileManager.uploadFile(profileImage);
+      photoUrl = uploadedUrl;
+    } else photoUrl = userContext?.photoUrl!;
     post<User, UpdateRequest>(new UrlBuilder().user().url, {
       ...data,
       dateOfBirth: birthDate.toISOString(),
-      photoUrl: "",
+      photoUrl: photoUrl,
     }).then((user) => props.updateUserContext(user.data));
   }
 

@@ -5,8 +5,9 @@ import Select from "react-select";
 import sectionHeader from "./sectionHeader";
 import Input from "components/Common/Input";
 import { minMaxNumberValidation } from "services/UseFormValidators";
-import { ChangeEvent } from "react";
 import DragAndDrop from "components/Common/DragAndDrop";
+import { useContext } from "react";
+import { UserContext } from "contexts/UserContext";
 const months = [
   "January",
   "February",
@@ -37,8 +38,9 @@ export interface PersonalInformationProps {
 
 export default function PersonalInformation(props: PersonalInformationProps) {
   const methods = useFormContext();
-  console.log(props.profileImage);
+  const userContext = useContext(UserContext);
   function handleImageUpload(files: Array<File>) {
+    console.log(files[0]);
     props.setProfileImage(files[0]);
   }
 
@@ -51,7 +53,7 @@ export default function PersonalInformation(props: PersonalInformationProps) {
             src={
               props.profileImage
                 ? URL.createObjectURL(props.profileImage)
-                : fallbackImageUrl
+                : userContext?.photoUrl || fallbackImageUrl
             }
             className="w-[32rem] h-[32rem] object-cover rounded-[100%] m-5"
           />

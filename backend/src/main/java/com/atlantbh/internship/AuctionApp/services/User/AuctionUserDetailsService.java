@@ -41,6 +41,7 @@ public class AuctionUserDetailsService implements UserDetailsService {
         user.setDateOfBirth(request.dateOfBirth());
         user.setCreditCard(request.creditCard());
         user.setPhoneNumber(request.phoneNumber());
+        user.setPhotoUrl(request.photoUrl());
         return userRepository.save(user);
     }
 }
