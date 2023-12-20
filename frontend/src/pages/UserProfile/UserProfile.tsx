@@ -7,6 +7,7 @@ import Icon from "svgs/Icon";
 import Seller from "./Seller";
 import Bids from "./Bids";
 import Settings from "./Settings/Settings";
+import Profile from "./Profile/Profile";
 
 const pageName: Record<0 | 1 | 2 | 3, string> = {
   0: "Profile",
@@ -16,7 +17,7 @@ const pageName: Record<0 | 1 | 2 | 3, string> = {
 };
 
 export default function UserProfile() {
-  const [activeTab, setActiveTab] = useState<0 | 1 | 2 | 3>(1);
+  const [activeTab, setActiveTab] = useState<0 | 1 | 2 | 3>(0);
   return (
     <div>
       <Breadcrumb
@@ -29,10 +30,13 @@ export default function UserProfile() {
       <Container type="large" className="mt-10">
         <TaskBar
           activeIndex={activeTab}
-          elements={[<div>hi</div>, <Seller />, <Bids />, <Settings />]}
+          elements={[<Profile />, <Seller />, <Bids />, <Settings />]}
           elementsClassName="mt-16"
           barClassName="flex gap-3"
         >
+          <TaskBarItem active={activeTab === 0} onClick={() => setActiveTab(0)}>
+            <div>Profile</div>
+          </TaskBarItem>
           <TaskBarItem active={activeTab === 1} onClick={() => setActiveTab(1)}>
             <Icon name="hamburger" />
             <div>Seller</div>

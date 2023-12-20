@@ -9,7 +9,8 @@ export default function Settings() {
         </h4>
         <div className="px-8 py-3">
           <p>Do you want to deactivate your account?</p>
-          <Button type="secondary" className="py-2 px-16 mt-5">
+          <Button type="secondary" className="py-2 px-16 mt-5 uppercase">
+            {/* what does deactivate mean? Should products be deleted if currently bid on? Should you even be able to delete if products are being sold?*/}
             Deactivate
           </Button>
         </div>
