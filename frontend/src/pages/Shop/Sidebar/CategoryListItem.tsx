@@ -54,7 +54,10 @@ export default function CategoryListItem(props: CategoryListItemProps) {
         checked={selectedSubcategoryIds.includes(subCategory.id)}
         onChange={(active) => handleSubcategorySelect(subCategory.id, active)}
       />
-      {`${subCategory.name}`}
+      <label
+        htmlFor={subCategory.name}
+        className="cursor-pointer"
+      >{`${subCategory.name}`}</label>
     </li>
   ));
   return (

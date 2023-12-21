@@ -10,6 +10,7 @@ import CategoryDto from "models/CategoryDto";
 import buildQueryParams from "services/QueryParamsBuilder";
 import SortType from "./SortType";
 import SortBar from "./SortBar";
+import FiltersList from "./FiltersList";
 
 export default function Shop() {
   const [didYouMean, setDidYouMean] = useState<string>();
@@ -80,6 +81,7 @@ export default function Shop() {
           />
         </aside>
         <div className="flex-grow">
+          <FiltersList categories={categories} />
           <SortBar
             sort={sortType}
             onChange={setSortType}

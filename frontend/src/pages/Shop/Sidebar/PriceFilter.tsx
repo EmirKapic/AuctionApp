@@ -3,9 +3,9 @@ import { ReactNode, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 export default function PriceFilter() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [minPrice, setMinPrice] = useState<number>();
   const [maxPrice, setMaxPrice] = useState<number>();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   function onPriceFilter() {
     const newSearchParams = new URLSearchParams(searchParams);
