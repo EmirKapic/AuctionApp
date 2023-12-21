@@ -25,8 +25,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         and (:name is null or name ilike concat('%', :name, '%'))
                         and (:sellerId is null or user.id = :sellerId)
                         and (:excludedSeller is null or user.email <> :excludedSeller)
-                        and (:minPrice is null or (highestBid is not null and :minPrice < highestBid) or :minPrice < startBid)
-                        and (:maxPrice is null or (highestBid is not null and :maxPrice > highestBid) or :maxPrice > startBid)
+                        and (:minPrice is null or (highestBid is not null and :minPrice <= highestBid) or :minPrice <= startBid)
+                        and (:maxPrice is null or (highestBid is not null and :maxPrice >= highestBid) or :maxPrice >= startBid)
                         and
                             case
                                 when :active = true then (dateStart <= current_timestamp and dateEnd > current_timestamp and purchased=false)
