@@ -1,5 +1,7 @@
+import Checkbox from "components/Common/Checkbox";
 import CategoryDto from "models/CategoryDto";
 import { useSearchParams } from "react-router-dom";
+import { className } from "services/ClassName";
 import Icon from "svgs/Icon";
 
 export interface CategoryListItemProps {
@@ -10,39 +12,56 @@ export interface CategoryListItemProps {
 export default function CategoryListItem(props: CategoryListItemProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  function handleSelect(categoryId: string, subcategoryId?: string): void {
-    const queryParams = new URLSearchParams();
-    queryParams.append("categoryId", categoryId);
-    if (subcategoryId) {
-      queryParams.append("subcategoryId", subcategoryId);
-    }
+  function handleSelectCategory(categoryId: string): void {
+    const queryParams = new URLSearchParams(searchParams);
+    queryParams.set("categoryId", categoryId);
+    queryParams.delete("subcategoryId");
     setSearchParams(queryParams);
   }
-  const selectedSubcategoryId = parseInt(
-    searchParams.get("subcategoryId") || "-1",
-  );
+
+  function handleSubcategorySelect(
+    subcategoryId: number,
+    active: boolean,
+  ): void {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (active) {
+      newSearchParams.append("subcategoryId", subcategoryId.toString());
+    } else {
+      const allSubcategoryParams = newSearchParams.getAll("subcategoryId");
+      newSearchParams.delete("subcategoryId");
+      allSubcategoryParams
+        .filter((param) => param !== subcategoryId.toString())
+        .forEach((param) => newSearchParams.append("subcategoryId", param));
+    }
+
+    setSearchParams(newSearchParams);
+  }
+
+  const selectedSubcategoryIds = searchParams
+    .getAll("subcategoryId")
+    .map((idString) => parseInt(idString));
 
   const subCategories = props.category.subCategories.map((subCategory) => (
     <li
-      className={
-        "text-lightgrey-200 list-none py-1 cursor-pointer" +
-        (selectedSubcategoryId && selectedSubcategoryId === subCategory.id
-          ? " text-purple"
-          : "")
-      }
+      className={className(
+        "text-lightgrey-200 list-none py-1 cursor-pointer flex",
+        selectedSubcategoryIds.includes(subCategory.id) ? " text-purple" : "",
+      )}
       key={subCategory.id}
-      onClick={() =>
-        handleSelect(props.category.id.toString(), subCategory.id.toString())
-      }
     >
-      {`${subCategory.name} (${subCategory.productCount})`}
+      <Checkbox
+        id={subCategory.name}
+        checked={selectedSubcategoryIds.includes(subCategory.id)}
+        onChange={(active) => handleSubcategorySelect(subCategory.id, active)}
+      />
+      {`${subCategory.name}`}
     </li>
   ));
   return (
     <div>
       <div
         className="flex justify-between py-2 cursor-pointer"
-        onClick={() => handleSelect(props.category.id.toString())}
+        onClick={() => handleSelectCategory(props.category.id.toString())}
       >
         <h1 className="text-sm">{props.category.name}</h1>
         <button>
