@@ -21,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         @Query("""
                         from Product where (:categoryId is null or :categoryId = subCategory.category.id )
-                        and (:subcategoryId is null or :subcategoryId = subCategory.id)
+                        and (:subcategories is null or subCategory.id in :subcategories)
                         and (:name is null or name ilike concat('%', :name, '%'))
                         and (:sellerId is null or user.id = :sellerId)
                         and (:excludedSeller is null or user.email <> :excludedSeller)
@@ -34,7 +34,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         """)
         Page<Product> getAll(Pageable pageable,
                         @Param("categoryId") Long categoryId,
-                        @Param("subcategoryId") Long subcategoryId,
+                        @Param("subcategories") List<Long> subcategories,
                         @Param("name") String name,
                         @Param("sellerId") Long sellerId,
                         @Param("active") Boolean active,
@@ -42,14 +42,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         @Query("""
                         from Product where (:categoryId is null or :categoryId = subCategory.category.id )
-                        and (:subcategoryId is null or :subcategoryId = subCategory.id)
+                        and (:subcategories is null or subCategory.id in :subcategories)
                         and (:name is null or levenshtein(upper(name),upper(:name)) <= 3)
                         and (dateStart<= current_timestamp and dateEnd > current_timestamp)
                         and purchased=false
                         order by levenshtein(upper(name), upper(:name))""")
         Page<Product> getAllActiveApproximate(Pageable pageable,
                         @Param("categoryId") Long categoryId,
-                        @Param("subcategoryId") Long subcategoryId,
+                        @Param("subcategories") List<Long> subcategories,
                         @Param("name") String name);
 
         @Query(value = """
