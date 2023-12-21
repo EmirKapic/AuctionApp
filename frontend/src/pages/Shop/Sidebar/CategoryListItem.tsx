@@ -53,6 +53,7 @@ export default function CategoryListItem(props: CategoryListItemProps) {
         id={subCategory.name}
         checked={selectedSubcategoryIds.includes(subCategory.id)}
         onChange={(active) => handleSubcategorySelect(subCategory.id, active)}
+        className="accent-purple"
       />
       <label
         htmlFor={subCategory.name}

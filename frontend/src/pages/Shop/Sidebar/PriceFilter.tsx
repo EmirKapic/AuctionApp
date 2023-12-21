@@ -26,7 +26,7 @@ export default function PriceFilter() {
     return (
       <input
         value={value}
-        onChange={(e) => onChange(parseInt(e.target.value))}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
         type="number"
         placeholder={placeholder}
         className="w-20 border border-silver py-2 text-center"
