@@ -81,7 +81,7 @@ export default function Shop() {
           />
         </aside>
         <div className="flex-grow">
-          <FiltersList categories={categories} />
+          <FiltersList />
           <SortBar
             sort={sortType}
             onChange={setSortType}

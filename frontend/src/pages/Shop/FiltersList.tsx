@@ -1,13 +1,8 @@
-import CategoryDto from "models/CategoryDto";
 import { ReactNode } from "react";
 import { useSearchParams } from "react-router-dom";
 import Icon from "svgs/Icon";
 
-export interface FiltersListProps {
-  categories: CategoryDto[];
-}
-
-export default function FiltersList(props: FiltersListProps) {
+export default function FiltersList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
