@@ -1,4 +1,3 @@
-import { FieldValue } from "firebase/firestore";
 import { FieldValues, RegisterOptions } from "react-hook-form";
 
 export function emailValidationOptions(): RegisterOptions<FieldValues, string> {

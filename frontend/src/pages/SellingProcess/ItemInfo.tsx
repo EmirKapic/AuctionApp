@@ -34,7 +34,10 @@ export default function ItemInfo(props: ItemInfoProps) {
         onClick={(e) => {
           e.stopPropagation();
           props.updateFields({
-            imagePaths: props.imagePaths.filter((img, indx) => indx !== index),
+            imagePaths: props.imagePaths.filter((img, indx) => {
+              img;
+              return indx !== index;
+            }),
           });
         }}
         type="button"

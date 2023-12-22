@@ -1,9 +1,16 @@
 import Button from "components/Common/Button";
+import useFetchOne from "hooks/useFetchOne";
+import ProductExtraInfo from "models/ProductExtraInfo";
 import { ReactNode, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import UrlBuilder from "services/UrlBuilder";
 
 export default function PriceFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { data } = useFetchOne<ProductExtraInfo>(
+    new UrlBuilder().products().extraInfo().url,
+    searchParams,
+  );
   const [minPrice, setMinPrice] = useState<number>();
   const [maxPrice, setMaxPrice] = useState<number>();
 
@@ -40,6 +47,13 @@ export default function PriceFilter() {
         {priceInput(minPrice, setMinPrice, "$10")}-
         {priceInput(maxPrice, setMaxPrice, "$1000")}
       </div>
+      {data && (
+        <div className="flex gap-1 text-lightgrey-200">
+          <div>{`$${data.minPrice}`}</div>
+          <div>-</div>
+          <div>{`$${data.maxPrice}`}</div>
+        </div>
+      )}
       <Button type="primary" className="py-1" onClick={onPriceFilter}>
         Apply filter
       </Button>

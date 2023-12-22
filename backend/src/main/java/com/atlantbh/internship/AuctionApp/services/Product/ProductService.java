@@ -1,11 +1,11 @@
 package com.atlantbh.internship.AuctionApp.services.Product;
 
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
+import com.atlantbh.internship.AuctionApp.dtos.ProductExtraInfoDto;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.models.User;
-import com.atlantbh.internship.AuctionApp.projections.ProductBucket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -29,5 +29,5 @@ public interface ProductService {
 
     List<Product> recommendedProducts();
 
-    List<ProductBucket> getProductBuckets(ProductParameters params, int numberOfBuckets);
+    ProductExtraInfoDto getProductBuckets(ProductParameters params, int numberOfBuckets);
 }
