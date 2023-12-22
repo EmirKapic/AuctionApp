@@ -69,7 +69,7 @@ export default class UrlBuilder {
     return this;
   }
   public extraInfo(): UrlBuilder {
-    this._url += "/extraInfo";
+    this._url += "/extra-info";
     return this;
   }
 }

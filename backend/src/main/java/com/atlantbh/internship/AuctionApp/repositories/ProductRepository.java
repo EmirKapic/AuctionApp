@@ -125,11 +125,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                        select count(*), t.bucket_number as bucketNumber
                        from (select p.name, floor(((p.start_bid - :oldMin) * :numberOfBuckets) / :maxMinDiff) as bucket_number
                                 from product p join sub_category as s on s.id=p.subcategory_id
+                                                join app_user u on p.seller_id = u.id
                                                where (:categoryId is null or :categoryId = s.category_id )
                                                and (:subcategories is null or s.id in (:subcategories))
                                                and (:name is null or p.name ilike concat('%', :name, '%'))
                                                and (:sellerId is null or p.seller_id = :sellerId)
-                                               and (:excludedSeller is null or p.email <> :excludedSeller)
+                                               and (:excludedSeller is null or u.email <> :excludedSeller)
                                                and (:minPrice is null or (p.highest_bid is not null and :minPrice <= p.highest_bid) or :minPrice <= p.start_bid)
                                                and (:maxPrice is null or (p.highest_bid is not null and :maxPrice >= p.highest_bid) or :maxPrice >= p.start_bid)
                                                and

@@ -58,7 +58,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.recommendedProducts());
     }
 
-    @GetMapping("/extraInfo")
+    @GetMapping("/extra-info")
     public ResponseEntity getExtraProductInfo(ProductParameters productParameters, @RequestParam(defaultValue = "20") Long numberOfBuckets){
         return ResponseEntity.ok().body(productService.getProductBuckets(productParameters, numberOfBuckets.intValue()));
     }

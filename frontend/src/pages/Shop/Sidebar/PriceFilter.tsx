@@ -1,16 +1,25 @@
+import BarGraph from "components/Common/BarGraph/BarGraph";
 import Button from "components/Common/Button";
 import useFetchOne from "hooks/useFetchOne";
 import ProductExtraInfo from "models/ProductExtraInfo";
-import { ReactNode, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 
 export default function PriceFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const productExtraInfoParams = useMemo(() => {
+    const params = new URLSearchParams(searchParams);
+    params.append("numberOfBuckets", "25");
+    return params;
+  }, []);
+
   const { data } = useFetchOne<ProductExtraInfo>(
     new UrlBuilder().products().extraInfo().url,
-    searchParams,
+    productExtraInfoParams,
   );
+
   const [minPrice, setMinPrice] = useState<number>();
   const [maxPrice, setMaxPrice] = useState<number>();
 
@@ -43,6 +52,20 @@ export default function PriceFilter() {
 
   return (
     <div className="flex flex-col gap-5">
+      {data && (
+        <BarGraph
+          data={data.buckets.map((bucket) => {
+            return {
+              size: bucket.count,
+              index: bucket.bucketNumber,
+            };
+          })}
+          height={60}
+          barColor="#E4E5EC"
+          className="border-b border-silver"
+          numberOfBars={25}
+        />
+      )}
       <div className="flex gap-6 items-center">
         {priceInput(minPrice, setMinPrice, "$10")}-
         {priceInput(maxPrice, setMaxPrice, "$1000")}
@@ -54,6 +77,7 @@ export default function PriceFilter() {
           <div>{`$${data.maxPrice}`}</div>
         </div>
       )}
+
       <Button type="primary" className="py-1" onClick={onPriceFilter}>
         Apply filter
       </Button>

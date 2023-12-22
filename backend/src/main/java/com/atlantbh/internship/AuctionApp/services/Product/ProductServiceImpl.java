@@ -6,6 +6,7 @@ import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.*;
 import com.atlantbh.internship.AuctionApp.projections.MaxMinPrice;
+import com.atlantbh.internship.AuctionApp.projections.ProductBucket;
 import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryRepository;
@@ -112,9 +113,11 @@ public class ProductServiceImpl implements ProductService {
                 params.sellerId(), params.active(), excludeOwnedBy(true), params.minPrice(), params.maxPrice());
         Double diff = maxMin.getMax() - maxMin.getMin();
 
-        return new ProductExtraInfoDto(productRepository.getProductBuckets(diff, maxMin.getMin(), numberOfBuckets ,params.categoryId(),
-               params.subcategoryId() != null ? params.subcategoryId() : List.of(), params.name(),
-                params.sellerId(), params.active(), excludeOwnedBy(true), params.minPrice(), params.maxPrice()), maxMin.getMax(), maxMin.getMin());
+        List<ProductBucket> result = productRepository.getProductBuckets(diff, maxMin.getMin(), numberOfBuckets ,params.categoryId(),
+                params.subcategoryId() != null ? params.subcategoryId() : List.of(), params.name(),
+                params.sellerId(), params.active(), excludeOwnedBy(true), params.minPrice(), params.maxPrice());
+
+        return new ProductExtraInfoDto(result, maxMin.getMax(), maxMin.getMin());
     }
 
 }
