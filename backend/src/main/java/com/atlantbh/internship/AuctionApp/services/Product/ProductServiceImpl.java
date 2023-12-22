@@ -4,6 +4,8 @@ import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.*;
+import com.atlantbh.internship.AuctionApp.projections.MaxMinPrice;
+import com.atlantbh.internship.AuctionApp.projections.ProductBucket;
 import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryRepository;
@@ -102,6 +104,19 @@ public class ProductServiceImpl implements ProductService {
                     : productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
         } else
             return productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
+    }
+
+    @Override
+    public List<ProductBucket> getProductBuckets(ProductParameters params, int numberOfBuckets) {
+        MaxMinPrice maxMin = productRepository.getMaxMinPrice(params.categoryId(), params.subcategoryId(), params.name(),
+                params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()), params.minPrice(), params.maxPrice());
+        Double diff = maxMin.getMax() - maxMin.getMin();
+
+        // new = (oldval - oldmin) * 20 / (oldmax-oldmin)
+
+        return productRepository.getProductBuckets(diff, maxMin.getMin(), numberOfBuckets ,params.categoryId(),
+               params.subcategoryId() != null ? params.subcategoryId() : List.of(), params.name(),
+                params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()), params.minPrice(), params.maxPrice());
     }
 
 }

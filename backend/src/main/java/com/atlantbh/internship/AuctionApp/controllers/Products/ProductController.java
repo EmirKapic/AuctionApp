@@ -5,6 +5,7 @@ import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
+import com.atlantbh.internship.AuctionApp.projections.ProductBucket;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductParameters;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductService;
 import com.atlantbh.internship.AuctionApp.utilities.ProductValidator;
@@ -15,11 +16,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/products")
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
+
+    @GetMapping("/test")
+    public void test(ProductParameters productParameters, long numberOfBuckets){
+        var res = productService.getProductBuckets(productParameters, 20);
+        for (var el : res){
+            System.out.println(el.getCount());
+            System.out.println(el.getBucketNumber());
+        }
+
+    }
 
     @GetMapping
     public Page<Product> getAll(final Pageable pageable, final ProductParameters parameters) {
@@ -57,5 +70,11 @@ public class ProductController {
     @GetMapping("/recommended")
     public ResponseEntity getRecommendedProducts() {
         return ResponseEntity.ok().body(productService.recommendedProducts());
+    }
+
+    @GetMapping("/extraInfo")
+    public ResponseEntity getExtraProductInfo(ProductParameters productParameters, @RequestParam(defaultValue = "20") Long numberOfBuckets){
+        List<ProductBucket> buckets = productService.getProductBuckets(productParameters, numberOfBuckets.intValue());
+        return ResponseEntity.ok().body(buckets);
     }
 }
