@@ -1,5 +1,7 @@
 package com.atlantbh.internship.AuctionApp.services.Bid;
 
+import com.atlantbh.internship.AuctionApp.exceptions.AuthorizationException;
+import com.atlantbh.internship.AuctionApp.exceptions.EntityNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Bid;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.models.User;
@@ -24,6 +26,20 @@ public class BidServiceImpl implements BidService {
     public Page<Bid> getBids(BidParameters params, Pageable pageable) {
         return bidRepository.findAllBids(userDetailsService.getCurrentUserEmail(), params.productId(), pageable);
     }
+
+    @Override
+    public Page<Bid> getProductBids(Pageable pageable, long productId) throws EntityNotFoundException, AuthorizationException {
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isEmpty()){
+            throw new EntityNotFoundException("No product with id : " + productId + " found.");
+        }
+        if (!product.get().getUser().getEmail().equals(userDetailsService.getCurrentUserEmail())){
+            throw new AuthorizationException("Only the product owner can view its bids.");
+        }
+        return bidRepository.findAllByProduct_User_EmailAndProduct_Id(
+                userDetailsService.getCurrentUserEmail(), productId, pageable);
+    }
+
 
     @Override
     public Optional<Bid> makeNewBid(double bid, long productId) {

@@ -65,7 +65,7 @@ public class ProductController {
         try {
             return ResponseEntity.ok().body(productService.relatedProducts(productId, limit));
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.ok().body(new ErrorResponse(e.getMessage()));
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }
 }
