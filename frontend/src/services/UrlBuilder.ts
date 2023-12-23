@@ -72,4 +72,8 @@ export default class UrlBuilder {
     this._url += "/related";
     return this;
   }
+  public product(): UrlBuilder {
+    this._url += "/product";
+    return this;
+  }
 }
