@@ -47,7 +47,6 @@ export default function BarGraph(props: BarGraphProps) {
     else completeBars.push(<BarItem height={0} />);
   }
 
-  console.log(completeBars);
   return (
     <div
       className={className(props.className)}

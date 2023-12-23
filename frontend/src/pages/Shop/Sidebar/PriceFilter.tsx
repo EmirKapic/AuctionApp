@@ -1,5 +1,6 @@
 import BarGraph from "components/Common/BarGraph/BarGraph";
 import Button from "components/Common/Button";
+//import DoubleSlider from "components/Common/DoubleSlider/DoubleSlider";
 import useFetchOne from "hooks/useFetchOne";
 import ProductExtraInfo from "models/ProductExtraInfo";
 import { ReactNode, useMemo, useState } from "react";
