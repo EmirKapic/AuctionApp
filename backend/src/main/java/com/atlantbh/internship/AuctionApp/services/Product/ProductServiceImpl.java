@@ -2,6 +2,7 @@ package com.atlantbh.internship.AuctionApp.services.Product;
 
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
+import com.atlantbh.internship.AuctionApp.exceptions.EntityNotFoundException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.*;
 import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
@@ -102,6 +103,20 @@ public class ProductServiceImpl implements ProductService {
                     : productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
         } else
             return productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
+    }
+
+    @Override
+    public List<Product> relatedProducts(long productId, Long limit) throws EntityNotFoundException {
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isEmpty()){
+            throw new EntityNotFoundException("No product with id " + productId + " found");
+        }
+
+        List<Product> related =  productRepository.
+                findAllByUser_EmailNotAndSubCategory_Id(
+                        userDetailsService.getCurrentUserEmail(), product.get().getSubCategory().getId());
+
+        return limit != null ? related.subList(0, limit.intValue()) : related;
     }
 
 }

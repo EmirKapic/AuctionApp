@@ -2,6 +2,7 @@ package com.atlantbh.internship.AuctionApp.services.Product;
 
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
+import com.atlantbh.internship.AuctionApp.exceptions.EntityNotFoundException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.models.User;
@@ -27,4 +28,6 @@ public interface ProductService {
     User getWinner(Product product);
 
     List<Product> recommendedProducts();
+
+    List<Product> relatedProducts(long productId, Long limit) throws EntityNotFoundException;
 }

@@ -3,6 +3,7 @@ package com.atlantbh.internship.AuctionApp.controllers.Products;
 import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
+import com.atlantbh.internship.AuctionApp.exceptions.EntityNotFoundException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.services.Product.ProductParameters;
@@ -57,5 +58,14 @@ public class ProductController {
     @GetMapping("/recommended")
     public ResponseEntity getRecommendedProducts() {
         return ResponseEntity.ok().body(productService.recommendedProducts());
+    }
+
+    @GetMapping("/related/{id}")
+    public ResponseEntity getRelatedProducts(@PathVariable("id")long productId, @RequestParam(name = "limit", required = false)Long limit){
+        try {
+            return ResponseEntity.ok().body(productService.relatedProducts(productId, limit));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.ok().body(new ErrorResponse(e.getMessage()));
+        }
     }
 }
