@@ -12,6 +12,7 @@ import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import UserInteractionService from "services/UserInteractionService";
+import RelatedProducts from "./RelatedProducts";
 
 const url = new UrlBuilder().bids().url;
 
@@ -94,6 +95,7 @@ export default function Product() {
             />
           </div>
         </div>
+        {data && <RelatedProducts productId={data.id} />}
       </Container>
     </div>
   );
