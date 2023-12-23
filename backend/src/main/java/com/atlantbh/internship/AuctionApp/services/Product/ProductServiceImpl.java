@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
         Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(),
                 params.name(), params.sellerId(), true, excludeOwnedBy(params.excludeUserOwned()));
-        if (!products.isEmpty()) {
+        if (!products.isEmpty() || params.name() == null) {
             return new ProductDidYouMean(products, null);
         }
         Page<Product> aprox = productRepository.getAllActiveApproximate(pageable, params.categoryId(),
@@ -113,8 +113,21 @@ public class ProductServiceImpl implements ProductService {
         }
 
         List<Product> related =  productRepository.
-                findAllByUser_EmailNotAndSubCategory_Id(
-                        userDetailsService.getCurrentUserEmail(), product.get().getSubCategory().getId());
+                findAllByUser_EmailNotAndSubCategory_IdAndIdNot(
+                        userDetailsService.getCurrentUserEmail(), product.get().getSubCategory().getId(), productId);
+
+        if (related.isEmpty() || limit != null && related.size() < limit){
+            List<Product> relatedByCategory = productRepository
+                    .findAllByUser_EmailNotAndSubCategory_Category_IdAndIdNot(
+                            userDetailsService.getCurrentUserEmail(), product.get().getSubCategory().getCategory().getId(), productId);
+            related.addAll(relatedByCategory);
+        }
+
+        if (related.isEmpty() || limit != null && related.size() < limit){
+            List<Product> randomProducts =
+                    productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
+            related.addAll(randomProducts);
+        }
 
         return limit != null ? related.subList(0, limit.intValue()) : related;
     }

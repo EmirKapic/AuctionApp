@@ -89,5 +89,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         limit 3""")
         List<Product> findTop3ByRandom(String sellerEmail);
 
-        List<Product> findAllByUser_EmailNotAndSubCategory_Id(String userEmail, long subcategoryId);
+        List<Product> findAllByUser_EmailNotAndSubCategory_IdAndIdNot(String userEmail, long subcategoryId, long productId);
+
+        List<Product> findAllByUser_EmailNotAndSubCategory_Category_IdAndIdNot(String userEmail, long categoryId, long productId);
 }
