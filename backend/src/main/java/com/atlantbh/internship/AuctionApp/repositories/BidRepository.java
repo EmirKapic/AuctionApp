@@ -29,7 +29,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
                         @Param("productId") Long productId,
                         Pageable pageable);
 
-        Page<Bid> findAllByProduct_User_EmailAndProduct_Id(String userEmail, long productId, Pageable pageable);
+        Page<Bid> findAllByProduct_Id(long productId, Pageable pageable);
 
         Bid findFirstByProduct_IdOrderByBidDesc(long productId);
 }

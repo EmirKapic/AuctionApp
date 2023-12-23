@@ -36,8 +36,7 @@ public class BidServiceImpl implements BidService {
         if (!product.get().getUser().getEmail().equals(userDetailsService.getCurrentUserEmail())){
             throw new AuthorizationException("Only the product owner can view its bids.");
         }
-        return bidRepository.findAllByProduct_User_EmailAndProduct_Id(
-                userDetailsService.getCurrentUserEmail(), productId, pageable);
+        return bidRepository.findAllByProduct_Id(productId, pageable);
     }
 
 
