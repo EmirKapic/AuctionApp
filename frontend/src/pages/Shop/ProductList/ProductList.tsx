@@ -4,7 +4,7 @@ import { pageSizeShop } from "defaultConstants";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import Product from "models/Product";
 import ProductDidYouMean from "models/ProductDidYouMean";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 import SortType from "../SortType";
@@ -13,7 +13,7 @@ type ProductListType = "grid" | "list";
 
 const productListClassName: Record<ProductListType, string> = {
   grid: "grid grid-cols-3 gap-5",
-  list: " ",
+  list: "flex flex-col gap-12 py-5",
 };
 
 const sortQueryParam: Record<SortType, Sort> = {
@@ -70,6 +70,7 @@ export default function ProductList(props: ProductListProps) {
             itemsClassName={productListClassName[props.type]}
             imageClassName="w-full h-96"
             items={data.content}
+            type={props.type === "grid" ? "vertical" : "horizontal"}
           />
         </div>
       ) : (
