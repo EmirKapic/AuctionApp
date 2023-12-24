@@ -77,10 +77,9 @@ function App() {
               element={<Register handleRegister={handleLogin} />}
             />
           </Route>
-          <Route path="/account/sell/csv" element={<CSVSelling />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/account" element={<UserProfile />} />
-
+            <Route path="/account/sell/csv" element={<CSVSelling />} />
             <Route path="/account/sell" element={<SellForm />} />
           </Route>
           <Route path="/payment/success" element={<PaymentSuccess />} />
