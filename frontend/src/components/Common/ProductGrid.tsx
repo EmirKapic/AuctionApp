@@ -35,9 +35,9 @@ export default function ProductGrid(props: GridProps) {
         </p>
       </div>
     ) : (
-      <div className="flex py-5 border px-2 gap-10">
+      <div key={item.id} className="flex py-5 border px-2 gap-10">
         <div className="flex-shrink-0">
-          <img src={item.images[0].url} className="w-80 h-96" />
+          <img src={item.images[0].url} className="w-80 h-96 object-cover" />
         </div>
         <div className="flex-grow">
           <h2 className="text-3xl font-bold pb-2">{item.name}</h2>
