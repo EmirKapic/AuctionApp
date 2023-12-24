@@ -8,6 +8,7 @@ import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryRepository;
 import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
+import com.atlantbh.internship.AuctionApp.utilities.ProductValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,11 +60,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Optional<Product> createNewProduct(NewProductRequest request) {
-        Optional<SubCategory> subCategory = subcategoryRepository.findById(request.subcategoryId());
+        if (!ProductValidator.validate(request)){
+            return Optional.empty();
+        }
+        Optional<SubCategory> subCategory = subcategoryRepository.findByNameEqualsIgnoreCase(request.subcategoryName());
         if (subCategory.isEmpty()) {
             return Optional.empty();
         }
-
         String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.loadUserByUsername(currentUserEmail);
 
@@ -102,6 +106,16 @@ public class ProductServiceImpl implements ProductService {
                     : productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
         } else
             return productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
+    }
+
+    @Override
+    public List<Product> createNewProducts(List<NewProductRequest> requests) {
+        List<Product> result = new LinkedList<>();
+        for(NewProductRequest request : requests){
+            Optional<Product> created = createNewProduct(request);
+            created.ifPresent(result::add);
+        }
+        return result;
     }
 
 }

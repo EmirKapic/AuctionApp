@@ -68,4 +68,8 @@ export default class UrlBuilder {
     this._url += "/recommended";
     return this;
   }
+  public makeAll(): UrlBuilder {
+    this._url += "/make-all";
+    return this;
+  }
 }

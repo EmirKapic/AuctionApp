@@ -27,4 +27,6 @@ public interface ProductService {
     User getWinner(Product product);
 
     List<Product> recommendedProducts();
+
+    List<Product> createNewProducts(List<NewProductRequest> requests);
 }
