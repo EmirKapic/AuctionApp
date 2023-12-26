@@ -68,4 +68,12 @@ export default class UrlBuilder {
     this._url += "/recommended";
     return this;
   }
+  public oauth2(): UrlBuilder {
+    this._url += "/oauth2";
+    return this;
+  }
+  public provider(provider: string): UrlBuilder {
+    this._url += `/${provider}`;
+    return this;
+  }
 }

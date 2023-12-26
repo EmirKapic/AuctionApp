@@ -1,3 +1,4 @@
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Button from "components/Common/Button";
 import Checkbox from "components/Common/Checkbox";
@@ -10,6 +11,7 @@ import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { FetchReturnType } from "services/fetching/FetchData";
 import post from "services/fetching/Post";
 import UrlBuilder from "services/UrlBuilder";
+import get from "services/fetching/Get";
 import {
   emailValidationOptions,
   passwordValidationOptions,
@@ -17,6 +19,14 @@ import {
 
 const EMAIL_INPUT_ID = "emailInput";
 const PASSWORD_INPUT_ID = "passwordInput";
+
+function handleGoogleLogin(credentials: CredentialResponse): void {
+  console.log(credentials);
+  const url =
+    new UrlBuilder().auth().login().oauth2().provider("google").url +
+    `?googleToken=${credentials.credential}`;
+  get(url);
+}
 
 export interface LoginProps {
   handleLogin: (user: User, token: string) => void;
@@ -93,6 +103,14 @@ export default function Login(props: LoginProps) {
           >
             Login
           </Button>
+          <div className="flex justify-between [&>*]:border">
+            <GoogleLogin
+              onSuccess={(res) => handleGoogleLogin(res)}
+              useOneTap
+            />
+            <button>google</button>
+            <button>facebook</button>
+          </div>
         </Form>
       </FormProvider>
     </div>

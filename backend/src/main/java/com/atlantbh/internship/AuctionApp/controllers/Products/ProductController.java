@@ -34,7 +34,9 @@ public class ProductController {
 
     @GetMapping("/random")
     public Product getRandom() {
-        return productService.getRandom();
+        var product = productService.getRandom();
+        System.out.println(product.getName());
+        return product;
     }
 
     @GetMapping("/{id}")

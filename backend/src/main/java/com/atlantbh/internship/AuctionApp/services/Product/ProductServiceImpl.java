@@ -28,8 +28,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getAll(Pageable pageable, ProductParameters params) {
-        return productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(), params.name(),
+        var prods =  productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(), params.name(),
                 params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()));
+        System.out.println(prods.getTotalElements());
+        return prods;
     }
 
     @Override
