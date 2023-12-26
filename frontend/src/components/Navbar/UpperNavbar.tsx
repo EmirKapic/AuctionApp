@@ -30,7 +30,7 @@ export default function UpperNavbar(props: UpperNavbarProps) {
         {userContext ? (
           <div className="text-white flex gap-10">
             <div>
-              Hi, <span>{userContext?.firstName}</span>
+              Hi, <span>{userContext?.firstName || userContext.email}</span>
             </div>
             <button
               onClick={props.onLogout}

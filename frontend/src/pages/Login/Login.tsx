@@ -20,14 +20,6 @@ import {
 const EMAIL_INPUT_ID = "emailInput";
 const PASSWORD_INPUT_ID = "passwordInput";
 
-function handleGoogleLogin(credentials: CredentialResponse): void {
-  console.log(credentials);
-  const url =
-    new UrlBuilder().auth().login().oauth2().provider("google").url +
-    `?googleToken=${credentials.credential}`;
-  get(url);
-}
-
 export interface LoginProps {
   handleLogin: (user: User, token: string) => void;
 }
@@ -35,6 +27,15 @@ export interface LoginProps {
 export default function Login(props: LoginProps) {
   const methods = useForm();
   const [rememberMe, setRememberMe] = useState(false);
+
+  function handleGoogleLogin(credentials: CredentialResponse): void {
+    const url =
+      new UrlBuilder().auth().login().oauth2().provider("google").url +
+      `?googleToken=${credentials.credential}`;
+    get<LoginResponse>(url).then((response) =>
+      props.handleLogin(response.data.user, response.data.token),
+    );
+  }
 
   function resolveFetchData(data: FetchReturnType<LoginResponse>): void {
     if (!data.success) {
@@ -103,12 +104,11 @@ export default function Login(props: LoginProps) {
           >
             Login
           </Button>
-          <div className="flex justify-between [&>*]:border">
+          <div className="flex justify-between border-t border-t-silver py-5">
             <GoogleLogin
               onSuccess={(res) => handleGoogleLogin(res)}
               useOneTap
             />
-            <button>google</button>
             <button>facebook</button>
           </div>
         </Form>

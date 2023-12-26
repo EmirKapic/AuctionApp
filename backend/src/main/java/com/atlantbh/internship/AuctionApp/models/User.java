@@ -59,10 +59,6 @@ public class User implements UserDetails {
         this(0, null, null, email, null, null, null, role, authenticationMethod);
     }
 
-//    public User(String email, String password, String firstName, String lastName, String role){
-//        this(0, firstName, lastName, email, password,null, null, role, null);
-//    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>(List.of(new SimpleGrantedAuthority(getRole())));

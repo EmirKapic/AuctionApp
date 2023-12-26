@@ -40,6 +40,8 @@ public class AuthController {
             Authentication authentication =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
             User user = userDetailsService.loadUserByUsername(authentication.getName());
+            if (!user.getAuthenticationMethod().equals("credentials"))
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("This account does not use password for login."));
             String token = jwtService.createToken(user);
             return ResponseEntity.ok(new LoginResponse(user, token));
         }
