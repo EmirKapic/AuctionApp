@@ -7,7 +7,7 @@ import com.atlantbh.internship.AuctionApp.dtos.login.LoginResponse;
 import com.atlantbh.internship.AuctionApp.dtos.register.RegisterRequest;
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.services.Auth.JwtService;
-import com.atlantbh.internship.AuctionApp.services.Auth.OAuth2Service;
+import com.atlantbh.internship.AuctionApp.services.Auth.OAuth2GoogleService;
 import com.atlantbh.internship.AuctionApp.services.Auth.RegisterService;
 import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -30,9 +30,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final RegisterService registerService;
     private final AuctionUserDetailsService userDetailsService;
-    private final OAuth2Service oAuth2Service;
-
-
+    private final OAuth2GoogleService oAuth2GoogleService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequest request){
@@ -69,23 +67,17 @@ public class AuthController {
             jwtService.resolveClaims(token);
             return ResponseEntity.ok().body(new MessageResponse("Token is valid."));
         }
-        catch(ExpiredJwtException exception){
+        catch(Exception exception){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse("Token expired or not valid."));
         }
     }
 
     @GetMapping("/login/oauth2/{provider}")
     ResponseEntity oAuth2Login(String googleToken) {
-        Optional<String> userEmail = oAuth2Service.extractEmail(googleToken);
-
-        if (userEmail.isEmpty()){
-            return ResponseEntity.badRequest().body(new ErrorResponse("Bad token"));
+        try {
+            return ResponseEntity.ok().body(oAuth2GoogleService.authenticateWithToken(googleToken));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
-
-        User user = oAuth2Service.findUser(userEmail.get())
-                .orElseGet(() -> oAuth2Service.createUser(userEmail.get()));
-
-        String jwtToken = jwtService.createToken(user);
-        return ResponseEntity.ok().body(new LoginResponse(user, jwtToken));
     }
 }
