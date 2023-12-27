@@ -3,7 +3,6 @@ package com.atlantbh.internship.AuctionApp.services.Auth;
 import com.atlantbh.internship.AuctionApp.dtos.login.LoginResponse;
 import com.atlantbh.internship.AuctionApp.models.User;
 import com.atlantbh.internship.AuctionApp.repositories.UserRepository;
-import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -20,7 +19,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class OAuth2GoogleServiceImpl implements OAuth2GoogleService {
-    private final AuctionUserDetailsService userDetailsService;
     private final UserRepository userRepository;
     private final JwtService jwtService;
     @Value("${spring.security.oauth2.client.registration.google.client-id}")

@@ -72,8 +72,12 @@ export default class UrlBuilder {
     this._url += "/oauth2";
     return this;
   }
-  public provider(provider: string): UrlBuilder {
-    this._url += `/${provider}`;
+  public google(): UrlBuilder {
+    this._url += "/google";
+    return this;
+  }
+  public facebook(): UrlBuilder {
+    this._url += "/facebook";
     return this;
   }
 }
