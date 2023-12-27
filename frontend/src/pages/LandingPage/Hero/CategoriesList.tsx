@@ -26,6 +26,16 @@ export default function CategoriesList() {
     return <div className="flex items-center">Error loading categories...</div>;
   }
 
+  categoriesList.push(
+    <li
+      key="all-categories"
+      onClick={() => navigate(`/shop/all-categories`)}
+      className="p-3 pl-4 w-full font-regular text-grey_ border-b border-silver"
+    >
+      <button>All categories</button>
+    </li>,
+  );
+
   return (
     <aside className="bg-white shadow-lightgrey h-fit">
       <h1 className="text-purple p-4 pr-36">CATEGORIES</h1>
