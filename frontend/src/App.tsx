@@ -22,6 +22,7 @@ import SellForm from "pages/SellingProcess/SellForm";
 import ProtectedRoute from "components/Common/ProtectedRoute";
 import PaymentSuccess from "pages/Payment/PaymentSuccess";
 import PaymentFailure from "pages/Payment/PaymentFailure";
+import AllCategories from "pages/AllCategories/AllCategories";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -82,6 +83,7 @@ function App() {
           </Route>
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/payment/fail" element={<PaymentFailure />} />
+          <Route path="/shop/all-categories" element={<AllCategories />} />
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />
