@@ -21,5 +21,3 @@ config:
   token-validity-time: PT30M
   stripe-secret-key: ${STRIPE_SECRET_KEY}
   client-host-url: ${CLIENT_HOST_URL}
-  google-client-secret: ${GOOGLE_CLIENT_SECRET}
-  google-client-id: ${GOOGLE_CLIENT_ID}
