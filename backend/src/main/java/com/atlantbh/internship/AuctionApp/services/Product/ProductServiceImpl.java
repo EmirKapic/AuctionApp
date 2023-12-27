@@ -16,7 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> createNewProducts(List<NewProductRequest> requests) {
-        List<Product> result = new LinkedList<>();
+        List<Product> result = new ArrayList<>();
         for(NewProductRequest request : requests){
             Optional<Product> created = createNewProduct(request);
             created.ifPresent(result::add);

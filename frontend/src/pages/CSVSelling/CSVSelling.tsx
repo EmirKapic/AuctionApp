@@ -9,10 +9,6 @@ import { Link, useNavigate } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 import post from "services/fetching/Post";
 
-export type SimpleMessageResponse = {
-  message: string;
-};
-
 function formatDate(date: string): string {
   const timeFrames = date.split("/").map((str) => parseInt(str));
   return new Date(
