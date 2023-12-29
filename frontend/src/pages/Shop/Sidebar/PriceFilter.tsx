@@ -1,9 +1,10 @@
 import BarGraph from "components/Common/BarGraph/BarGraph";
 import Button from "components/Common/Button";
+import DoubleSlider from "components/Common/DoubleSlider/DoubleSlider";
 //import DoubleSlider from "components/Common/DoubleSlider/DoubleSlider";
 import useFetchOne from "hooks/useFetchOne";
 import ProductExtraInfo from "models/ProductExtraInfo";
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 
@@ -14,7 +15,7 @@ export default function PriceFilter() {
     const params = new URLSearchParams(searchParams);
     params.append("numberOfBuckets", "25");
     return params;
-  }, []);
+  }, [searchParams]);
 
   const { data } = useFetchOne<ProductExtraInfo>(
     new UrlBuilder().products().extraInfo().url,
@@ -67,6 +68,14 @@ export default function PriceFilter() {
           numberOfBars={25}
         />
       )}
+      <DoubleSlider
+        totalMax={data?.maxPrice || 0}
+        totalMin={0}
+        setMax={setMaxPrice}
+        setMin={setMinPrice}
+        min={minPrice}
+        max={maxPrice}
+      />
       <div className="flex gap-6 items-center">
         {priceInput(minPrice, setMinPrice, "$10")}-
         {priceInput(maxPrice, setMaxPrice, "$1000")}
