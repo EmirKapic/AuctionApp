@@ -88,7 +88,7 @@ export default function Shop() {
               onChange={setSortType}
               className="flex-grow"
             />
-            <GridTypePicker active={gridType} onTypeChange={setGridType} />
+            <GridTypePicker gridType={gridType} onTypeChange={setGridType} />
           </div>
 
           <div className="pt-5">

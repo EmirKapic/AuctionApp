@@ -5,11 +5,11 @@ import Icon from "svgs/Icon";
 export type GridType = "grid" | "list";
 
 export interface GridTypePickerProps {
-  active: GridType;
+  gridType: GridType;
   onTypeChange: (type: GridType) => void;
 }
 
-function gridType(
+function renderGridTypeButton(
   children: ReactNode,
   active: boolean,
   onTypeChange: () => void,
@@ -30,20 +30,20 @@ function gridType(
 export default function GridTypePicker(props: GridTypePickerProps) {
   return (
     <div className="flex border items-center">
-      {gridType(
+      {renderGridTypeButton(
         <div className="flex gap-1">
           <Icon name="grid" />
           Grid
         </div>,
-        props.active === "grid",
+        props.gridType === "grid",
         () => props.onTypeChange("grid"),
       )}
-      {gridType(
+      {renderGridTypeButton(
         <div className="flex gap-1">
           <Icon name="list" />
           List
         </div>,
-        props.active === "list",
+        props.gridType === "list",
         () => props.onTypeChange("list"),
       )}
     </div>
