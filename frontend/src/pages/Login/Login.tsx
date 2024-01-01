@@ -48,7 +48,7 @@ export default function Login(props: LoginProps) {
   function handleFacebookLogin(credentials: ReactFacebookLoginInfo): void {
     const url =
       new UrlBuilder().auth().login().oauth2().facebook().url +
-      `?email=${credentials.email}`;
+      `?facebookToken=${credentials.accessToken}`;
     get<LoginResponse>(url).then((response) =>
       props.handleLogin(response.data.user, response.data.token),
     );

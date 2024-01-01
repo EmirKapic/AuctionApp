@@ -8,6 +8,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,10 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.Optional;
 
-@Service
+@Service()
+@Qualifier("google")
 @RequiredArgsConstructor
-public class OAuth2GoogleServiceImpl implements OAuth2GoogleService {
+public class OAuth2GoogleServiceImpl implements OAuth2Service {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
@@ -33,7 +35,7 @@ public class OAuth2GoogleServiceImpl implements OAuth2GoogleService {
     }
 
     @Override
-    public LoginResponse authenticateWithToken(String googleToken) throws GeneralSecurityException, IOException {
+    public LoginResponse authenticate(String googleToken) throws GeneralSecurityException, IOException {
         String userEmail = extractEmail(googleToken);
         Optional<User> userOpt = userRepository.findByEmailEquals(userEmail);
         User user = userOpt.orElseGet(() -> userRepository.save(new User(userEmail, "ROLE_USER", "oauth")));
