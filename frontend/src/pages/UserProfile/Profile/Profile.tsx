@@ -22,9 +22,9 @@ type FormValues = {
   firstName: string;
   lastName: string;
   email: string;
-  dateOfBirthDay: number;
-  dateOfBirthMonth: SelectionOption<number, string>;
-  dateOfBirthYear: number;
+  dateOfBirthDay?: number;
+  dateOfBirthMonth?: SelectionOption<number, string>;
+  dateOfBirthYear?: number;
   phoneNumber: string;
   creditCard: string;
   address: string;
@@ -34,13 +34,25 @@ type FormValues = {
 };
 
 type UpdateRequest = FormValues & {
-  dateOfBirth: string;
-  photoUrl: string;
+  dateOfBirth?: string;
+  photoUrl?: string;
 };
 
 function getBirthDate(date?: string): Date | undefined {
   if (!date) return;
   return new Date(date);
+}
+
+function validateDateOfBirth(
+  day: number,
+  month: number,
+  year: number,
+): boolean {
+  return day <= DateUtility.getMaxDayForMonth(month, year)! && day > 0;
+}
+
+function dateEntered(day?: number, month?: number, year?: number) {
+  return day && month && year;
 }
 
 export interface ProfileProps {
@@ -67,23 +79,21 @@ export default function Profile(props: ProfileProps) {
       country: userContext?.country,
     },
   });
-  function validateDateOfBirth(
-    day: number,
-    month: number,
-    year: number,
-  ): boolean {
-    return day <= DateUtility.getMaxDayForMonth(month, year)! && day > 0;
-  }
 
   async function handleFormSubmit(
     data: FormValues,
     e?: React.BaseSyntheticEvent,
   ): Promise<void> {
     if (
-      !validateDateOfBirth(
+      dateEntered(
         data.dateOfBirthDay,
-        data.dateOfBirthMonth.value,
+        data.dateOfBirthMonth?.value,
         data.dateOfBirthYear,
+      ) &&
+      !validateDateOfBirth(
+        data.dateOfBirthDay!,
+        data.dateOfBirthMonth!.value,
+        data.dateOfBirthYear!,
       )
     ) {
       e?.stopPropagation();
@@ -93,12 +103,18 @@ export default function Profile(props: ProfileProps) {
       });
       return;
     }
-    const birthDate = new Date(
-      data.dateOfBirthYear,
-      data.dateOfBirthMonth.value,
+    const birthDate: Date | undefined = dateEntered(
       data.dateOfBirthDay,
-      new Date().getUTCHours(),
-    );
+      data.dateOfBirthMonth?.value,
+      data.dateOfBirthYear,
+    )
+      ? new Date(
+          data.dateOfBirthYear!,
+          data.dateOfBirthMonth!.value,
+          data.dateOfBirthDay,
+          new Date().getUTCHours(),
+        )
+      : undefined;
     let photoUrl: string;
     if (profileImage) {
       const fileManager: FileManager = new FirebaseFileManager();
@@ -107,7 +123,7 @@ export default function Profile(props: ProfileProps) {
     } else photoUrl = userContext?.photoUrl!;
     post<User, UpdateRequest>(new UrlBuilder().user().url, {
       ...data,
-      dateOfBirth: birthDate.toISOString(),
+      dateOfBirth: birthDate?.toISOString(),
       photoUrl: photoUrl,
     }).then((user) => props.updateUserContext(user.data));
   }
