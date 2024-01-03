@@ -68,6 +68,7 @@ export default function SpecialOffers() {
         itemsClassName="grid grid-cols-4 gap-5"
         imageClassName="w-72 h-72"
         items={items}
+        type="vertical"
       />
     );
   }
