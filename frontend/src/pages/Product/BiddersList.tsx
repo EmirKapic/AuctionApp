@@ -65,7 +65,7 @@ export default function BiddersList(props: BiddersListProps) {
         <Button
           type="primary"
           className="mx-auto py-2 px-10 mb-5"
-          onClick={() => setPage(page + 1)}
+          onClick={() => setPage((page) => page + 1)}
         >
           See more?
         </Button>
