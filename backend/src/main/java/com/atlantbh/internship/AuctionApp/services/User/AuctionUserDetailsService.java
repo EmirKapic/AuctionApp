@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @AllArgsConstructor
 @Service
 public class AuctionUserDetailsService implements UserDetailsService {
@@ -17,9 +15,8 @@ public class AuctionUserDetailsService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByEmailEquals(email);
-        if (user.isEmpty())throw new UsernameNotFoundException("No user with email " + email + " found.");
-        return user.get();
+        return userRepository.findByEmailEquals(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No user with email " + email + " found."));
     }
 
     public User getCurrentUser() {
