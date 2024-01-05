@@ -1,12 +1,23 @@
 import Container from "components/Common/Container";
-import { FormEvent, ReactNode, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FormEvent, ReactNode, useEffect, useState } from "react";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import Icon from "svgs/Icon";
 
 export default function LowerNavbar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (!searchParams.has("name")) setSearchText("");
+    else setSearchText(searchParams.get("name")!);
+  }, [searchParams]);
 
   const pathPrefix = pathname === "/" ? "/" : pathname.split("/")[1];
 

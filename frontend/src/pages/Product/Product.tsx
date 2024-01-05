@@ -12,6 +12,8 @@ import { UserContext } from "contexts/UserContext";
 import AlertMessage from "components/Common/AlertMessage";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import UserInteractionService from "services/UserInteractionService";
+import RelatedProducts from "./RelatedProducts";
+import BiddersList from "./BiddersList";
 
 const url = new UrlBuilder().bids().url;
 
@@ -94,6 +96,11 @@ export default function Product() {
             />
           </div>
         </div>
+        {data && data.user.id === userContext?.id ? (
+          <BiddersList productId={data.id} />
+        ) : (
+          <RelatedProducts productId={data.id} />
+        )}
       </Container>
     </div>
   );
