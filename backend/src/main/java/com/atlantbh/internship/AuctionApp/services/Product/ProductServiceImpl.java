@@ -31,19 +31,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getAll(Pageable pageable, ProductParameters params) {
-        return productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(), params.name(),
+        return productRepository.getAll(pageable, params.categoryId(), params.subcategoryIds(), params.name(),
                 params.sellerId(), params.active(), excludeOwnedBy(params.excludeUserOwned()), params.minPrice(), params.maxPrice());
     }
 
     @Override
     public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
-        Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(),
+        Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryIds(),
                 params.name(), params.sellerId(), true, excludeOwnedBy(params.excludeUserOwned()), params.minPrice(), params.maxPrice());
         if (!products.isEmpty() || params.name() == null) {
             return new ProductDidYouMean(products, null);
         }
         Page<Product> aprox = productRepository.getAllActiveApproximate(pageable, params.categoryId(),
-                params.subcategoryId(), params.name());
+                params.subcategoryIds(), params.name());
         String didYouMeanQuery = aprox.isEmpty() ? null : aprox.getContent().get(0).getName();
         return new ProductDidYouMean(aprox, didYouMeanQuery);
     }
@@ -109,12 +109,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductExtraInfoDto getProductBuckets(ProductParameters params, int numberOfBuckets) {
-        MaxMinPrice maxMin = productRepository.getMaxMinPrice(params.categoryId(), params.subcategoryId(), params.name(),
+        MaxMinPrice maxMin = productRepository.getMaxMinPrice(params.categoryId(), params.subcategoryIds(), params.name(),
                 params.sellerId(), params.active(), excludeOwnedBy(true), params.minPrice(), params.maxPrice());
         Double diff = maxMin.getMax() - maxMin.getMin();
 
         List<ProductBucket> result = productRepository.getProductBuckets(diff, maxMin.getMin(), numberOfBuckets ,params.categoryId(),
-                params.subcategoryId() != null ? params.subcategoryId() : List.of(), params.name(),
+                params.subcategoryIds() != null ? params.subcategoryIds() : List.of(), params.name(),
                 params.sellerId(), params.active(), excludeOwnedBy(true), params.minPrice(), params.maxPrice());
 
         return new ProductExtraInfoDto(result, maxMin.getMax(), maxMin.getMin());

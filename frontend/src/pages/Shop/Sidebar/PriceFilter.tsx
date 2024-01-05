@@ -1,7 +1,6 @@
 import BarGraph from "components/Common/BarGraph/BarGraph";
 import Button from "components/Common/Button";
 import DoubleSlider from "components/Common/DoubleSlider/DoubleSlider";
-//import DoubleSlider from "components/Common/DoubleSlider/DoubleSlider";
 import useFetchOne from "hooks/useFetchOne";
 import ProductExtraInfo from "models/ProductExtraInfo";
 import { ReactNode, useEffect, useMemo, useState } from "react";
@@ -18,7 +17,7 @@ export default function PriceFilter() {
   }, [searchParams]);
 
   const { data } = useFetchOne<ProductExtraInfo>(
-    new UrlBuilder().products().extraInfo().url,
+    new UrlBuilder().products().priceDetails().url,
     productExtraInfoParams,
   );
 

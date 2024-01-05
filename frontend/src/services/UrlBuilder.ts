@@ -68,8 +68,8 @@ export default class UrlBuilder {
     this._url += "/recommended";
     return this;
   }
-  public extraInfo(): UrlBuilder {
-    this._url += "/extra-info";
+  public priceDetails(): UrlBuilder {
+    this._url += "/price-details";
     return this;
   }
 }

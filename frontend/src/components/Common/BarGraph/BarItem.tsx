@@ -12,6 +12,6 @@ export default function BarItem(props: BarItemProps) {
         height: props.height,
         backgroundColor: props.color || Colors.LIGHTGREY,
       }}
-    ></div>
+    />
   );
 }
