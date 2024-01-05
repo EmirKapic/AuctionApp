@@ -60,10 +60,10 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.recommendedProducts());
     }
 
-    @GetMapping("/related/{id}")
-    public ResponseEntity getRelatedProducts(@PathVariable("id")long productId, @RequestParam(name = "limit", required = false)Long limit){
+    @GetMapping("/{id}/related")
+    public ResponseEntity getRelatedProducts(@PathVariable("id")long productId, Pageable pageable){
         try {
-            return ResponseEntity.ok().body(productService.relatedProducts(productId, limit));
+            return ResponseEntity.ok().body(productService.relatedProducts(productId, pageable));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }

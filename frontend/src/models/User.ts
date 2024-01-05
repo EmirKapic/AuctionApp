@@ -5,7 +5,7 @@ type User = {
   email: string;
   phoneNumber?: string;
   role: string;
-  photoUrl: string;
+  photoUrl?: string;
 };
 
 export default User;

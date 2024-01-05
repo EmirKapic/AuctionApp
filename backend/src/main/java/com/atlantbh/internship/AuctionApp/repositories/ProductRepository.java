@@ -89,7 +89,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         limit 3""")
         List<Product> findTop3ByRandom(String sellerEmail);
 
-        List<Product> findAllByUser_EmailNotAndSubCategory_IdAndIdNot(String userEmail, long subcategoryId, long productId);
-
-        List<Product> findAllByUser_EmailNotAndSubCategory_Category_IdAndIdNot(String userEmail, long categoryId, long productId);
+        @Query("""
+                from Product
+                where user.email <> :userEmail
+                  and (subCategory.id = :subcategoryId or subCategory.category.id = :categoryId)
+                  and id <> :productId
+                order by
+                  case
+                    when subCategory.id = :subcategoryId then 1
+                    else 0
+                  end
+                desc
+                """)
+        Page<Product> findRelatedProducts(
+                @Param("userEmail") String userEmail,
+                @Param("subcategoryId") long subcategoryId,
+                @Param("categoryId") long categoryId,
+                @Param("productId") long productId,
+                Pageable pageable);
 }

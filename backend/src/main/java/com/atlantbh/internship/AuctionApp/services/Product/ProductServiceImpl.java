@@ -106,30 +106,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> relatedProducts(long productId, Long limit) throws EntityNotFoundException {
-        Optional<Product> product = productRepository.findById(productId);
-        if (product.isEmpty()){
-            throw new EntityNotFoundException("No product with id " + productId + " found");
-        }
+    public Page<Product> relatedProducts(long productId, Pageable pageable) throws EntityNotFoundException {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("No product with id " + productId + " found"));
 
-        List<Product> related =  productRepository.
-                findAllByUser_EmailNotAndSubCategory_IdAndIdNot(
-                        userDetailsService.getCurrentUserEmail(), product.get().getSubCategory().getId(), productId);
-
-        if (related.isEmpty() || limit != null && related.size() < limit){
-            List<Product> relatedByCategory = productRepository
-                    .findAllByUser_EmailNotAndSubCategory_Category_IdAndIdNot(
-                            userDetailsService.getCurrentUserEmail(), product.get().getSubCategory().getCategory().getId(), productId);
-            related.addAll(relatedByCategory);
-        }
-
-        if (related.isEmpty() || limit != null && related.size() < limit){
-            List<Product> randomProducts =
-                    productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
-            related.addAll(randomProducts);
-        }
-
-        return limit != null ? related.subList(0, limit.intValue()) : related;
+        return productRepository
+                .findRelatedProducts(
+                        userDetailsService.getCurrentUserEmail(),
+                        product.getSubCategory().getId(),
+                        product.getSubCategory().getCategory().getId(),
+                        productId,
+                        pageable);
     }
 
 }

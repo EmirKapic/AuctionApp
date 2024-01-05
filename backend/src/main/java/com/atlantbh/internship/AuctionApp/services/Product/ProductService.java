@@ -29,5 +29,5 @@ public interface ProductService {
 
     List<Product> recommendedProducts();
 
-    List<Product> relatedProducts(long productId, Long limit) throws EntityNotFoundException;
+    Page<Product> relatedProducts(long productId, Pageable pageable) throws EntityNotFoundException;
 }
