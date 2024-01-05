@@ -22,11 +22,11 @@ public interface ProductService {
 
     Optional<Product> createNewProduct(NewProductRequest request);
 
+    List<Product> createNewProducts(List<NewProductRequest> requests);
+
     boolean isPurchasable(Product product);
 
     User getWinner(Product product);
 
     List<Product> recommendedProducts();
-
-    List<Product> createNewProducts(List<NewProductRequest> requests);
 }

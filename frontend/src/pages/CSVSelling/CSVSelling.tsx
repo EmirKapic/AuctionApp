@@ -93,7 +93,6 @@ export default function CSVSelling() {
       };
       return product;
     });
-    console.log(productRequests);
     setUploadStatus("ongoing");
     const res = await post<Product[], NewProductRequest[]>(
       new UrlBuilder().products().makeAll().url,

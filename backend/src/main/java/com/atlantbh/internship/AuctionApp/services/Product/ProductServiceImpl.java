@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +78,14 @@ public class ProductServiceImpl implements ProductService {
         return Optional.of(productRepository.save(newProduct));
     }
 
+    @Override
+    public List<Product> createNewProducts(List<NewProductRequest> requests) {
+        return requests.stream()
+                .map(this::createNewProduct)
+                .flatMap(Optional::stream)
+                .toList();
+    }
+
     private String excludeOwnedBy(Boolean excludeUserOwned) {
         if (excludeUserOwned == null || !excludeUserOwned)
             return null;
@@ -107,15 +114,4 @@ public class ProductServiceImpl implements ProductService {
         } else
             return productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
     }
-
-    @Override
-    public List<Product> createNewProducts(List<NewProductRequest> requests) {
-        List<Product> result = new ArrayList<>();
-        for(NewProductRequest request : requests){
-            Optional<Product> created = createNewProduct(request);
-            created.ifPresent(result::add);
-        }
-        return result;
-    }
-
 }
