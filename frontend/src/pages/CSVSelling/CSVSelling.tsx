@@ -74,12 +74,13 @@ export default function CSVSelling() {
               </ul>
             </div>
             {failedProducts && (
-              <div>
+              <div className="text-lg">
                 Following products could not be uploaded:
                 <ul className="list-disc pl-10 text-pink-700">
                   {failedProducts.map((item, index) => (
                     <li key={index}>
-                      {`${item.product.title} - ${item.reason}`}
+                      {item.product.title}
+                      {item.reason && ` - ${item.reason}`}
                     </li>
                   ))}
                 </ul>
@@ -102,18 +103,26 @@ export default function CSVSelling() {
       return { product: product, reason: "Invalid dates" };
     if (!ProductValidator.validatePhoneNumber(product.phoneNumber))
       return { product: product, reason: "Invalid phone number" };
+    if (product.imageUrls.length < 3)
+      return {
+        product: product,
+        reason: "You must upload at least 3 photo urls",
+      };
     if (!ProductValidator.validateUrls(product.imageUrls))
       return { product: product, reason: "Invalid image urls" };
   }
 
-  function validateRequests(products: Array<NewProductRequest>): void {
-    console.log(products);
+  function validateRequests(
+    products: Array<NewProductRequest>,
+  ): Array<NewProductRequest> {
     const failedProds: Array<UploadFailure> = [];
+    const validatedProds: Array<NewProductRequest> = [];
     products.map((product) => {
       const validation = validateSingleRequest(product);
-      validation && failedProds.push(validation);
+      validation ? failedProds.push(validation) : validatedProds.push(product);
     });
-    setFailedProducts(failedProds);
+    setFailedProducts((prods) => [...prods, ...failedProds]);
+    return validatedProds;
   }
 
   async function handleFileUpload(): Promise<void> {
@@ -137,12 +146,16 @@ export default function CSVSelling() {
       };
       return product;
     });
-    validateRequests(productRequests);
+    const validatedRequests = validateRequests(productRequests);
     setUploadStatus("ongoing");
     const res = await post<Product[], NewProductRequest[]>(
       new UrlBuilder().products().makeAll().url,
-      productRequests,
+      validatedRequests,
     );
+    const failedToUpload: Array<UploadFailure> = validatedRequests
+      .filter((req) => !res.data.find((p) => p.name === req.title))
+      .map((req) => ({ product: req, reason: "" }));
+    setFailedProducts((prods) => [...prods, ...failedToUpload]);
     setUploadedProducts(res.data);
     setUploadStatus("done");
   }
@@ -179,6 +192,8 @@ export default function CSVSelling() {
             onDrop={(files) => {
               setFile(files[0]);
               setUploadStatus("not started");
+              setFailedProducts([]);
+              setUploadedProducts([]);
             }}
             className="py-4 border mt-10 cursor-pointer"
           >
