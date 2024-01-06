@@ -4,7 +4,7 @@ import { pageSizeShop } from "defaultConstants";
 import useFetchPage, { Sort } from "hooks/useFetchPage";
 import Product from "models/Product";
 import ProductDidYouMean from "models/ProductDidYouMean";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 import SortType from "../SortType";

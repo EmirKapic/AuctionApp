@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
-
     @GetMapping
     public Page<Product> getAll(final Pageable pageable, final ProductParameters parameters) {
         return productService.getAll(pageable, parameters);
@@ -57,5 +56,10 @@ public class ProductController {
     @GetMapping("/recommended")
     public ResponseEntity getRecommendedProducts() {
         return ResponseEntity.ok().body(productService.recommendedProducts());
+    }
+
+    @GetMapping("/price-details")
+    public ResponseEntity getExtraProductInfo(ProductParameters productParameters, @RequestParam(defaultValue = "20") Long numberOfBuckets){
+        return ResponseEntity.ok().body(productService.getProductBuckets(productParameters, numberOfBuckets.intValue()));
     }
 }

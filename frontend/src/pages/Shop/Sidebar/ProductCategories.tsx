@@ -1,6 +1,7 @@
 import CategoryDto from "models/CategoryDto";
 import Sidebar from "./Sidebar";
 import CategoryListItem from "./CategoryListItem";
+import PriceFilter from "./PriceFilter";
 
 export interface ProductCategoriesProps {
   categories: Array<CategoryDto>;
@@ -16,5 +17,12 @@ export default function ProductCategories(props: ProductCategoriesProps) {
     />
   ));
 
-  return <Sidebar title="Product categories">{categories}</Sidebar>;
+  return (
+    <div className="flex flex-col gap-10">
+      <Sidebar title="Product categories">{categories}</Sidebar>
+      <Sidebar title="Filter by price">
+        <PriceFilter />
+      </Sidebar>
+    </div>
+  );
 }
