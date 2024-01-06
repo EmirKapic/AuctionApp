@@ -6,6 +6,7 @@ import Product from "models/Product";
 import { NewProductRequest } from "pages/SellingProcess/SellForm";
 import { ReactNode, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ProductValidator from "services/ProductValidator";
 import UrlBuilder from "services/UrlBuilder";
 import post from "services/fetching/Post";
 
@@ -20,11 +21,16 @@ function formatDate(date: string): string {
 }
 
 type UploadStatus = "not started" | "ongoing" | "done";
+type UploadFailure = {
+  product: NewProductRequest;
+  reason: string;
+};
 
 export default function CSVSelling() {
   const [file, setFile] = useState<File>();
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>("not started");
   const [uploadedProducts, setUploadedProducts] = useState<Product[]>([]);
+  const [failedProducts, setFailedProducts] = useState<UploadFailure[]>([]);
   const navigate = useNavigate();
 
   function renderStatusMessage(): ReactNode {
@@ -53,7 +59,7 @@ export default function CSVSelling() {
           </p>
         ) : (
           <div>
-            <p className="text-lg">
+            <div className="text-lg">
               Successfully uploaded following products:
               <ul className="list-disc pl-10">
                 {uploadedProducts.map((prod) => (
@@ -66,10 +72,48 @@ export default function CSVSelling() {
                   </li>
                 ))}
               </ul>
-            </p>
+            </div>
+            {failedProducts && (
+              <div>
+                Following products could not be uploaded:
+                <ul className="list-disc pl-10 text-pink-700">
+                  {failedProducts.map((item, index) => (
+                    <li key={index}>
+                      {`${item.product.title} - ${item.reason}`}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         );
     }
+  }
+
+  function validateSingleRequest(
+    product: NewProductRequest,
+  ): UploadFailure | undefined {
+    if (
+      !ProductValidator.validateDates(
+        new Date(product.startDate),
+        new Date(product.endDate),
+      )
+    )
+      return { product: product, reason: "Invalid dates" };
+    if (!ProductValidator.validatePhoneNumber(product.phoneNumber))
+      return { product: product, reason: "Invalid phone number" };
+    if (!ProductValidator.validateUrls(product.imageUrls))
+      return { product: product, reason: "Invalid image urls" };
+  }
+
+  function validateRequests(products: Array<NewProductRequest>): void {
+    console.log(products);
+    const failedProds: Array<UploadFailure> = [];
+    products.map((product) => {
+      const validation = validateSingleRequest(product);
+      validation && failedProds.push(validation);
+    });
+    setFailedProducts(failedProds);
   }
 
   async function handleFileUpload(): Promise<void> {
@@ -93,6 +137,7 @@ export default function CSVSelling() {
       };
       return product;
     });
+    validateRequests(productRequests);
     setUploadStatus("ongoing");
     const res = await post<Product[], NewProductRequest[]>(
       new UrlBuilder().products().makeAll().url,
