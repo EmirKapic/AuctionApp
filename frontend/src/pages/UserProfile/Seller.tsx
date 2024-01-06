@@ -1,7 +1,7 @@
 import { UserContext } from "contexts/UserContext";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import UrlBuilder from "services/UrlBuilder";
-import NotSelling from "./NotSelling";
+import NotSelling from "./NoActivityComponents/NotSelling";
 import Button from "components/Common/Button";
 import Icon from "svgs/Icon";
 import { useNavigate } from "react-router-dom";

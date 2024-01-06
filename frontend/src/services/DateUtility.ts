@@ -57,6 +57,9 @@ const DateUtility = {
       }
     }
   },
+  getMaxDayForMonth(month: number, year: number): number | undefined {
+    return new Date(year, month + 1, 0).getDate();
+  },
 };
 
 export default DateUtility;

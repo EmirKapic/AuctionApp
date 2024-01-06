@@ -1,3 +1,4 @@
+import { FieldValue } from "firebase/firestore";
 import { FieldValues, RegisterOptions } from "react-hook-form";
 
 export function emailValidationOptions(): RegisterOptions<FieldValues, string> {
@@ -54,5 +55,16 @@ export function phoneNumberValidationOptions(): RegisterOptions<
   return {
     required: { value: true, message: "Please enter a phone number" },
     pattern: { value: /^\+\d+$/, message: "Please enter a valid phone number" },
+  };
+}
+
+export function minMaxNumberValidation(
+  min: number,
+  max: number,
+  message: string,
+): RegisterOptions<FieldValues, string> {
+  return {
+    max: { value: max, message: message },
+    min: { value: min, message: message },
   };
 }

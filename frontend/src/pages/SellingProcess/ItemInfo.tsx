@@ -90,11 +90,9 @@ export default function ItemInfo(props: ItemInfoProps) {
             props.updateFields({ selectedSubcategory: data?.value })
           }
           placeholder="Choose a subcategory"
-          options={
-            props.selectedCategory?.subCategories.map((subCat) => {
-              return { value: subCat, label: subCat.name };
-            }) || []
-          }
+          options={props.selectedCategory?.subCategories.map((subCat) => {
+            return { value: subCat, label: subCat.name };
+          })}
           isDisabled={!props.selectedCategory}
         />
       </div>
