@@ -1,6 +1,10 @@
 import Button from "components/Common/Button";
 
-export default function Settings() {
+export interface SettingsProps {
+  onDeactivate: () => void;
+}
+
+export default function Settings(props: SettingsProps) {
   return (
     <div>
       <div className="border border-silver border-opacity-50 flex flex-col w-1/2">
@@ -9,8 +13,11 @@ export default function Settings() {
         </h4>
         <div className="px-8 py-3">
           <p>Do you want to deactivate your account?</p>
-          <Button type="secondary" className="py-2 px-16 mt-5 uppercase">
-            {/* what does deactivate mean? Should products be deleted if currently bid on? Should you even be able to delete if products are being sold?*/}
+          <Button
+            type="secondary"
+            className="py-2 px-16 mt-5 uppercase"
+            onClick={props.onDeactivate}
+          >
             Deactivate
           </Button>
         </div>

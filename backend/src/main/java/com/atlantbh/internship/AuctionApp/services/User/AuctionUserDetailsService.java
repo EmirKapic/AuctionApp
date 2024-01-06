@@ -55,8 +55,8 @@ public class AuctionUserDetailsService implements UserDetailsService {
     }
 
     public void deleteUser(long userId){
-        userRepository.deleteById(userId);
         removeUserBids(userId);
+        userRepository.deleteById(userId);
     }
 
     private void removeUserBids(long userId){
@@ -79,7 +79,6 @@ public class AuctionUserDetailsService implements UserDetailsService {
         else{
             product.setHighestBid(null);
         }
-        product.setNumberOfBids(product.getNumberOfBids() - 1);
         productRepository.save(product);
     }
 }
