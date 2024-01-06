@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +22,8 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "AppUser")
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,12 +58,13 @@ public class User implements UserDetails {
     private String creditCard;
     private String photoUrl;
     private Instant dateOfBirth;
+    private boolean deleted;
 
     public User(String email){
         this(email, null, null, null);
     }
     public User(String email, String password, String firstName, String lastName){
-        this(0, firstName, lastName, email, password,null, null,null, null, null, null, null, null, null, null);
+        this(0, firstName, lastName, email, password,null, null,null, null, null, null, null, null, null, null, false);
     }
 
     @Override

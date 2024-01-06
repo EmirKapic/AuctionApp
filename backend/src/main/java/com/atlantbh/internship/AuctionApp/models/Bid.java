@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.Instant;
 
@@ -12,6 +14,8 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE bid SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Bid {
 
     @Id
@@ -19,6 +23,7 @@ public class Bid {
     private long id;
     private double bid;
     private Instant dateCreated;
+    private boolean deleted;
 
     @ManyToOne
     @JoinColumn(name = "bidder_id")
@@ -29,6 +34,6 @@ public class Bid {
     private Product product;
 
     public Bid(double bid, User user, Product product){
-        this(0, bid, Instant.now(), user , product);
+        this(0, bid, Instant.now(),false, user , product);
     }
 }
