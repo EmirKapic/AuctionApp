@@ -58,26 +58,7 @@ const DateUtility = {
     }
   },
   getMaxDayForMonth(month: number, year: number): number | undefined {
-    if (month < 0 || month > 11) throw new Error("Invalid month");
-    switch (month) {
-      case 0:
-      case 2:
-      case 4:
-      case 6:
-      case 7:
-      case 9:
-      case 11:
-        return 31;
-      case 3:
-      case 5:
-      case 8:
-      case 10:
-        return 30;
-      case 1:
-        return year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)
-          ? 28
-          : 29;
-    }
+    return new Date(year, month + 1, 0).getDate();
   },
 };
 
