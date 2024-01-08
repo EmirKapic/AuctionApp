@@ -123,14 +123,24 @@ export default function Seller() {
           {renderTabButton("Active", activeTab === 0, () => setActiveTab(0))}
           {renderTabButton("Sold", activeTab === 1, () => setActiveTab(1))}
         </div>
-        <Button
-          type="primary"
-          className="py-2 px-16 mb-3"
-          onClick={() => navigate("/account/sell")}
-        >
-          <Icon name="plus" />
-          Add item
-        </Button>
+        <div>
+          <Button
+            type="primary"
+            className="py-2 px-16 mb-3"
+            onClick={() => navigate("/account/sell/csv")}
+          >
+            <Icon name="documentArrowUp" />
+            Add via CSV
+          </Button>
+          <Button
+            type="primary"
+            className="py-2 px-16 mb-3 w-full"
+            onClick={() => navigate("/account/sell")}
+          >
+            <Icon name="plus" />
+            Add item
+          </Button>
+        </div>
       </div>
       <div className="flex justify-center border border-silver mb-5">
         {data.content.length ? (
