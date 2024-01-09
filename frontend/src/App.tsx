@@ -22,6 +22,8 @@ import SellForm from "pages/SellingProcess/SellForm";
 import ProtectedRoute from "components/Common/ProtectedRoute";
 import PaymentSuccess from "pages/Payment/PaymentSuccess";
 import PaymentFailure from "pages/Payment/PaymentFailure";
+import CSVSelling from "pages/CSVSelling/CSVSelling";
+import AllCategories from "pages/AllCategories/AllCategories";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -78,10 +80,12 @@ function App() {
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/account" element={<UserProfile />} />
+            <Route path="/account/sell/csv" element={<CSVSelling />} />
             <Route path="/account/sell" element={<SellForm />} />
           </Route>
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/payment/fail" element={<PaymentFailure />} />
+          <Route path="/shop/all-categories" element={<AllCategories />} />
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />
