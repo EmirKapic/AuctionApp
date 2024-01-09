@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
@@ -35,10 +36,13 @@ public class OAuth2GoogleServiceImpl implements OAuth2Service {
     }
 
     @Override
-    public LoginResponse authenticate(String googleToken) throws GeneralSecurityException, IOException {
+    public LoginResponse authenticate(String googleToken) throws GeneralSecurityException, IOException, AuthenticationException {
         String userEmail = extractEmail(googleToken);
         Optional<User> userOpt = userRepository.findByEmailEquals(userEmail);
         User user = userOpt.orElseGet(() -> userRepository.save(new User(userEmail, "ROLE_USER", "oauth")));
+        if (!user.getAuthenticationMethod().equals("oauth")){
+            throw new AuthenticationException("User is not signed in via oauth");
+        }
         String jwtToken = jwtService.createToken(user);
         return new LoginResponse(user, jwtToken);
     }
