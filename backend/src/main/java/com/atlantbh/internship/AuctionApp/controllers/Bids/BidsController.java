@@ -2,6 +2,8 @@ package com.atlantbh.internship.AuctionApp.controllers.Bids;
 
 import com.atlantbh.internship.AuctionApp.dtos.ErrorResponse;
 import com.atlantbh.internship.AuctionApp.dtos.bidding.NewBidRequest;
+import com.atlantbh.internship.AuctionApp.exceptions.AuthorizationException;
+import com.atlantbh.internship.AuctionApp.exceptions.EntityNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.Bid;
 import com.atlantbh.internship.AuctionApp.services.Bid.BidParameters;
 import com.atlantbh.internship.AuctionApp.services.Bid.BidService;
@@ -22,6 +24,16 @@ public class BidsController {
     public ResponseEntity getBids(final Pageable pageable, BidParameters params) {
         Page<Bid> bids = bidService.getBids(params, pageable);
         return ResponseEntity.ok().body(bids);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/product/{id}")
+    public ResponseEntity getProductBids(final Pageable pageable, @PathVariable("id")long productId){
+        try {
+            return ResponseEntity.ok().body(bidService.getProductBids(pageable, productId));
+        } catch (EntityNotFoundException | AuthorizationException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
