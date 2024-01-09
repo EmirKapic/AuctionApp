@@ -9,6 +9,7 @@ import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import com.atlantbh.internship.AuctionApp.repositories.SubcategoryRepository;
 import com.atlantbh.internship.AuctionApp.services.User.AuctionUserDetailsService;
+import com.atlantbh.internship.AuctionApp.utilities.ProductValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,11 +60,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Optional<Product> createNewProduct(NewProductRequest request) {
-        Optional<SubCategory> subCategory = subcategoryRepository.findById(request.subcategoryId());
+        if (!ProductValidator.validate(request)) {
+            return Optional.empty();
+        }
+        Optional<SubCategory> subCategory = subcategoryRepository.findByNameEqualsIgnoreCase(request.subcategoryName());
         if (subCategory.isEmpty()) {
             return Optional.empty();
         }
-
         String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDetailsService.loadUserByUsername(currentUserEmail);
 
@@ -74,6 +77,14 @@ public class ProductServiceImpl implements ProductService {
         newProduct.setImages(request.imageUrls().stream().map(url -> new ProductImage(url, newProduct)).toList());
 
         return Optional.of(productRepository.save(newProduct));
+    }
+
+    @Override
+    public List<Product> createNewProducts(List<NewProductRequest> requests) {
+        return requests.stream()
+                .map(this::createNewProduct)
+                .flatMap(Optional::stream)
+                .toList();
     }
 
     private String excludeOwnedBy(Boolean excludeUserOwned) {

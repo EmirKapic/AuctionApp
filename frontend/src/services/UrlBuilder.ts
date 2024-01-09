@@ -76,4 +76,8 @@ export default class UrlBuilder {
     this._url += "/product";
     return this;
   }
+  public makeAll(): UrlBuilder {
+    this._url += "/make-all";
+    return this;
+  }
 }
