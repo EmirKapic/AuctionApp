@@ -2,6 +2,7 @@ package com.atlantbh.internship.AuctionApp.services.Product;
 
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
+import com.atlantbh.internship.AuctionApp.exceptions.EntityNotFoundException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
 import com.atlantbh.internship.AuctionApp.models.*;
 import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
@@ -37,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
         Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(),
                 params.name(), params.sellerId(), true, excludeOwnedBy(params.excludeUserOwned()));
-        if (!products.isEmpty()) {
+        if (!products.isEmpty() || params.name() == null) {
             return new ProductDidYouMean(products, null);
         }
         Page<Product> aprox = productRepository.getAllActiveApproximate(pageable, params.categoryId(),
@@ -59,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Optional<Product> createNewProduct(NewProductRequest request) {
-        if (!ProductValidator.validate(request)){
+        if (!ProductValidator.validate(request)) {
             return Optional.empty();
         }
         Optional<SubCategory> subCategory = subcategoryRepository.findByNameEqualsIgnoreCase(request.subcategoryName());
@@ -114,4 +115,19 @@ public class ProductServiceImpl implements ProductService {
         } else
             return productRepository.findTop3ByRandom(userDetailsService.getCurrentUserEmail());
     }
+
+    @Override
+    public Page<Product> relatedProducts(long productId, Pageable pageable) throws EntityNotFoundException {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("No product with id " + productId + " found"));
+
+        return productRepository
+                .findRelatedProducts(
+                        userDetailsService.getCurrentUserEmail(),
+                        product.getSubCategory().getId(),
+                        product.getSubCategory().getCategory().getId(),
+                        productId,
+                        pageable);
+    }
+
 }

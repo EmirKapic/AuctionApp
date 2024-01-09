@@ -88,4 +88,23 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         order by RANDOM()
                         limit 3""")
         List<Product> findTop3ByRandom(String sellerEmail);
+
+        @Query("""
+                from Product
+                where user.email <> :userEmail
+                  and (subCategory.id = :subcategoryId or subCategory.category.id = :categoryId)
+                  and id <> :productId
+                order by
+                  case
+                    when subCategory.id = :subcategoryId then 1
+                    else 0
+                  end
+                desc
+                """)
+        Page<Product> findRelatedProducts(
+                @Param("userEmail") String userEmail,
+                @Param("subcategoryId") long subcategoryId,
+                @Param("categoryId") long categoryId,
+                @Param("productId") long productId,
+                Pageable pageable);
 }

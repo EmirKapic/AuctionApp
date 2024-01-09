@@ -68,6 +68,14 @@ export default class UrlBuilder {
     this._url += "/recommended";
     return this;
   }
+  public related(): UrlBuilder {
+    this._url += "/related";
+    return this;
+  }
+  public product(): UrlBuilder {
+    this._url += "/product";
+    return this;
+  }
   public makeAll(): UrlBuilder {
     this._url += "/make-all";
     return this;
