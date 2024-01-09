@@ -1,12 +1,14 @@
 package com.atlantbh.internship.AuctionApp.services.User;
 
 import com.atlantbh.internship.AuctionApp.dtos.user.UserUpdateRequest;
-import com.atlantbh.internship.AuctionApp.models.Bid;
 import com.atlantbh.internship.AuctionApp.models.Product;
 import com.atlantbh.internship.AuctionApp.models.User;
+import com.atlantbh.internship.AuctionApp.projections.ProductBid;
+import com.atlantbh.internship.AuctionApp.projections.ProductBidCount;
 import com.atlantbh.internship.AuctionApp.repositories.BidRepository;
 import com.atlantbh.internship.AuctionApp.repositories.ProductRepository;
 import com.atlantbh.internship.AuctionApp.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,10 +16,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class AuctionUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BidRepository bidRepository;
@@ -54,31 +56,38 @@ public class AuctionUserDetailsService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(long userId){
-        removeUserBids(userId);
-        userRepository.deleteById(userId);
-    }
 
-    private void removeUserBids(long userId){
-        List<Bid> userBids = bidRepository.findAllByBidder_Id(userId);
-        for (Bid b : userBids){
-            if (Double.compare(b.getProduct().getHighestBid(),b.getBid()) == 0){
-                removeHighestBid(b.getProduct().getId(), b.getId());
+    public void deleteUser(long userId){
+        List<ProductBidCount> productCountsBeforeRemove = bidRepository.findCountOfUserBidOnProducts(userId);
+
+        for (ProductBidCount pbCount : productCountsBeforeRemove){
+            pbCount.getProduct().setNumberOfBids((int)(pbCount.getProduct().getNumberOfBids() - pbCount.getCount()));
+            if (pbCount.getProduct().getNumberOfBids() == 0){
+                pbCount.getProduct().setHighestBid(null);
             }
         }
-        bidRepository.deleteAllByBidder_Id(userId);
-    }
 
-    private void removeHighestBid(long productId, long highestBidId){
-        Product product = productRepository.findById(productId).get();
-        bidRepository.deleteById(highestBidId);
-        Optional<Bid> secondHighest = bidRepository.findFirstByProduct_IdOrderByBidDesc(productId);
-        if (secondHighest.isPresent()){
-            product.setHighestBid(secondHighest.get().getBid());
+        List<Product> products =  productCountsBeforeRemove.stream()
+                        .filter(pb -> pb.getProduct().getNumberOfBids() > 0)
+                        .map(pb -> pb.getProduct())
+                        .toList();
+        bidRepository.deleteAllByBidder_Id(userId);
+
+        List<Long> productIds = products.stream().map(p -> p.getId()).toList();
+
+        List<ProductBid> highestBids = bidRepository.findHighestBidForProducts(productIds);
+
+        for (Product p : products){
+            Double highestBid = highestBids.stream()
+                    .filter(pb -> pb.getProduct().getId() == p.getId())
+                    .map(pb -> pb.getBid()).toList().get(0);
+
+            p.setHighestBid(highestBid);
         }
-        else{
-            product.setHighestBid(null);
+
+        for (ProductBidCount pb : productCountsBeforeRemove){
+            productRepository.save(pb.getProduct());
         }
-        productRepository.save(product);
+        userRepository.deleteById(userId);
     }
 }

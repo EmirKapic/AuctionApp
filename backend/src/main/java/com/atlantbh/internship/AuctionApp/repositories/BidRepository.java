@@ -1,6 +1,8 @@
 package com.atlantbh.internship.AuctionApp.repositories;
 
 import com.atlantbh.internship.AuctionApp.models.Bid;
+import com.atlantbh.internship.AuctionApp.projections.ProductBid;
+import com.atlantbh.internship.AuctionApp.projections.ProductBidCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,5 +38,20 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
 
         void deleteAllByBidder_Id(long bidderId);
 
-        List<Bid> findAllByBidder_Id(long bidderId);
+        @Query("""
+                select p as product, count(*) as count
+                from Product p join Bid b on p.id=b.product.id
+                where b.bidder.id = :userId
+                  and p.dateEnd > current_timestamp
+                group by p
+                """)
+        List<ProductBidCount> findCountOfUserBidOnProducts(@Param("userId") long userId);
+
+        @Query("""
+                select max(b.bid) as bid, p as product
+                from Bid b join Product p on p.id = b.product.id
+                where p.id in (:productIds)
+                group by p
+                """)
+        List<ProductBid> findHighestBidForProducts(@Param("productIds") List<Long> productIds);
 }
