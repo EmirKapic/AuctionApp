@@ -85,9 +85,8 @@ public class AuctionUserDetailsService implements UserDetailsService {
             p.setHighestBid(highestBid);
         }
 
-        for (ProductBidCount pb : productCountsBeforeRemove){
-            productRepository.save(pb.getProduct());
-        }
+        List<Product> allUserProducts = productCountsBeforeRemove.stream().map(pb -> pb.getProduct()).toList();
+        productRepository.saveAll(allUserProducts);
         userRepository.deleteById(userId);
     }
 }
