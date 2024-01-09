@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.naming.AuthenticationException;
 import java.util.Optional;
 
 @Service
@@ -20,13 +21,16 @@ public class OAuth2FacebookServiceImpl implements OAuth2Service{
     private final RestTemplate restTemplate;
     private final Gson gson;
     @Override
-    public LoginResponse authenticate(String token) {
+    public LoginResponse authenticate(String token) throws AuthenticationException {
         String uri = "https://graph.facebook.com/me?access_token=" + token + "&fields=email";
         String resultJson = restTemplate.getForObject(uri, String.class);
         FacebookResponse response = gson.fromJson(resultJson, FacebookResponse.class);
 
         Optional<User> userOpt = userRepository.findByEmailEquals(response.email());
         User user = userOpt.orElseGet(() -> userRepository.save(new User(response.email(), "ROLE_USER", "oauth")));
+        if (!user.getAuthenticationMethod().equals("oauth")){
+            throw new AuthenticationException("User is not signed in via oauth");
+        }
         String jwtToken = jwtService.createToken(user);
         return new LoginResponse(user, jwtToken);
     }
