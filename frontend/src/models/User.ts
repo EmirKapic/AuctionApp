@@ -6,6 +6,7 @@ type User = {
   phoneNumber?: string;
   role: string;
   authenticationMethod: string;
+  photoUrl?: string;
 };
 
 export default User;

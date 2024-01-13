@@ -20,8 +20,7 @@ import { className } from "services/ClassName";
 
 export type NewProductRequest = {
   title: string;
-  categoryId: number;
-  subcategoryId: number;
+  subcategoryName: string;
   description: string;
   imageUrls: string[];
   startPrice: number;
@@ -159,8 +158,7 @@ export default function SellForm() {
 
     const newProduct: NewProductRequest = {
       title: data[addItemIds.titleId],
-      categoryId: formState.selectedCategory!.id,
-      subcategoryId: formState.selectedSubcategory!.id,
+      subcategoryName: formState.selectedSubcategory!.name,
       description: data[addItemIds.descriptionId],
       imageUrls: givenUrls,
       startPrice: data[pricesIds.startPriceId],
