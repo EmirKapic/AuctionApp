@@ -22,6 +22,7 @@ import SellForm from "pages/SellingProcess/SellForm";
 import ProtectedRoute from "components/Common/ProtectedRoute";
 import PaymentSuccess from "pages/Payment/PaymentSuccess";
 import PaymentFailure from "pages/Payment/PaymentFailure";
+import deleteRequest from "services/fetching/Delete";
 import CSVSelling from "pages/CSVSelling/CSVSelling";
 import AllCategories from "pages/AllCategories/AllCategories";
 
@@ -39,6 +40,14 @@ function App() {
     setCurrentUser(undefined);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+  }
+
+  function handleDeactivate() {
+    setCurrentUser(undefined);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    deleteRequest(new UrlBuilder().user().id(currentUser!.id).url);
+    navigate("/");
   }
 
   useEffect(() => {
@@ -79,7 +88,18 @@ function App() {
             />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path="/account" element={<UserProfile />} />
+            <Route
+              path="/account"
+              element={
+                <UserProfile
+                  updateUserContext={(user) => {
+                    setCurrentUser(user);
+                    localStorage.setItem("user", JSON.stringify(user));
+                  }}
+                  onDeactivate={handleDeactivate}
+                />
+              }
+            />
             <Route path="/account/sell/csv" element={<CSVSelling />} />
             <Route path="/account/sell" element={<SellForm />} />
           </Route>

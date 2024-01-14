@@ -6,7 +6,7 @@ import Bid from "models/Bid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DateUtility from "services/DateUtility";
-import NotBidding from "./NotBidding";
+import NotBidding from "./NoActivityComponents/NotBidding";
 
 export interface BidTableProps {
   fetchUrl: string;

@@ -101,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public User getWinner(Product product) {
-        Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(product.getId());
+        Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(product.getId()).get();
         return bid.getBidder();
     }
 

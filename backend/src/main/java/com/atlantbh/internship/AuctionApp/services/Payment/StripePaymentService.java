@@ -103,7 +103,7 @@ public class StripePaymentService implements PaymentService {
             product.setPurchased(true);
             productRepository.save(product);
 
-            Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(productId);
+            Bid bid = bidRepository.findFirstByProduct_IdOrderByBidDesc(productId).get();
             Payment thisPayment = new Payment(bid, session.getId());
             paymentRepository.save(thisPayment);
         } catch (StripeException exception) {

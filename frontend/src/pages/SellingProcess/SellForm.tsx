@@ -196,10 +196,7 @@ export default function SellForm() {
             <div className="flex justify-between">
               <Button
                 type="secondary"
-                className={className(
-                  btnClassName,
-                  "hover:bg-lightgrey-200 hover:bg-opacity-40 duration-300",
-                )}
+                className={btnClassName}
                 onClick={() => navigate("/account")}
               >
                 cancel
