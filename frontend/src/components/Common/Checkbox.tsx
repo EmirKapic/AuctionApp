@@ -5,6 +5,7 @@ export interface CheckboxProps {
   onChange?: (active: boolean) => void;
   checked?: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 export default function Checkbox(props: PropsWithChildren<CheckboxProps>) {
@@ -18,6 +19,7 @@ export default function Checkbox(props: PropsWithChildren<CheckboxProps>) {
         }
         checked={props.checked}
         disabled={props.disabled}
+        className={props.className}
       />
       <label htmlFor={props.id}>{props.children}</label>
     </div>

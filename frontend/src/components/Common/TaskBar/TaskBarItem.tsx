@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren } from "react";
 
 export interface TaskBarItemProps {
   active?: boolean;
@@ -13,7 +13,7 @@ export default function TaskBarItem(
     : "text-black bg-lightgrey-200 bg-opacity-20 hover:bg-opacity-60";
   return (
     <button
-      onClick={(e) => props.onClick()}
+      onClick={() => props.onClick()}
       className={
         "flex gap-1 justify-center py-2 min-w-[100px] duration-200 " + className
       }

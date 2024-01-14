@@ -53,10 +53,9 @@ public class ProductController {
                 .orElse(ResponseEntity.badRequest().body(new ErrorResponse("Could not create new product.")));
     }
 
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/make-all")
-    public ResponseEntity makeAll(@RequestBody List<NewProductRequest> requests){
+    public ResponseEntity makeAll(@RequestBody List<NewProductRequest> requests) {
         return ResponseEntity.ok().body(productService.createNewProducts(requests));
     }
 
@@ -66,11 +65,17 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/related")
-    public ResponseEntity getRelatedProducts(@PathVariable("id")long productId, Pageable pageable){
+    public ResponseEntity getRelatedProducts(@PathVariable("id") long productId, Pageable pageable) {
         try {
             return ResponseEntity.ok().body(productService.relatedProducts(productId, pageable));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
+    }
+
+    @GetMapping("/price-details")
+    public ResponseEntity getPriceDetails(ProductParameters productParameters,
+            @RequestParam(defaultValue = "20") Long numberOfBuckets) {
+        return ResponseEntity.ok().body(productService.getPriceDetails(productParameters, numberOfBuckets.intValue()));
     }
 }

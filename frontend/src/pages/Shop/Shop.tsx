@@ -11,6 +11,7 @@ import buildQueryParams from "services/QueryParamsBuilder";
 import SortType from "./SortType";
 import SortBar from "./SortBar";
 import GridTypePicker, { GridType } from "./GridTypePicker";
+import FiltersList from "./FiltersList";
 
 export default function Shop() {
   const [didYouMean, setDidYouMean] = useState<string>();
@@ -82,6 +83,7 @@ export default function Shop() {
           />
         </aside>
         <div className="flex-grow">
+          <FiltersList />
           <div className="flex justify-between items-center">
             <SortBar
               sort={sortType}

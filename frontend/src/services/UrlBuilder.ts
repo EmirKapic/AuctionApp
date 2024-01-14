@@ -92,4 +92,8 @@ export default class UrlBuilder {
     this._url += "/make-all";
     return this;
   }
+  public priceDetails(): UrlBuilder {
+    this._url += "/price-details";
+    return this;
+  }
 }

@@ -1,6 +1,7 @@
 package com.atlantbh.internship.AuctionApp.services.Product;
 
 import com.atlantbh.internship.AuctionApp.dtos.ProductDidYouMean;
+import com.atlantbh.internship.AuctionApp.dtos.ProductsPriceDetails;
 import com.atlantbh.internship.AuctionApp.dtos.sell.NewProductRequest;
 import com.atlantbh.internship.AuctionApp.exceptions.EntityNotFoundException;
 import com.atlantbh.internship.AuctionApp.exceptions.ProductNotFoundException;
@@ -32,4 +33,6 @@ public interface ProductService {
     List<Product> recommendedProducts();
 
     Page<Product> relatedProducts(long productId, Pageable pageable) throws EntityNotFoundException;
+
+    ProductsPriceDetails getPriceDetails(ProductParameters params, int numberOfBuckets);
 }

@@ -14,14 +14,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
     private final AuctionUserDetailsService userService;
+
     @PutMapping
     @PreAuthorize("isAuthenticated()")
-    public User updateUser(@RequestBody UserUpdateRequest request){
+    public User updateUser(@RequestBody UserUpdateRequest request) {
         return userService.updateUser(request, userService.getCurrentUser());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable String id){
+    public ResponseEntity deleteUser(@PathVariable String id) {
         userService.deleteUser(Long.parseLong(id));
         return ResponseEntity.ok().body(new MessageResponse("Delete user with id: " + id));
     }

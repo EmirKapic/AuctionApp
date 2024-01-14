@@ -43,7 +43,7 @@ public class AuctionUserDetailsService implements UserDetailsService {
         return !getCurrentUserEmail().equals("anonymousUser");
     }
 
-    public User updateUser(UserUpdateRequest request, User user){
+    public User updateUser(UserUpdateRequest request, User user) {
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
         user.setAddress(request.address());
@@ -57,28 +57,27 @@ public class AuctionUserDetailsService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-
-    public void deleteUser(long userId){
+    public void deleteUser(long userId) {
         List<ProductBidCount> productCountsBeforeRemove = bidRepository.findCountOfUserBidOnProducts(userId);
 
-        for (ProductBidCount pbCount : productCountsBeforeRemove){
-            pbCount.getProduct().setNumberOfBids((int)(pbCount.getProduct().getNumberOfBids() - pbCount.getCount()));
-            if (pbCount.getProduct().getNumberOfBids() == 0){
+        for (ProductBidCount pbCount : productCountsBeforeRemove) {
+            pbCount.getProduct().setNumberOfBids((int) (pbCount.getProduct().getNumberOfBids() - pbCount.getCount()));
+            if (pbCount.getProduct().getNumberOfBids() == 0) {
                 pbCount.getProduct().setHighestBid(null);
             }
         }
 
-        List<Product> products =  productCountsBeforeRemove.stream()
-                        .filter(pb -> pb.getProduct().getNumberOfBids() > 0)
-                        .map(pb -> pb.getProduct())
-                        .toList();
+        List<Product> products = productCountsBeforeRemove.stream()
+                .filter(pb -> pb.getProduct().getNumberOfBids() > 0)
+                .map(pb -> pb.getProduct())
+                .toList();
         bidRepository.deleteAllByBidder_Id(userId);
 
         List<Long> productIds = products.stream().map(p -> p.getId()).toList();
 
         List<ProductBid> highestBids = bidRepository.findHighestBidForProducts(productIds);
 
-        for (Product p : products){
+        for (Product p : products) {
             Double highestBid = highestBids.stream()
                     .filter(pb -> pb.getProduct().getId() == p.getId())
                     .map(pb -> pb.getBid()).toList().get(0);
