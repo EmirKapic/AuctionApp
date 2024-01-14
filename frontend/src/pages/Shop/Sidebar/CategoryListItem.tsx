@@ -15,7 +15,7 @@ export default function CategoryListItem(props: CategoryListItemProps) {
   function handleSelectCategory(categoryId: string): void {
     const queryParams = new URLSearchParams(searchParams);
     queryParams.set("categoryId", categoryId);
-    queryParams.delete("subcategoryId");
+    queryParams.delete("subcategoryIds");
     setSearchParams(queryParams);
   }
 
@@ -25,20 +25,20 @@ export default function CategoryListItem(props: CategoryListItemProps) {
   ): void {
     const newSearchParams = new URLSearchParams(searchParams);
     if (active) {
-      newSearchParams.append("subcategoryId", subcategoryId.toString());
+      newSearchParams.append("subcategoryIds", subcategoryId.toString());
     } else {
-      const allSubcategoryParams = newSearchParams.getAll("subcategoryId");
-      newSearchParams.delete("subcategoryId");
+      const allSubcategoryParams = newSearchParams.getAll("subcategoryIds");
+      newSearchParams.delete("subcategoryIds");
       allSubcategoryParams
         .filter((param) => param !== subcategoryId.toString())
-        .forEach((param) => newSearchParams.append("subcategoryId", param));
+        .forEach((param) => newSearchParams.append("subcategoryIds", param));
     }
 
     setSearchParams(newSearchParams);
   }
 
   const selectedSubcategoryIds = searchParams
-    .getAll("subcategoryId")
+    .getAll("subcategoryIds")
     .map((idString) => parseInt(idString));
 
   const subCategories = props.category.subCategories.map((subCategory) => (
