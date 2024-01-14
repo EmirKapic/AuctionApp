@@ -5,6 +5,7 @@ type User = {
   email: string;
   phoneNumber?: string;
   role: string;
+  authenticationMethod: string;
   photoUrl?: string;
 };
 
