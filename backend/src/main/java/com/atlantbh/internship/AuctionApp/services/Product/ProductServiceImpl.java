@@ -40,8 +40,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDidYouMean getAllActiveApproximate(Pageable pageable, ProductParameters params) {
-        Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryId(),
-                params.name(), params.sellerId(), true, excludeOwnedBy(params.excludeUserOwned()));
+        Page<Product> products = productRepository.getAll(pageable, params.categoryId(), params.subcategoryIds(),
+                params.name(), params.sellerId(), true, excludeOwnedBy(params.excludeUserOwned()), params.minPrice(), params.maxPrice());
         if (!products.isEmpty() || params.name() == null) {
             return new ProductDidYouMean(products, null);
         }

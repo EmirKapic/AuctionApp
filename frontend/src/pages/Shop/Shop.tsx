@@ -83,8 +83,8 @@ export default function Shop() {
           />
         </aside>
         <div className="flex-grow">
+          <FiltersList />
           <div className="flex justify-between items-center">
-            <FiltersList />
             <SortBar
               sort={sortType}
               onChange={setSortType}
