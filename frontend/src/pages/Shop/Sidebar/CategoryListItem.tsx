@@ -16,6 +16,7 @@ export default function CategoryListItem(props: CategoryListItemProps) {
     const queryParams = new URLSearchParams(searchParams);
     queryParams.set("categoryId", categoryId);
     queryParams.delete("subcategoryIds");
+    queryParams.delete("name");
     setSearchParams(queryParams);
   }
 
@@ -33,7 +34,7 @@ export default function CategoryListItem(props: CategoryListItemProps) {
         .filter((param) => param !== subcategoryId.toString())
         .forEach((param) => newSearchParams.append("subcategoryIds", param));
     }
-
+    newSearchParams.delete("name");
     setSearchParams(newSearchParams);
   }
 

@@ -13,7 +13,7 @@ export default function AllCategories() {
   function handleSubcategoryClick(subCat: Subcategory) {
     const params = new URLSearchParams();
     params.append("categoryId", subCat.category.id.toString());
-    params.append("subcategoryId", subCat.id.toString());
+    params.append("subcategoryIds", subCat.id.toString());
     navigate("/shop?" + params.toString());
   }
 
