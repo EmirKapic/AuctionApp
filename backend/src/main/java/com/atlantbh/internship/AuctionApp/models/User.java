@@ -61,12 +61,16 @@ public class User implements UserDetails {
     }
 
     public User(String email, String password, String firstName, String lastName, String authenticationMethod) {
-        this(0, firstName, lastName, email, password, null, null, null, authenticationMethod);
+        this(0, firstName, lastName, email, password, null, null, null,
+                null, null, null, null, null, null, null, false,
+                authenticationMethod
+        );
     }
 
     public User(String email, String role, String authenticationMethod) {
-        this(0, null, null, email, null, null, null, null, null, null, null, null, null, null, role,
-                authenticationMethod, false);
+        this(0, null, null, email, null, null, null,
+                role, null, null, null, null, null, null,
+                null, false, authenticationMethod);
     }
 
     @Override
