@@ -10,11 +10,13 @@ import CategoryDto from "models/CategoryDto";
 import buildQueryParams from "services/QueryParamsBuilder";
 import SortType from "./SortType";
 import SortBar from "./SortBar";
+import GridTypePicker, { GridType } from "./GridTypePicker";
 import FiltersList from "./FiltersList";
 
 export default function Shop() {
   const [didYouMean, setDidYouMean] = useState<string>();
   const [sortType, setSortType] = useState<SortType>(SortType.DEFAULT);
+  const [gridType, setGridType] = useState<GridType>("grid");
   const [queryParams] = useSearchParams();
   const {
     data: categories,
@@ -81,15 +83,19 @@ export default function Shop() {
           />
         </aside>
         <div className="flex-grow">
-          <FiltersList />
-          <SortBar
-            sort={sortType}
-            onChange={setSortType}
-            className="w-1/4 pb-2"
-          />
-          <div>
+          <div className="flex justify-between items-center">
+            <FiltersList />
+            <SortBar
+              sort={sortType}
+              onChange={setSortType}
+              className="flex-grow"
+            />
+            <GridTypePicker gridType={gridType} onTypeChange={setGridType} />
+          </div>
+
+          <div className="pt-5">
             <ProductList
-              type="grid"
+              type={gridType}
               setDidYouMeanQuery={setDidYouMean}
               sortType={sortType}
             />

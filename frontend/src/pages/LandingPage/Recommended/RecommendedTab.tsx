@@ -30,6 +30,7 @@ export default function RecommendedTab() {
         items={data}
         itemsClassName="grid grid-cols-3 gap-5"
         imageClassName="w-92 h-80"
+        type="vertical"
       />
     </Container>
   );

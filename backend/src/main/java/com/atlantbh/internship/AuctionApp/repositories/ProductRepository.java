@@ -96,62 +96,80 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         List<Product> findTop3ByRandom(String sellerEmail);
 
         @Query("""
-                 select max(startBid) as max, min(startBid) as min
-                 from Product
-                 where (:categoryId is null or :categoryId = subCategory.category.id )
-                        and (:subcategories is null or subCategory.id in :subcategories)
-                        and (:name is null or name ilike concat('%', :name, '%'))
-                        and (:sellerId is null or user.id = :sellerId)
-                        and (:excludedSeller is null or user.email <> :excludedSeller)
-                        and (:minPrice is null or :minPrice <= greatest(highestBid, startBid))
-                        and (:maxPrice is null or :maxPrice >= greatest(highestBid, startBid))
-                        and
-                            case
-                                when :active = true then (dateStart <= current_timestamp and dateEnd > current_timestamp and purchased=false)
-                                when :active = false then (dateEnd < current_timestamp)
-                                else true
-                            end
-                 """)
+                        from Product
+                        where user.email <> :userEmail
+                          and (subCategory.id = :subcategoryId or subCategory.category.id = :categoryId)
+                          and id <> :productId
+                        order by
+                          case
+                            when subCategory.id = :subcategoryId then 1
+                            else 0
+                          end
+                        desc
+                        """)
+        Page<Product> findRelatedProducts(
+                        @Param("userEmail") String userEmail,
+                        @Param("subcategoryId") long subcategoryId,
+                        @Param("categoryId") long categoryId,
+                        @Param("productId") long productId,
+                        Pageable pageable);
+
+        @Query("""
+                        select max(startBid) as max, min(startBid) as min
+                        from Product
+                        where (:categoryId is null or :categoryId = subCategory.category.id )
+                               and (:subcategories is null or subCategory.id in :subcategories)
+                               and (:name is null or name ilike concat('%', :name, '%'))
+                               and (:sellerId is null or user.id = :sellerId)
+                               and (:excludedSeller is null or user.email <> :excludedSeller)
+                               and (:minPrice is null or :minPrice <= greatest(highestBid, startBid))
+                               and (:maxPrice is null or :maxPrice >= greatest(highestBid, startBid))
+                               and
+                                   case
+                                       when :active = true then (dateStart <= current_timestamp and dateEnd > current_timestamp and purchased=false)
+                                       when :active = false then (dateEnd < current_timestamp)
+                                       else true
+                                   end
+                        """)
         MaxMinPrice getMaxMinPrice(@Param("categoryId") Long categoryId,
-                                   @Param("subcategories") List<Long> subcategories,
-                                   @Param("name") String name,
-                                   @Param("sellerId") Long sellerId,
-                                   @Param("active") Boolean active,
-                                   @Param("excludedSeller") String excludedSeller,
-                                   @Param("minPrice") Double minPrice,
-                                   @Param("maxPrice") Double maxPrice);
+                        @Param("subcategories") List<Long> subcategories,
+                        @Param("name") String name,
+                        @Param("sellerId") Long sellerId,
+                        @Param("active") Boolean active,
+                        @Param("excludedSeller") String excludedSeller,
+                        @Param("minPrice") Double minPrice,
+                        @Param("maxPrice") Double maxPrice);
 
         @Query(value = """
-                       select count(*), t.bucket_number as bucketNumber
-                       from (select p.name, floor(((p.start_bid - :oldMin) * :numberOfBuckets) / :maxMinDiff) as bucket_number
-                                from product p join sub_category as s on s.id=p.subcategory_id
-                                                join app_user u on p.seller_id = u.id
-                                               where (:categoryId is null or :categoryId = s.category_id )
-                                               and (:subcategories is null or s.id in (:subcategories))
-                                               and (:name is null or p.name ilike concat('%', :name, '%'))
-                                               and (:sellerId is null or p.seller_id = :sellerId)
-                                               and (:excludedSeller is null or u.email <> :excludedSeller)
-                                               and (:minPrice is null or :minPrice <= greatest(p.start_bid, p.highest_bid))
-                                               and (:maxPrice is null or :maxPrice >= greatest(p.start_bid, p.highest_bid))
-                                               and
-                                                   case
-                                                       when :active = true then (p.date_start <= current_timestamp and p.date_end > current_timestamp and purchased=false)
-                                                       when :active = false then (p.date_end < current_timestamp)
-                                                       else true
-                                                   end) as t
-                       group by t.bucket_number
-                       """, nativeQuery = true)
+                        select count(*), t.bucket_number as bucketNumber
+                        from (select p.name, floor(((p.start_bid - :oldMin) * :numberOfBuckets) / :maxMinDiff) as bucket_number
+                                 from product p join sub_category as s on s.id=p.subcategory_id
+                                                 join app_user u on p.seller_id = u.id
+                                                where (:categoryId is null or :categoryId = s.category_id )
+                                                and (:subcategories is null or s.id in (:subcategories))
+                                                and (:name is null or p.name ilike concat('%', :name, '%'))
+                                                and (:sellerId is null or p.seller_id = :sellerId)
+                                                and (:excludedSeller is null or u.email <> :excludedSeller)
+                                                and (:minPrice is null or :minPrice <= greatest(p.start_bid, p.highest_bid))
+                                                and (:maxPrice is null or :maxPrice >= greatest(p.start_bid, p.highest_bid))
+                                                and
+                                                    case
+                                                        when :active = true then (p.date_start <= current_timestamp and p.date_end > current_timestamp and purchased=false)
+                                                        when :active = false then (p.date_end < current_timestamp)
+                                                        else true
+                                                    end) as t
+                        group by t.bucket_number
+                        """, nativeQuery = true)
         List<ProductBucket> getProductBuckets(
-                                                @Param("maxMinDiff")Double maxMinDiff,
-                                                @Param("oldMin") Double oldMin,
-                                                @Param("numberOfBuckets") Integer numberOfBuckets,
-                                                @Param("categoryId") Long categoryId,
-                                                @Param("subcategories") List<Long> subcategories,
-                                                @Param("name") String name,
-                                                @Param("sellerId") Long sellerId,
-                                                @Param("active") Boolean active,
-                                                @Param("excludedSeller") String excludedSeller,
-                                                @Param("minPrice") Double minPrice,
-                                                @Param("maxPrice") Double maxPrice
-                                                );
+                        @Param("maxMinDiff") Double maxMinDiff,
+                        @Param("oldMin") Double oldMin,
+                        @Param("numberOfBuckets") Integer numberOfBuckets,
+                        @Param("categoryId") Long categoryId,
+                        @Param("subcategories") List<Long> subcategories,
+                        @Param("name") String name,
+                        @Param("sellerId") Long sellerId,
+                        @Param("active") Boolean active,
+                        @Param("excludedSeller") String excludedSeller,
+                        @Param("minPrice") Double minPrice,
+                        @Param("maxPrice") Double maxPrice);
 }

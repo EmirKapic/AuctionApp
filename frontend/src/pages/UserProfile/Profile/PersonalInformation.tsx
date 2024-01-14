@@ -40,7 +40,6 @@ export default function PersonalInformation(props: PersonalInformationProps) {
   const methods = useFormContext();
   const userContext = useContext(UserContext);
   function handleImageUpload(files: Array<File>) {
-    console.log(files[0]);
     props.setProfileImage(files[0]);
   }
 

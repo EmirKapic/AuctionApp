@@ -12,6 +12,7 @@ import User from "models/User";
 
 export interface UserProfileProps {
   updateUserContext: (updatedUser: User) => void;
+  onDeactivate: () => void;
 }
 
 const pageName: Record<0 | 1 | 2 | 3, string> = {
@@ -39,7 +40,7 @@ export default function UserProfile(props: UserProfileProps) {
             <Profile updateUserContext={props.updateUserContext} />,
             <Seller />,
             <Bids />,
-            <Settings />,
+            <Settings onDeactivate={props.onDeactivate} />,
           ]}
           elementsClassName="mt-16"
           barClassName="flex gap-3"

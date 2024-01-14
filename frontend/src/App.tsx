@@ -22,6 +22,9 @@ import SellForm from "pages/SellingProcess/SellForm";
 import ProtectedRoute from "components/Common/ProtectedRoute";
 import PaymentSuccess from "pages/Payment/PaymentSuccess";
 import PaymentFailure from "pages/Payment/PaymentFailure";
+import deleteRequest from "services/fetching/Delete";
+import CSVSelling from "pages/CSVSelling/CSVSelling";
+import AllCategories from "pages/AllCategories/AllCategories";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -37,6 +40,14 @@ function App() {
     setCurrentUser(undefined);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+  }
+
+  function handleDeactivate() {
+    setCurrentUser(undefined);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    deleteRequest(new UrlBuilder().user().id(currentUser!.id).url);
+    navigate("/");
   }
 
   useEffect(() => {
@@ -85,13 +96,16 @@ function App() {
                     setCurrentUser(user);
                     localStorage.setItem("user", JSON.stringify(user));
                   }}
+                  onDeactivate={handleDeactivate}
                 />
               }
             />
+            <Route path="/account/sell/csv" element={<CSVSelling />} />
             <Route path="/account/sell" element={<SellForm />} />
           </Route>
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/payment/fail" element={<PaymentFailure />} />
+          <Route path="/shop/all-categories" element={<AllCategories />} />
         </Routes>
         <div className="absolute bottom-0 w-full">
           <Footer />
