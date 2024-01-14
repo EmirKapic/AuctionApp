@@ -12,6 +12,8 @@ type User = {
   dateOfBirth?: string;
   creditCard?: string;
   photoUrl?: string;
+  authenticationMethod: string;
+  photoUrl?: string;
 };
 
 export default User;

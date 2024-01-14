@@ -32,7 +32,6 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
 
-
     @Column(unique = true, nullable = false)
     private String email;
     @JsonIgnore
@@ -40,11 +39,7 @@ public class User implements UserDetails {
 
     @ManyToMany
     @JsonIgnore
-    @JoinTable(
-            name = "Wishlist",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
+    @JoinTable(name = "Wishlist", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> wishlist = new ArrayList<>();
 
     @Nullable
@@ -59,12 +54,19 @@ public class User implements UserDetails {
     private String photoUrl;
     private Instant dateOfBirth;
     private boolean deleted;
+    private String authenticationMethod;
 
-    public User(String email){
-        this(email, null, null, null);
+    public User(String email) {
+        this(email, null, null, null, null);
     }
-    public User(String email, String password, String firstName, String lastName){
-        this(0, firstName, lastName, email, password,null, null,null, null, null, null, null, null, null, null, false);
+
+    public User(String email, String password, String firstName, String lastName, String authenticationMethod) {
+        this(0, firstName, lastName, email, password, null, null, null, authenticationMethod);
+    }
+
+    public User(String email, String role, String authenticationMethod) {
+        this(0, null, null, email, null, null, null, null, null, null, null, null, null, null, role,
+                authenticationMethod, false);
     }
 
     @Override

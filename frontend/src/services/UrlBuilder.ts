@@ -68,4 +68,28 @@ export default class UrlBuilder {
     this._url += "/recommended";
     return this;
   }
+  public oauth2(): UrlBuilder {
+    this._url += "/oauth2";
+    return this;
+  }
+  public google(): UrlBuilder {
+    this._url += "/google";
+    return this;
+  }
+  public facebook(): UrlBuilder {
+    this._url += "/facebook";
+    return this;
+  }
+  public related(): UrlBuilder {
+    this._url += "/related";
+    return this;
+  }
+  public product(): UrlBuilder {
+    this._url += "/product";
+    return this;
+  }
+  public makeAll(): UrlBuilder {
+    this._url += "/make-all";
+    return this;
+  }
 }

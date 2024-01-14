@@ -34,24 +34,26 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
                         @Param("productId") Long productId,
                         Pageable pageable);
 
+        Page<Bid> findAllByProduct_Id(long productId, Pageable pageable);
+
         Optional<Bid> findFirstByProduct_IdOrderByBidDesc(long productId);
 
         void deleteAllByBidder_Id(long bidderId);
 
         @Query("""
-                select p as product, count(*) as count
-                from Product p join Bid b on p.id=b.product.id
-                where b.bidder.id = :userId
-                  and p.dateEnd > current_timestamp
-                group by p
-                """)
+                        select p as product, count(*) as count
+                        from Product p join Bid b on p.id=b.product.id
+                        where b.bidder.id = :userId
+                          and p.dateEnd > current_timestamp
+                        group by p
+                        """)
         List<ProductBidCount> findCountOfUserBidOnProducts(@Param("userId") long userId);
 
         @Query("""
-                select max(b.bid) as bid, p as product
-                from Bid b join Product p on p.id = b.product.id
-                where p.id in (:productIds)
-                group by p
-                """)
+                        select max(b.bid) as bid, p as product
+                        from Bid b join Product p on p.id = b.product.id
+                        where p.id in (:productIds)
+                        group by p
+                        """)
         List<ProductBid> findHighestBidForProducts(@Param("productIds") List<Long> productIds);
 }

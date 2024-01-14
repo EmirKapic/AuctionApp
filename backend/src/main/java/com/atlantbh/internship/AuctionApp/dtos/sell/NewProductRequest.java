@@ -5,7 +5,7 @@ import lombok.NonNull;
 import java.time.Instant;
 import java.util.List;
 
-public record NewProductRequest(@NonNull String title, long subcategoryId,
+public record NewProductRequest(@NonNull String title, String subcategoryName,
                 @NonNull String description, @NonNull List<String> imageUrls,
                 double startPrice, Instant startDate,
                 Instant endDate, @NonNull String address,

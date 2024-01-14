@@ -27,7 +27,8 @@ public class AuctionUserDetailsService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmailEquals(email);
+        return userRepository.findByEmailEquals(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No user with email " + email + " found."));
     }
 
     public User getCurrentUser() {
