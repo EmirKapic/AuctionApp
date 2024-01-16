@@ -1,8 +1,4 @@
-import {
-  CredentialResponse,
-  GoogleLogin,
-  useGoogleOneTapLogin,
-} from "@react-oauth/google";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Button from "components/Common/Button";
 import Checkbox from "components/Common/Checkbox";
@@ -22,7 +18,6 @@ import {
   emailValidationOptions,
   passwordValidationOptions,
 } from "services/UseFormValidators";
-import { render } from "react-dom";
 import Icon from "svgs/Icon";
 
 const EMAIL_INPUT_ID = "emailInput";

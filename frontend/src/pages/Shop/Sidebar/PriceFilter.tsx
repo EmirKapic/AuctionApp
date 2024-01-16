@@ -3,7 +3,7 @@ import Button from "components/Common/Button";
 import DoubleSlider from "components/Common/DoubleSlider/DoubleSlider";
 import useFetchOne from "hooks/useFetchOne";
 import ProductExtraInfo from "models/ProductExtraInfo";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import UrlBuilder from "services/UrlBuilder";
 

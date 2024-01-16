@@ -11,7 +11,6 @@ type User = {
   country?: string;
   dateOfBirth?: string;
   creditCard?: string;
-  photoUrl?: string;
   authenticationMethod: string;
   photoUrl?: string;
 };

@@ -19,6 +19,7 @@ export default function RelatedProducts(props: RelatedProductsProps) {
           Related products
         </div>
         <ProductGrid
+          type="vertical"
           items={data.content}
           itemsClassName="grid grid-cols-3 gap-5"
           imageClassName="w-96 h-[28rem]"

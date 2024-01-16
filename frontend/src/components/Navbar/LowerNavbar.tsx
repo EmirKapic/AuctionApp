@@ -12,7 +12,7 @@ export default function LowerNavbar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (!searchParams.has("name")) setSearchText("");
