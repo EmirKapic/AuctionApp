@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   auction-postgres:
     image: postgres:16-alpine
@@ -31,6 +31,7 @@ services:
       JWT_KEY: ${JWT_KEY}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       CLIENT_HOST_URL: https://auction.praksa.abhapp.com/
+      GOOGLE_CLIENT_ID: 147147029110-gd2hh6lkuvsh9ub6v67q65893anjm9v0.apps.googleusercontent.com
     ports:
       - "8080:8080"
     networks:
